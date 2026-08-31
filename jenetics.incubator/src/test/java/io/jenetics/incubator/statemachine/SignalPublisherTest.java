@@ -101,8 +101,8 @@ public class SignalPublisherTest {
 			Set.of(known),
 			Set.of(start, end),
 			start,
-			Set.of(end),
-			(_, _) -> Optional.empty()
+			(_, _) -> Optional.empty(),
+			Set.of(end)
 		);
 
 		try (var publisher = new SignalPublisher<>(new SymbolStepper<>(fsm))) {

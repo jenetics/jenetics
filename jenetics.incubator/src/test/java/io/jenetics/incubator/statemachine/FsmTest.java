@@ -19,13 +19,9 @@
  */
 package io.jenetics.incubator.statemachine;
 
-import org.testng.annotations.Test;
-
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static io.jenetics.incubator.statemachine.FsmTest.Command.BEGIN;
 import static io.jenetics.incubator.statemachine.FsmTest.Command.END;
 import static io.jenetics.incubator.statemachine.FsmTest.Command.EXIT;
@@ -35,26 +31,22 @@ import static io.jenetics.incubator.statemachine.FsmTest.ProcessState.ACTIVE;
 import static io.jenetics.incubator.statemachine.FsmTest.ProcessState.INACTIVE;
 import static io.jenetics.incubator.statemachine.FsmTest.ProcessState.PAUSED;
 import static io.jenetics.incubator.statemachine.FsmTest.ProcessState.TERMINATED;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
+import org.testng.annotations.Test;
 
 public class FsmTest {
 
 	enum ProcessState implements Fsm.State {
-		ACTIVE,
-		INACTIVE,
-		PAUSED,
-		TERMINATED
+		ACTIVE, INACTIVE, PAUSED, TERMINATED
 	}
 
 	enum Command implements Fsm.Symbol, Fsm.Event<Command> {
-		BEGIN,
-		END,
-		PAUSE,
-		RESUME,
-		EXIT;
-
+		BEGIN, END, PAUSE, RESUME, EXIT;
 		@Override
 		public Command kind() {
 			return this;
@@ -71,7 +63,6 @@ public class FsmTest {
 		EnumSet.allOf(Command.class),
 		EnumSet.allOf(ProcessState.class),
 		INACTIVE,
-		EnumSet.of(TERMINATED),
 		Fsm.Delta.of(
 			new Fsm.Transition<>(INACTIVE, BEGIN, ACTIVE),
 			new Fsm.Transition<>(ACTIVE, PAUSE, PAUSED),
@@ -79,7 +70,8 @@ public class FsmTest {
 			new Fsm.Transition<>(ACTIVE, END, INACTIVE),
 			new Fsm.Transition<>(PAUSED, END, INACTIVE),
 			new Fsm.Transition<>(INACTIVE, EXIT, TERMINATED)
-		)
+		),
+		EnumSet.of(TERMINATED)
 	);
 
 	@Test
@@ -175,8 +167,8 @@ public class FsmTest {
 				Set.of(begin),
 				Set.of(ready1, ready2, stop),
 				ready1,
-				Set.of(stop),
-				(_, _) -> Optional.empty()
+				(_, _) -> Optional.empty(),
+				Set.of(stop)
 			));
 	}
 
@@ -192,8 +184,8 @@ public class FsmTest {
 				Set.of(begin1, begin2),
 				Set.of(ready, stop),
 				ready,
-				Set.of(stop),
-				(_, _) -> Optional.empty()
+				(_, _) -> Optional.empty(),
+				Set.of(stop)
 			));
 	}
 
@@ -204,8 +196,8 @@ public class FsmTest {
 				EnumSet.allOf(Command.class),
 				EnumSet.of(ACTIVE, TERMINATED),
 				INACTIVE,
-				EnumSet.of(TERMINATED),
-				(_, _) -> Optional.empty()
+				(_, _) -> Optional.empty(),
+				EnumSet.of(TERMINATED)
 			));
 	}
 
@@ -216,8 +208,8 @@ public class FsmTest {
 				EnumSet.allOf(Command.class),
 				EnumSet.of(INACTIVE, ACTIVE),
 				INACTIVE,
-				EnumSet.of(TERMINATED),
-				(_, _) -> Optional.empty()
+				(_, _) -> Optional.empty(),
+				EnumSet.of(TERMINATED)
 			));
 	}
 
@@ -228,8 +220,8 @@ public class FsmTest {
 				EnumSet.allOf(Command.class),
 				EnumSet.allOf(ProcessState.class),
 				INACTIVE,
-				EnumSet.of(INACTIVE),
-				(_, _) -> Optional.empty()
+				(_, _) -> Optional.empty(),
+				EnumSet.of(INACTIVE)
 			));
 	}
 
@@ -240,8 +232,8 @@ public class FsmTest {
 				EnumSet.allOf(Command.class),
 				EnumSet.allOf(ProcessState.class),
 				INACTIVE,
-				EnumSet.of(TERMINATED),
-				Fsm.Delta.of(new Fsm.Transition<>(TERMINATED, BEGIN, ACTIVE))
+				Fsm.Delta.of(new Fsm.Transition<>(TERMINATED, BEGIN, ACTIVE)),
+				EnumSet.of(TERMINATED)
 			));
 	}
 

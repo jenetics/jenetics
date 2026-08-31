@@ -35,13 +35,13 @@ import java.util.stream.Collectors;
 import java.util.stream.Gatherer;
 
 /**
- * Definition of a <a href="https://en.wikipedia.org/wiki/Finite-state_machine#Mathematical_model">
- *     Finit State Machine</a>.
- * The {@link Fsm} is modeled as a quintuple (record) {@code (Σ, S, s0, δ, F)},
+ * Implements a
+ * <a href="https://en.wikipedia.org/wiki/Finite-state_machine#Mathematical_model">
+ * Finit State Machine</a> as a quintuple (record) {@code (Σ, S, s0, δ, F)},
  * where:
  * <ul>
  *     <li><b>Σ</b> is the non-empty alphabet of symbols (signals);</li>
- *     <li><b>S</b> is the finit non-empty set of states;</li>
+ *     <li><b>S</b> is the finite non-empty set of states;</li>
  *     <li><b>s0</b> is the initial state, which is an element of S;</li>
  *     <li><b>δ</b> is the transition function: δ: S x Σ -> S;</li>
  *     <li><b>F</b> is the possible empty set of final states, which are
@@ -50,13 +50,25 @@ import java.util.stream.Gatherer;
  *
  * A {@link Fsm} instance is usually created as static constant.
  *
- * <h1>Defining state machine</h1>
+ * <h1>State machine</h1>
+ *
+ * Since the FSM is immutable, it can be defined as static constant and shared
+ * between different threads and executions.
  * {@snippet lang=java:
+ * enum ProcessState implements Fsm.State {
+ *     ACTIVE, INACTIVE, PAUSED, TERMINATED
+ * }
+ * enum Command implements Fsm.Symbol, Fsm.Event<Command> {
+ *     BEGIN, END, PAUSE, RESUME, EXIT;
+ *     @Override
+ *     public Command kind() {
+ *         return this;
+ *     }
+ * }
  * static final Fsm<ProcessState, Command> FSM = new Fsm<>(
  *     EnumSet.allOf(Command.class),
  *     EnumSet.allOf(ProcessState.class),
  *     INACTIVE,
- *     EnumSet.of(TERMINATED),
  *     Fsm.Delta.of(
  *         new Fsm.Transition<>(INACTIVE, BEGIN, ACTIVE),
  *         new Fsm.Transition<>(ACTIVE, PAUSE, PAUSED),
@@ -64,24 +76,44 @@ import java.util.stream.Gatherer;
  *         new Fsm.Transition<>(ACTIVE, END, INACTIVE),
  *         new Fsm.Transition<>(PAUSED, END, INACTIVE),
  *         new Fsm.Transition<>(INACTIVE, EXIT, TERMINATED)
- *     )
+ *     ),
+ *     EnumSet.of(TERMINATED)
  * );
  * }
- * The <em>execution</em> of the state machine is done by the {@link Stepper}
- * implementations, which also holds the current state of the state machines.
- * {@link Stepper} instances are usually not shared between different threads.
- * On top of the {@link Stepper}, the FSM can be run in a reactive manner using
- * the {@link SignalPublisher} and {@link SignalSubscriber} classes. The
- * {@link OberservableStepper} adapter lets you execute the FSM in an event-based
- * kind.
  *
- * <h1>Execute action on state transitions</h1>
- * The immutable FSM can be used to convert a stream of events into a stream of
- * state transitions. It is then possible to execute actions on these transitions.
+ * <h1>State transition</h1>
+ *
+ * The {@link Fsm} class itself doesn't hold any mutable state. This is the
+ * responsibility of the {@link Stepper} class, which maintains a mutable state
+ * and can perform state transitions on incoming {@link Fsm.Signal}s using an
+ * FSM definition
  * {@snippet lang=java:
+ * final var events = List.of(BEGIN, PAUSE, RESUME, END, EXIT, END);
  * events.stream()
- *     .gather(Fsm.transitions(() -> new SymbolStepper<>(FSM)))
+ *     // Converts the stream of events into a stream of state transitions.
+ *     .gather(Fsm.transitions(() -> new EventStepper<>(FSM)))
  *     .forEach(IO::println);
+ *
+ * // Transition[before=INACTIVE, signal=BEGIN, after=ACTIVE]
+ * // Transition[before=ACTIVE, signal=PAUSE, after=PAUSED]
+ * // Transition[before=PAUSED, signal=RESUME, after=ACTIVE]
+ * // Transition[before=ACTIVE, signal=END, after=INACTIVE]
+ * // Transition[before=INACTIVE, signal=EXIT, after=TERMINATED]
+ * }
+ *
+ * You can also use the stepper directly for an imperative state transitions.
+ * {@snippet lang=java:
+ * final var stepper = new EventStepper<>(FSM);
+ * for (int i = 0; i < events.size() && !stepper.isFinished(); ++i) {
+ *     final var transition = stepper.next(events.get(i));
+ *     IO.println(transition);
+ * }
+ *
+ * // Optional[Transition[before=INACTIVE, signal=BEGIN, after=ACTIVE]]
+ * // Optional[Transition[before=ACTIVE, signal=PAUSE, after=PAUSED]]
+ * // Optional[Transition[before=PAUSED, signal=RESUME, after=ACTIVE]]
+ * // Optional[Transition[before=ACTIVE, signal=END, after=INACTIVE]]
+ * // Optional[Transition[before=INACTIVE, signal=EXIT, after=TERMINATED]]
  * }
  *
  * @apiNote
@@ -117,8 +149,8 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 	Set<SY> alphabet,
 	Set<ST> states,
 	ST start,
-	Set<ST> finals,
-	Delta<ST, SY> delta
+	Delta<ST, SY> delta,
+	Set<ST> finals
 ) {
 
 	public Fsm {

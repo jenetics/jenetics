@@ -26,7 +26,7 @@
  * a quintuple (record) {@code (Σ, S, s0, δ, F)}, with
  * <ul>
  *     <li><b>Σ</b> as the non-empty alphabet of symbols (signals);</li>
- *     <li><b>S</b> as the finit non-empty set of states;</li>
+ *     <li><b>S</b> as the finites non-empty set of states;</li>
  *     <li><b>s0</b> as the initial state, which is an element of S;</li>
  *     <li><b>δ</b> as the transition function: δ: S x Σ -> S;</li>
  *     <li><b>F</b> as the possible empty set of final states, which are
@@ -79,7 +79,6 @@
  *     EnumSet.allOf(Command.class),
  *     EnumSet.allOf(ProcessState.class),
  *     INACTIVE,
- *     EnumSet.of(TERMINATED),
  *     Fsm.Delta.of(
  *         new Fsm.Transition<>(INACTIVE, BEGIN, ACTIVE),
  *         new Fsm.Transition<>(ACTIVE, PAUSE, PAUSED),
@@ -87,7 +86,8 @@
  *         new Fsm.Transition<>(ACTIVE, END, INACTIVE),
  *         new Fsm.Transition<>(PAUSED, END, INACTIVE),
  *         new Fsm.Transition<>(INACTIVE, EXIT, TERMINATED)
- *     )
+ *     ),
+ *      EnumSet.of(TERMINATED)
  * );
  * }
  *
