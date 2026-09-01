@@ -19,16 +19,19 @@
  */
 package io.jenetics.util;
 
+import static java.time.Clock.systemUTC;
+import static java.util.Objects.requireNonNull;
+
 import java.time.Clock;
 import java.time.Duration;
 import java.util.Comparator;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.stream.Gatherer;
 import java.util.stream.Stream;
-
-import static java.time.Clock.systemUTC;
-import static java.util.Objects.requireNonNull;
 
 /**
  * This class contains factory methods for (flat) mapping stream element. The
@@ -109,8 +112,8 @@ public final class Streams {
 	 * @param <C> the comparable type
 	 * @return a new gatherer
 	 */
-	public static <C extends Comparable<? super C>> Gatherer<C, ?, C>
-	strictlyIncreasing() {
+	public static <C extends Comparable<? super C>>
+	Gatherer<C, ?, C> strictlyIncreasing() {
 		return strictlyImproving(Comparator.naturalOrder());
 	}
 
@@ -139,10 +142,42 @@ public final class Streams {
 	 *
 	 * @param <C> the comparable type
 	 * @return a new flat-mapper function
+	 * @deprecated Use {@link #strictlyDecreasing()} instead.
 	 */
+	@Deprecated(forRemoval = true, since = "9.1")
 	public static <C extends Comparable<? super C>>
 	Function<C, Stream<C>> toStrictlyDecreasing() {
 		return strictlyImproving0(Streams::min);
+	}
+
+	/**
+	 * Return a new gatherer, which guarantees a strictly decreasin stream, from
+	 * an arbitrarily ordered source stream. Note that this gatherer doesn't sort
+	 * the stream. It <em>just</em> skips the <em>out of order</em> elements.
+	 *
+	 * <pre>{@code
+	 *     +----9--8--9--5--6--6--2--9----|
+	 *        strictlyDecreasing()
+	 *     +----9--8-----5--------2-------|
+	 * }</pre>
+	 *
+	 * {@snippet lang="java":
+	 * final ISeq<Integer> values = new Random().ints(0, 100)
+	 *     .boxed()
+	 *     .limit(100)
+	 *     .gather(Streams.strictlyDecreasing())
+	 *     .collect(ISeq.toISeq());
+	 *
+	 * System.out.println(values);
+	 * // [45,32,15,12,3,1]
+	 * }
+	 *
+	 * @param <C> the comparable type
+	 * @return a new flat-mapper function
+	 */
+	public static <C extends Comparable<? super C>>
+	Gatherer<C, ?, C> strictlyDecreasing() {
+		return strictlyImproving(Comparator.<C>naturalOrder().reversed());
 	}
 
 	/**
@@ -221,21 +256,18 @@ public final class Streams {
 	public static <T> Gatherer<T, ?, T>
 	strictlyImproving(final Comparator<? super T> comparator) {
 		requireNonNull(comparator);
+
 		return Gatherer.ofSequential(
-			State<T>::new,
+			AtomicReference<T>::new,
 			(state, value, downstream) -> {
-				final T best = best(comparator, state.best, value);
-				if (best != state.best) {
-					state.best = best;
+				final T best = best(comparator, state.get(), value);
+				if (best != state.get()) {
+					state.set(best);
 					return downstream.push(best);
 				}
 				return true;
 			}
 		);
-	}
-
-	private static final class State<T> {
-		private T best;
 	}
 
 	private static <T extends Comparable<? super T>> T max(final T a, final T b) {
@@ -270,10 +302,13 @@ public final class Streams {
 	 * @param <C> the element type
 	 * @return a new flat-mapper function
 	 * @throws IllegalArgumentException if the given size is smaller than one
+	 * @deprecated Will be removed. Use {@link #maxInterval(int)}
+	 *             instead.
 	 */
+	@Deprecated(forRemoval = true, since = "9.1")
 	public static <C extends Comparable<? super C>>
 	Function<C, Stream<C>> toIntervalMax(final int size) {
-		return sliceBest(Streams::max, size);
+		return sliceBest1(Streams::max, size);
 	}
 
 	/**
@@ -292,10 +327,13 @@ public final class Streams {
 	 * @param <C> the element type
 	 * @return a new flat-mapper function
 	 * @throws IllegalArgumentException if the given size is smaller than one
+	 * @deprecated Will be removed. Use {@link #minInterval(int)}
+	 *             instead.
 	 */
+	@Deprecated(forRemoval = true, since = "9.1")
 	public static <C extends Comparable<? super C>>
 	Function<C, Stream<C>> toIntervalMin(final int size) {
-		return sliceBest(Streams::min, size);
+		return sliceBest1(Streams::min, size);
 	}
 
 	/**
@@ -312,14 +350,18 @@ public final class Streams {
 	 * @throws IllegalArgumentException if the given size is smaller than one
 	 * @throws NullPointerException if the given {@code comparator} is
 	 *         {@code null}
+	 * @deprecated Will be removed. Use {@link #bestInterval(Comparator, int)}
+	 *             instead.
 	 */
+	@Deprecated(forRemoval = true, since = "9.1")
 	public static <C> Function<C, Stream<C>>
 	toIntervalBest(final Comparator<? super C> comparator, final int size) {
 		requireNonNull(comparator);
-		return sliceBest((a, b) -> best(comparator, a, b), size);
+		return sliceBest1((a, b) -> best(comparator, a, b), size);
 	}
 
-	private static <C> Function<C, Stream<C>> sliceBest(
+	@Deprecated
+	private static <C> Function<C, Stream<C>> sliceBest1(
 		final BinaryOperator<C> comp,
 		final int rangeSize
 	) {
@@ -354,6 +396,106 @@ public final class Streams {
 	}
 
 	/**
+	 * Return a new gatherer which emits the maximum element of the last <em>n</em>
+	 * consumed elements.
+	 *
+	 * <pre>{@code
+	 *          +----3---+----3---+
+	 *          |        |        |
+	 *     +----9--8--3--3--5--4--2--9----|
+	 *        maxInterval(3)
+	 *     +----------9--------5----------|
+	 * }</pre>
+	 *
+	 * @param size the size of the slice
+	 * @param <C> the element type
+	 * @return a new flat-mapper function
+	 * @throws IllegalArgumentException if the given size is smaller than one
+	 */
+	public static <C extends Comparable<? super C>>
+	Gatherer<C, ?, C> maxInterval(final int size) {
+		return sliceBestGatherer(Streams::max, size);
+	}
+
+	/**
+	 * Return a new gatherer which emits the minimum element of the last <em>n</em>
+	 * consumed elements.
+	 *
+	 * <pre>{@code
+	 *          +----3---+----3---+
+	 *          |        |        |
+	 *     +----9--8--3--3--1--4--2--9----|
+	 *        minInterval(3)
+	 *     +----------3--------1----------|
+	 * }</pre>
+	 *
+	 * @param size the size of the slice
+	 * @param <C> the element type
+	 * @return a new flat-mapper function
+	 * @throws IllegalArgumentException if the given size is smaller than one
+	 */
+	public static <C extends Comparable<? super C>>
+	Gatherer<C, ?, C> minInterval(final int size) {
+		return sliceBestGatherer(Streams::min, size);
+	}
+
+	/**
+	 * Return a new gatherer which emits the best element of the last <em>n</em>
+	 * consumed elements.
+	 *
+	 * @see #maxInterval(int)
+	 * @see #minInterval(int)
+	 *
+	 * @param <C> the element type
+	 * @param size the size of the slice
+	 * @param comparator the comparator used for testing the elements
+	 * @return a new gatherer
+	 * @throws IllegalArgumentException if the given size is smaller than one
+	 * @throws NullPointerException if the given {@code comparator} is
+	 *         {@code null}
+	 */
+	public static <C> Gatherer<C, ?, C>
+	bestInterval(final Comparator<? super C> comparator, final int size) {
+		requireNonNull(comparator);
+		return sliceBestGatherer((a, b) -> best(comparator, a, b), size);
+	}
+
+	private static <C> Gatherer<C, ?, C> sliceBestGatherer(
+		final BinaryOperator<C> comp,
+		final int rangeSize
+	) {
+		requireNonNull(comp);
+		if (rangeSize < 1) {
+			throw new IllegalArgumentException(
+				"Range size must be at least one: " + rangeSize
+			);
+		}
+
+		record State<C>(AtomicInteger count, AtomicReference<C> best) {
+			State() {
+				this(new AtomicInteger(), new AtomicReference<>());
+			}
+		}
+
+		return Gatherer.ofSequential(
+			State<C>::new,
+			(state, value, downstream) -> {
+				final var count = state.count.incrementAndGet();
+				state.best.set(comp.apply(state.best.get(), value));
+
+				if (count >= rangeSize) {
+					downstream.push(state.best.get());
+					state.count.set(0);
+					state.best.set(null);
+				}
+
+				return true;
+			}
+		);
+
+	}
+
+	/**
 	 * Return a new flat-mapper function which returns (emits) the maximal value
 	 * of the elements emitted within the given {@code timespan}.
 	 *
@@ -373,10 +515,13 @@ public final class Streams {
 	 * @return a new flat-mapper function
 	 * @throws IllegalArgumentException if the given size is smaller than one
 	 * @throws NullPointerException if the given {@code timespan} is {@code null}
+	 * @deprecated Will be removed. Use {@link #maxInterval(Duration)}
+	 *             instead.
 	 */
+	@Deprecated(forRemoval = true, since = "9.1")
 	public static <C extends Comparable<? super C>>
 	Function<C, Stream<C>> toIntervalMax(final Duration timespan) {
-		return sliceBest(Streams::max, timespan, systemUTC());
+		return sliceBest0(Streams::max, timespan, systemUTC());
 	}
 
 	/**
@@ -400,10 +545,13 @@ public final class Streams {
 	 * @return a new flat-mapper function
 	 * @throws IllegalArgumentException if the given size is smaller than one
 	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @deprecated Will be removed. Use {@link #maxInterval(Duration, Clock)}
+	 *             instead.
 	 */
+	@Deprecated
 	public static <C extends Comparable<? super C>>
 	Function<C, Stream<C>> toIntervalMax(final Duration timespan, final Clock clock) {
-		return sliceBest(Streams::max, timespan, clock);
+		return sliceBest0(Streams::max, timespan, clock);
 	}
 
 	/**
@@ -426,10 +574,13 @@ public final class Streams {
 	 * @return a new flat-mapper function
 	 * @throws IllegalArgumentException if the given size is smaller than one
 	 * @throws NullPointerException if the given {@code timespan} is {@code null}
+	 * @deprecated Will be removed. Use {@link #minInterval(Duration)}
+	 *             instead.
 	 */
+	@Deprecated(forRemoval = true, since = "9.1")
 	public static <C extends Comparable<? super C>>
 	Function<C, Stream<C>> toIntervalMin(final Duration timespan) {
-		return sliceBest(Streams::min, timespan, systemUTC());
+		return sliceBest0(Streams::min, timespan, systemUTC());
 	}
 
 	/**
@@ -453,10 +604,13 @@ public final class Streams {
 	 * @return a new flat-mapper function
 	 * @throws IllegalArgumentException if the given size is smaller than one
 	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @deprecated Will be removed. Use {@link #minInterval(Duration, Clock)}
+	 *             instead.
 	 */
+	@Deprecated(forRemoval = true, since = "9.1")
 	public static <C extends Comparable<? super C>>
 	Function<C, Stream<C>> toIntervalMin(final Duration timespan, final Clock clock) {
-		return sliceBest(Streams::min, timespan, clock);
+		return sliceBest0(Streams::min, timespan, clock);
 	}
 
 	/**
@@ -472,12 +626,15 @@ public final class Streams {
 	 *        calculation slice
 	 * @return a new flat-mapper function
 	 * @throws IllegalArgumentException if the given size is smaller than one
-	 @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @deprecated Will be removed. Use {@link #bestInterval(Comparator, Duration)}
+	 *             instead.
 	 */
+	@Deprecated(forRemoval = true, since = "9.1")
 	public static <C> Function<C, Stream<C>>
 	toIntervalBest(final Comparator<? super C> comparator, final Duration timespan) {
 		requireNonNull(comparator);
-		return sliceBest((a, b) -> best(comparator, a, b), timespan, systemUTC());
+		return sliceBest0((a, b) -> best(comparator, a, b), timespan, systemUTC());
 	}
 
 	/**
@@ -491,8 +648,11 @@ public final class Streams {
 	 * @param clock the {@code clock} used for measuring the {@code timespan}
 	 * @return a new flat-mapper function
 	 * @throws IllegalArgumentException if the given size is smaller than one
-	 @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @deprecated Will be removed. Use {@link #bestInterval(Comparator, Duration, Clock)}
+	 *             instead.
 	 */
+	@Deprecated(forRemoval = true, since = "9.1")
 	public static <C> Function<C, Stream<C>>
 	toIntervalBest(
 		final Comparator<? super C> comparator,
@@ -500,16 +660,18 @@ public final class Streams {
 		final Clock clock
 	) {
 		requireNonNull(comparator);
-		return sliceBest((a, b) -> best(comparator, a, b), timespan, clock);
+		return sliceBest0((a, b) -> best(comparator, a, b), timespan, clock);
 	}
 
-	private static <C> Function<C, Stream<C>> sliceBest(
+	@Deprecated
+	private static <C> Function<C, Stream<C>> sliceBest0(
 		final BinaryOperator<C> comp,
 		final Duration timespan,
 		final Clock clock
 	) {
 		requireNonNull(comp);
 		requireNonNull(timespan);
+		requireNonNull(clock);
 
 		return new Function<>() {
 			private final long _timespan  = timespan.toMillis();
@@ -538,6 +700,192 @@ public final class Streams {
 				return result;
 			}
 		};
+	}
+
+	/**
+	 * Return a new gatherer which emits the maximal element consumed within the
+	 * given {@code timespan}.
+	 *
+	 * <pre>{@code
+	 *          +---3s---+---3s---+
+	 *          |        |        |
+	 *     +----9--8--3--3--5--4--2--9----|
+	 *        maxInterval(3s)
+	 *     +----------9--------5----------|
+	 * }</pre>
+	 *
+	 * @see #maxInterval(Duration, Clock)
+	 *
+	 * @param <C> the element type
+	 * @param timespan the timespan the elements are collected for the
+	 *        calculation slice
+	 * @return a new gatherer
+	 * @throws IllegalArgumentException if the given size is smaller than one
+	 * @throws NullPointerException if the given {@code timespan} is {@code null}
+	 */
+	public static <C extends Comparable<? super C>>
+	Gatherer<C, ?, C> maxInterval(final Duration timespan) {
+		return sliceBestGatherer(Streams::max, timespan, systemUTC());
+	}
+
+	/**
+	 * Return a new gatherer which emits the maximal element consumed within the
+	 * given {@code timespan}.
+	 *
+	 * <pre>{@code
+	 *          +---3s---+---3s---+
+	 *          |        |        |
+	 *     +----9--8--3--3--5--4--2--9----|
+	 *        maxInterval(3s)
+	 *     +----------9--------5----------|
+	 * }</pre>
+	 *
+	 * @see #maxInterval(Duration)
+	 *
+	 * @param <C> the element type
+	 * @param timespan the timespan the elements are collected for the
+	 *        calculation slice
+	 * @param clock the {@code clock} used for measuring the {@code timespan}
+	 * @return a new gatherer
+	 * @throws IllegalArgumentException if the given size is smaller than one
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static <C extends Comparable<? super C>>
+	Gatherer<C, ?, C> maxInterval(final Duration timespan, final Clock clock) {
+		return sliceBestGatherer(Streams::max, timespan, clock);
+	}
+
+	/**
+	 * Return a new gatherer which emits the minimal element consumed within the
+	 * given {@code timespan}.
+	 *
+	 * <pre>{@code
+	 *          +---3s---+---3s---+
+	 *          |        |        |
+	 *     +----9--8--3--3--1--4--2--9----|
+	 *        minInterval(3s)
+	 *     +----------3--------1----------|
+	 * }</pre>
+	 *
+	 * @see #minInterval(Duration, Clock)
+	 *
+	 * @param <C> the element type
+	 * @param timespan the timespan the elements are collected for the
+	 *        calculation slice
+	 * @return a new gatherer
+	 * @throws IllegalArgumentException if the given size is smaller than one
+	 * @throws NullPointerException if the given {@code timespan} is {@code null}
+	 */
+	public static <C extends Comparable<? super C>>
+	Gatherer<C, ?, C> minInterval(final Duration timespan) {
+		return sliceBestGatherer(Streams::min, timespan, systemUTC());
+	}
+
+	/**
+	 * Return a new gatherer which emits the minimal element consumed within the
+	 * given {@code timespan}.
+	 *
+	 * <pre>{@code
+	 *          +---3s---+---3s---+
+	 *          |        |        |
+	 *     +----9--8--3--3--1--4--2--9----|
+	 *        minInterval(3s)
+	 *     +----------3--------1----------|
+	 * }</pre>
+	 *
+	 * @see #minInterval(Duration)
+	 *
+	 * @param <C> the element type
+	 * @param timespan the timespan the elements are collected for the
+	 *        calculation slice
+	 * @param clock the {@code clock} used for measuring the {@code timespan}
+	 * @return a new gatherer
+	 * @throws IllegalArgumentException if the given size is smaller than one
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static <C extends Comparable<? super C>>
+	Gatherer<C, ?, C> minInterval(final Duration timespan, final Clock clock) {
+		return sliceBestGatherer(Streams::min, timespan, clock);
+	}
+
+	/**
+	 * Return a new gatherer which emits the <em>best</em> element consumed
+	 * within the given {@code timespan}.
+	 *
+	 * @see #minInterval(Duration)
+	 * @see #maxInterval(Duration)
+	 *
+	 * @param <C> the element type
+	 * @param comparator the comparator used for testing the elements
+	 * @param timespan the timespan the elements are collected for the
+	 *        calculation slice
+	 * @return a new gatherer
+	 * @throws IllegalArgumentException if the given size is smaller than one
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static <C>Gatherer<C, ?, C>
+	bestInterval(final Comparator<? super C> comparator, final Duration timespan) {
+		requireNonNull(comparator);
+		return sliceBestGatherer((a, b) -> best(comparator, a, b), timespan, systemUTC());
+	}
+
+	/**
+	 * Return a new gatherer which emits the <em>best</em> element consumed
+	 * within the given {@code timespan}.
+	 *
+	 * @param <C> the element type
+	 * @param comparator the comparator used for testing the elements
+	 * @param timespan the timespan the elements are collected for the
+	 *        calculation slice
+	 * @param clock the {@code clock} used for measuring the {@code timespan}
+	 * @return a new gatherer
+	 * @throws IllegalArgumentException if the given size is smaller than one
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static <C> Gatherer<C, ?, C> bestInterval(
+		final Comparator<? super C> comparator,
+		final Duration timespan,
+		final Clock clock
+	) {
+		requireNonNull(comparator);
+		return sliceBestGatherer((a, b) -> best(comparator, a, b), timespan, clock);
+	}
+
+
+	private static <C> Gatherer<C, ?, C> sliceBestGatherer(
+		final BinaryOperator<C> comp,
+		final Duration timespan,
+		final Clock clock
+	) {
+		requireNonNull(comp);
+		requireNonNull(timespan);
+		requireNonNull(clock);
+
+		record State<C>(long ts, AtomicLong start, AtomicReference<C> best) {
+			State(long ts) {
+				this(ts, new AtomicLong(0), new AtomicReference<>());
+			}
+		}
+
+		return Gatherer.ofSequential(
+			() -> new State<C>(timespan.toMillis()),
+			(state, value, downstream) -> {
+				if (state.start.get() == 0) {
+					state.start.set(clock.millis());
+				}
+
+				state.best.set(comp.apply(state.best.get(), value));
+				long end = clock.millis();
+
+				if (end - state.start.get() >= state.ts) {
+					downstream.push(state.best.get());
+					state.start.set(0);
+					state.best.set(null);
+				}
+
+				return true;
+			}
+		);
 	}
 
 }
