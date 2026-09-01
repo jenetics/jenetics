@@ -37,13 +37,13 @@ import java.util.stream.Gatherer;
 /**
  * Implements a
  * <a href="https://en.wikipedia.org/wiki/Finite-state_machine#Mathematical_model">
- * Finit State Machine</a> as a quintuple (record) {@code (Σ, S, s0, δ, F)},
+ * Finit State Machine</a> as a quintuple (record) (Σ, S, s<sub>0</sub>, δ, F),
  * where:
  * <ul>
  *     <li><b>Σ</b> is the non-empty alphabet of symbols (signals);</li>
  *     <li><b>S</b> is the finite non-empty set of states;</li>
- *     <li><b>s0</b> is the initial state, which is an element of S;</li>
- *     <li><b>δ</b> is the transition function: δ: S x Σ -> S;</li>
+ *     <li><b>s<sub>0</sub></b> is the initial state, which is an element of S;</li>
+ *     <li><b>δ</b> is the transition function: δ: S &#10005; Σ &rarr; S;</li>
  *     <li><b>F</b> is the possible empty set of final states, which are
  *         elements of S.</li>
  * </ul>
@@ -60,8 +60,7 @@ import java.util.stream.Gatherer;
  * }
  * enum Command implements Fsm.Symbol, Fsm.Event<Command> {
  *     BEGIN, END, PAUSE, RESUME, EXIT;
- *     @Override
- *     public Command kind() {
+ *     @Override public Command kind() {
  *         return this;
  *     }
  * }

@@ -23,12 +23,13 @@
  * <a href="https://en.wikipedia.org/wiki/Finite-state_machine#Mathematical_model">
  * finite-state machine</a> implementation. It separates the definition of the
  * FSM from its execution, where the {@link Fsm} implementation is modeled as
- * a quintuple (record) {@code (Σ, S, s0, δ, F)}, with
+ * a quintuple (record) (Σ, S, s<sub>0</sub>, δ, F), with
  * <ul>
  *     <li><b>Σ</b> as the non-empty alphabet of symbols (signals);</li>
- *     <li><b>S</b> as the finites non-empty set of states;</li>
- *     <li><b>s0</b> as the initial state, which is an element of S;</li>
- *     <li><b>δ</b> as the transition function: δ: S x Σ -> S;</li>
+ *     <li><b>S</b> as the finite non-empty set of states;</li>
+ *     <li><b>s<sub>0</sub></b> as the initial state, which is an
+ *     element of S;</li>
+ *     <li><b>δ</b> as the transition function: δ: S &#10005; Σ &rarr; S;</li>
  *     <li><b>F</b> as the possible empty set of final states, which are
  *         elements of S.</li>
  * </ul>
@@ -36,12 +37,15 @@
  * <h1>Architecture</h1>
  *
  * The static definition of the {@link Fsm} is separated from the actual
- * execution of it. Executing an FSM is essentially the transformation of a
+ * execution. Executing an FSM is essentially means the transformation of a
  * stream of {@link Fsm.Signal}s (events) into a stream of state
  * {@link Fsm.Transition}s. Depending on the transition, actual actions can be
- * triggered during the execution.
- * // TODO: add a diagram
- *
+ * triggered during the execution of the state transitions.
+ * <img src="doc-files/FSM.svg" alt="Architecture Diagram"><p>
+ * The diagram above shows the interaction between {@link Fsm.Event}
+ * ({@link Fsm.Signal}), {@link Fsm}, {@link Fsm.Transition} and {@link Stepper},
+ * where the {@link Stepper} maintains an internal state, which is updated after
+ * every event.
  *
  * <h2>Defining an FSM</h2>
  *
@@ -49,32 +53,19 @@
  * immutable, it can be shared between threads and can be used for arbitrary
  * executions.
  * <p>
- * The constructor checks the basic FSM invariants: the alphabet and the states
- * must not be empty, the start state must be part of the state set, final states
- * must be part of the state set, the start state must not be final and final
- * states must not have outgoing transitions. States and symbols are identified
- * by their {@link Fsm.Named#name()} and must be unique within one FSM.
+ * When creating a new {@link Fsm} instance, the properties, as described above
+ * are checked and enforced. States and symbols are identified by their
+ * {@link Fsm.Named#name()} and must be unique within one FSM.
  * {@snippet lang=java:
  * enum ProcessState implements Fsm.State {
- *     ACTIVE,
- *     INACTIVE,
- *     PAUSED,
- *     TERMINATED
+ *     ACTIVE, INACTIVE, PAUSED, TERMINATED
  * }
- *
  * enum Command implements Fsm.Symbol, Fsm.Event<Command> {
- *     BEGIN,
- *     END,
- *     PAUSE,
- *     RESUME,
- *     EXIT;
- *
- *     @Override
- *     public Command kind() {
+ *     BEGIN, END, PAUSE, RESUME, EXIT;
+ *     @Override public Command kind() {
  *         return this;
  *     }
  * }
- *
  * static final Fsm<ProcessState, Command> FSM = new Fsm<>(
  *     EnumSet.allOf(Command.class),
  *     EnumSet.allOf(ProcessState.class),
@@ -87,7 +78,7 @@
  *         new Fsm.Transition<>(PAUSED, END, INACTIVE),
  *         new Fsm.Transition<>(INACTIVE, EXIT, TERMINATED)
  *     ),
- *      EnumSet.of(TERMINATED)
+ *     EnumSet.of(TERMINATED)
  * );
  * }
  *
@@ -97,11 +88,11 @@
  * Calling {@link Stepper#next(Fsm.Signal)} applies one signal and returns the
  * performed {@link Fsm.Transition}, if a transition is defined. Undefined
  * transitions are ignored by returning an empty {@link java.util.Optional};
- * unknown signals and signals after reaching a final state are rejected.
+ * unknown signals and signals after reaching a final state are rejected with an
+ * {@link java.lang.IllegalArgumentException}.
  * <p>
  * {@link SymbolStepper} accepts plain {@link Fsm.Symbol symbols}. Use it when
  * the signal alone is enough to decide the transition.
- *
  * {@snippet lang=java:
  * final var stepper = new SymbolStepper<>(FSM);
  *
@@ -117,7 +108,6 @@
  * {@link EventStepper} accepts {@link Fsm.Event events}. Events expose a
  * {@link Fsm.Event#kind()} symbol and may carry additional payload, for example
  * by using {@link PayloadEvent}.
- *
  * {@snippet lang=java:
  * final var stepper = new EventStepper<>(FSM);
  * final var event = Fsm.Event.of(BEGIN);
@@ -132,8 +122,8 @@
  * returns a gatherer that enriches a signal stream with the matching
  * transitions. The gatherer ignores signals without a defined transition and
  * stops once the stepper reaches a final state.
- *
  * {@snippet lang=java:
+ * final var events = List.of(BEGIN, PAUSE, RESUME, END, EXIT, END);
  * events.stream()
  *     .gather(Fsm.transitions(() -> new SymbolStepper<>(FSM)))
  *     .forEach(transition -> handle(transition));
@@ -144,10 +134,11 @@
  * transitions and closes when the stepper reaches a final state.
  * {@link SignalSubscriber} is a small subscriber adapter which requests one
  * transition at a time and forwards transitions to a {@link java.util.function.Consumer}.
- *
  * {@snippet lang=java:
  * try (var publisher = new SignalPublisher<>(new SymbolStepper<>(FSM))) {
- *     publisher.subscribe(new SignalSubscriber<>(transition -> handle(transition)));
+ *     publisher.subscribe(
+ *         new SignalSubscriber<>(transition -> handle(transition))
+ *     );
  *
  *     publisher.submit(BEGIN);
  *     publisher.submit(END);
@@ -161,11 +152,10 @@
  * listeners whenever the wrapped stepper performs a transition. It is useful
  * when state transitions should trigger actions without mixing those actions
  * into the FSM definition.
- *
  * {@snippet lang=java:
  * final var stepper = new OberservableStepper<>(new SymbolStepper<>(FSM));
  *
- * stepper.register(transition -> audit(transition));
+ * stepper.register(transition -> handle(transition));
  * stepper.next(BEGIN);
  * }
  *
