@@ -87,6 +87,16 @@ public class StreamsTest {
 		};
 	}
 
+	@DataProvider(name = "completeIntervalBestData")
+	public Object[] completeIntervalBestData() {
+		return new Object[][] {
+			{10, 1},
+			{100, 10},
+			{333, 3},
+			{1110, 3}
+		};
+	}
+
 	private static final class TestClock extends Clock {
 		long count = 0;
 		@Override
@@ -244,7 +254,7 @@ public class StreamsTest {
 		assertThat(values).isEqualTo(ISeq.of(1, 2));
 	}
 
-	@Test(dataProvider = "toIntervalBestData")
+	@Test(dataProvider = "completeIntervalBestData")
 	public void maxIntervalSameAsStreamsFlatMap(
 		final int streamSize,
 		final int sliceSize
@@ -265,7 +275,7 @@ public class StreamsTest {
 		assertThat(gathered).isEqualTo(flatMapped);
 	}
 
-	@Test(dataProvider = "toIntervalBestData")
+	@Test(dataProvider = "completeIntervalBestData")
 	public void minIntervalSameAsStreamsFlatMap(
 		final int streamSize,
 		final int sliceSize
@@ -286,7 +296,7 @@ public class StreamsTest {
 		assertThat(gathered).isEqualTo(flatMapped);
 	}
 
-	@Test(dataProvider = "toIntervalBestData")
+	@Test(dataProvider = "completeIntervalBestData")
 	public void bestIntervalSameAsStreamsFlatMap(
 		final int streamSize,
 		final int sliceSize
@@ -313,7 +323,7 @@ public class StreamsTest {
 			.gather(Streams.maxOfInterval(3))
 			.collect(ISeq.toISeq());
 
-		assertThat(values).isEqualTo(ISeq.of(9, 5));
+		assertThat(values).isEqualTo(ISeq.of(9, 5, 9));
 	}
 
 	@Test
@@ -322,7 +332,7 @@ public class StreamsTest {
 			.gather(Streams.minOfInterval(3))
 			.collect(ISeq.toISeq());
 
-		assertThat(values).isEqualTo(ISeq.of(3, 1));
+		assertThat(values).isEqualTo(ISeq.of(3, 1, 2));
 	}
 
 	@Test
@@ -332,6 +342,33 @@ public class StreamsTest {
 			.collect(ISeq.toISeq());
 
 		assertThat(values).isEqualTo(ISeq.of("bbb", "cccc"));
+	}
+
+	@Test
+	public void maxIntervalUsesLastPartialInterval() {
+		final ISeq<Integer> values = Stream.of(1, 3, 2, 4, 6)
+			.gather(Streams.maxOfInterval(3))
+			.collect(ISeq.toISeq());
+
+		assertThat(values).isEqualTo(ISeq.of(3, 6));
+	}
+
+	@Test
+	public void minIntervalUsesLastPartialInterval() {
+		final ISeq<Integer> values = Stream.of(3, 1, 2, 6, 4)
+			.gather(Streams.minOfInterval(3))
+			.collect(ISeq.toISeq());
+
+		assertThat(values).isEqualTo(ISeq.of(1, 4));
+	}
+
+	@Test
+	public void bestIntervalUsesLastPartialInterval() {
+		final ISeq<String> values = Stream.of("a", "bbb", "bb", "cc", "dddd")
+			.gather(Streams.bestOfInterval(Comparator.comparing(String::length), 3))
+			.collect(ISeq.toISeq());
+
+		assertThat(values).isEqualTo(ISeq.of("bbb", "dddd"));
 	}
 
 	@Test

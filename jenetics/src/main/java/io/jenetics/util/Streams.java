@@ -65,6 +65,7 @@ public final class Streams {
 	 * }</pre>
 	 *
 	 * {@snippet lang="java":
+	 * @SuppressWarnings("removal")
 	 * final ISeq<Integer> values = new Random().ints(0, 100)
 	 *     .boxed()
 	 *     .limit(100)
@@ -130,6 +131,7 @@ public final class Streams {
 	 * }</pre>
 	 *
 	 * {@snippet lang="java":
+	 * @SuppressWarnings("removal")
 	 * final ISeq<Integer> values = new Random().ints(0, 100)
 	 *     .boxed()
 	 *     .limit(100)
@@ -186,6 +188,7 @@ public final class Streams {
 	 * function doesn't sort the stream. It <em>just</em> skips the <em>out of
 	 * order</em> elements.
 	 * {@snippet lang="java":
+	 * @SuppressWarnings("removal")
 	 * final ISeq<Integer> values = new Random().ints(0, 100)
 	 *     .boxed()
 	 *     .limit(100)
@@ -397,19 +400,21 @@ public final class Streams {
 
 	/**
 	 * Return a new gatherer which emits the maximum element of the last <em>n</em>
-	 * consumed elements.
+	 * consumed elements. If the stream ends with a final interval smaller than
+	 * {@code n}, the maximum element of this remaining interval is emitted as
+	 * well.
 	 *
 	 * <pre>{@code
 	 *          +----3---+----3---+
-	 *          |        |        |
+	 *          |        |        |--+
 	 *     +----9--8--3--3--5--4--2--9----|
 	 *        maxOfInterval(3)
-	 *     +----------9--------5----------|
+	 *     +----------9--------5-----9----|
 	 * }</pre>
 	 *
 	 * @param size the size of the slice
 	 * @param <C> the element type
-	 * @return a new flat-mapper function
+	 * @return a new gatherer
 	 * @throws IllegalArgumentException if the given size is smaller than one
 	 */
 	public static <C extends Comparable<? super C>>
@@ -419,19 +424,21 @@ public final class Streams {
 
 	/**
 	 * Return a new gatherer which emits the minimum element of the last <em>n</em>
-	 * consumed elements.
+	 * consumed elements. If the stream ends with a final interval smaller than
+	 * {@code n}, the minimum element of this remaining interval is emitted as
+	 * well.
 	 *
 	 * <pre>{@code
 	 *          +----3---+----3---+
-	 *          |        |        |
+	 *          |        |        |--+
 	 *     +----9--8--3--3--1--4--2--9----|
 	 *        minOfInterval(3)
-	 *     +----------3--------1----------|
+	 *     +----------3--------1-----2----|
 	 * }</pre>
 	 *
 	 * @param size the size of the slice
 	 * @param <C> the element type
-	 * @return a new flat-mapper function
+	 * @return a new gatherer
 	 * @throws IllegalArgumentException if the given size is smaller than one
 	 */
 	public static <C extends Comparable<? super C>>
@@ -441,7 +448,8 @@ public final class Streams {
 
 	/**
 	 * Return a new gatherer which emits the best element of the last <em>n</em>
-	 * consumed elements.
+	 * consumed elements. If the stream ends with a final interval smaller than
+	 * {@code n}, the best element of this remaining interval is emitted as well.
 	 *
 	 * @see #maxOfInterval(int)
 	 * @see #minOfInterval(int)
@@ -490,6 +498,11 @@ public final class Streams {
 				}
 
 				return true;
+			},
+			(state, downstream) -> {
+				if (state.count.get() > 0) {
+					downstream.push(state.best.get());
+				}
 			}
 		);
 
