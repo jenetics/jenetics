@@ -79,7 +79,7 @@ public class RepairingConstraint implements Constraint<DoubleGene, Double> {
 		return Phenotype.of(gt, gen);
 	}
 
-	public static void main(final String[] args) {
+	void main() {
 		final var random = new Random();
 
 		for (int i = 0; i < 100; ++i) {

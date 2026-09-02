@@ -59,7 +59,7 @@ public class LastMonday {
 		return date.getDayOfMonth();
 	}
 
-	public static void main(final String[] args) {
+	void main() {
 		final Engine<AnyGene<LocalDate>, Integer> engine = Engine
 			.builder(LastMonday::fitness, CODEC)
 			.offspringSelector(new RouletteWheelSelector<>())

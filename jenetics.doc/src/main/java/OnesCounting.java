@@ -20,7 +20,7 @@ public class OnesCounting {
 			.bitCount();
 	}
 
-	public static void main(String[] args) {
+	void main() {
 		// Configure and build the evolution engine.
 		final Engine<BitGene, Integer> engine = Engine
 			.builder(

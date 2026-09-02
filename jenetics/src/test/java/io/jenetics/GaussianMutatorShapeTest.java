@@ -101,7 +101,7 @@ public class GaussianMutatorShapeTest {
 		};
 	}
 
-	public static void main(String[] args) {
+	void main() {
 		sigmas();
 		//shift();
 	}

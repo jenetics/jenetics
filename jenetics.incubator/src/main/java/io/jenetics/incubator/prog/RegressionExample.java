@@ -131,7 +131,7 @@ public class RegressionExample {
 		return error.apply(prog, calculated, RESULTS);
 	}
 
-	public static void main(final String[] args) {
+	void main() {
 		Codec<List<Terminal<String>>, IntegerGene> foo = Mappers.multiIntegerChromosomeMapper(
 			CFG,
 			rule -> new IntRange(rule.alternatives().size()*10),

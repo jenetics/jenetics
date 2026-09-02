@@ -37,7 +37,7 @@ public class EngineExecutorTest {
 			.sum()*gt.gene().allele();
 	}
 
-	public static void main(final String[] args) {
+	void main() {
 		//final ExecutorService executor = Executors.newFixedThreadPool(2);
 
 		final Engine<DoubleGene, Double> engine = Engine

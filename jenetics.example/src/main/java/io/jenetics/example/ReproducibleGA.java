@@ -46,7 +46,7 @@ public class ReproducibleGA {
 	private static final Codec<Double, DoubleGene>
 	CODEC = Codecs.ofScalar(new DoubleRange(0, 1));
 
-	public static void main(final String[] args) {
+	void main() {
 		final var random = RandomGeneratorFactory.getDefault();
 
 		final ISeq<Genotype<DoubleGene>> population =

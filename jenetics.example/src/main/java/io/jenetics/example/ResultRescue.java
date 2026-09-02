@@ -55,7 +55,7 @@ public final class ResultRescue {
 		.offspringSelector(new RouletteWheelSelector<>())
 		.build();
 
-	public static void main(final String[] args) throws IOException {
+	void main() throws IOException {
 		final EvolutionResult<DoubleGene, Double> rescue = ENGINE.stream()
 			.limit(Limits.bySteadyFitness(10))
 			.collect(EvolutionResult.toBestEvolutionResult());

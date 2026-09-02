@@ -142,7 +142,7 @@ public class DynamicGenotype {
 		}
 	}
 
-	public static void main(final String[] args) {
+	void main() {
 		final Engine<DoubleGene, Double> engine = Engine
 			.builder(DynamicGenotype::fitness, ENCODING)
 			.alterers(new DynamicMutator<>(0.25))

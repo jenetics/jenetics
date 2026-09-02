@@ -191,7 +191,7 @@ public class RandomIndexStreamTest {
 	}
 
 
-	public static void main(final String[] args) {
+	void main() {
 		final int delta = 500;
 
 		for (int i = 0; i <= delta; ++i) {

@@ -73,7 +73,7 @@ public class ReactiveEvolution implements AutoCloseable {
 		}
 	}
 
-	public static void main(final String[] args) throws InterruptedException {
+	void main() throws InterruptedException {
 		try (var evolution = new ReactiveEvolution()) {
 			evolution.evolve(new SimpleSubscriber());
 			Thread.sleep(500);

@@ -94,7 +94,7 @@ public class GrammarBasedRegression
 		};
 	}
 
-	public static void main(final String[] args) {
+	void main() {
 		final var regression = new GrammarBasedRegression(
 			SymbolicRegression.SAMPLES
 		);

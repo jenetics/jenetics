@@ -70,7 +70,7 @@ public class SudokuProblem implements Problem<SudokuGrid, IntegerGene, Integer> 
 		);
 	}
 
-	public static void main(String[] args) {
+	void main() {
 		final var board = Board.BOARD1;
 		final var problem = new SudokuProblem(board);
 

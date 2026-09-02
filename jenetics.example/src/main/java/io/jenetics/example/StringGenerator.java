@@ -58,7 +58,7 @@ public class StringGenerator {
 			)
 		);
 
-	public static void main(final String[] args) {
+	void main() {
 		final Engine<CharacterGene, Integer> engine = Engine.builder(PROBLEM)
 			.populationSize(500)
 			.survivorsSelector(new StochasticUniversalSelector<>())

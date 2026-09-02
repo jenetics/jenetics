@@ -64,7 +64,7 @@ public class KnapsackSelectorComparison {
 		"Runtime2"
 	);
 
-	public static void main(final String[] args) throws InterruptedException {
+	void main(final String[] args) throws InterruptedException {
 		final Runner2<Long, BitGene, Double> runner = Runner2.of(
 			KNAPSACK.toBuilder()
 				.selector(new MonteCarloSelector<>())

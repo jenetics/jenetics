@@ -54,7 +54,7 @@ public class XMLStreamWriterTest {
 		xml.writeEndElement();
 	}
 
-	public static void main(final String[] args) throws Exception {
+	void main() throws Exception {
 		final IntegerChromosome ch = IntegerChromosome.of(
 			Integer.MIN_VALUE, Integer.MAX_VALUE, 3
 		);

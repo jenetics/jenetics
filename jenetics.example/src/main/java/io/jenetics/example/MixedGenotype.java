@@ -56,7 +56,7 @@ public class MixedGenotype {
 		return dc.doubleValue() + bc.bitCount() + ic.doubleValue();
 	}
 
-	public static void main(final String[] args) {
+	void main() {
 		final Engine engine = Engine
 			.builder(MixedGenotype::fitness, ENCODING)
 			.build();

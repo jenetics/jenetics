@@ -137,7 +137,7 @@
  *
  * Now we are ready to put everything together:
  * {@snippet lang="java":
- * public static void main(final String[] args) {
+ * void main() {
  *     final Engine<ProgramGene<Double>, Double> engine = Engine
  *         .builder(Polynomial::error, CODEC)
  *         .minimizing()

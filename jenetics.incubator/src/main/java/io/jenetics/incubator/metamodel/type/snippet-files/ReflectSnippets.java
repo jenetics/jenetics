@@ -30,7 +30,7 @@ final class ReflectSnippets {
 
 	static class ReflectPackageSnippet {
 
-		public static void main(String[] args) {
+		void main() {
 			// @start region="PropertyType"
 			record Author(String forename, String surname) { }
 
@@ -93,7 +93,7 @@ final class ReflectSnippets {
 			// @end
 		}
 
-		public static void main(String[] args) {
+		void main() {
 			listType();
 		}
 

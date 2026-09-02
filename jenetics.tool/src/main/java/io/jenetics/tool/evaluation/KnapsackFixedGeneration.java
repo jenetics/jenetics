@@ -61,7 +61,7 @@ public class KnapsackFixedGeneration {
 		"Runtime"
 	);
 
-	public static void main(final String[] args) throws InterruptedException {
+	void main(final String[] args) throws InterruptedException {
 		final Runner<Long, BitGene, Double> runner = Runner.of(
 			generation -> KNAPSACK,
 			Limits::byFixedGeneration,

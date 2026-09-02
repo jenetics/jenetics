@@ -35,7 +35,7 @@ import io.jenetics.util.ISeq;
  */
 public class Usage {
 
-	public static void main(final String[] args) throws Exception {
+	void main() throws Exception {
 		final Problem<BitChromosome, BitGene, Integer> count = Problem.of(
 			BitChromosome::bitCount,
 			Codec.of(

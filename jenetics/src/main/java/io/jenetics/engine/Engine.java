@@ -59,7 +59,7 @@ import io.jenetics.util.Seq;
  *        return cos(0.5 + sin(x))*cos(x);
  *    }
  *
- *    public static void main(String[] args) {
+ *    void main() {
  *        // Create/configuring the engine via its builder.
  *        final Engine<DoubleGene, Double> engine = Engine
  *            .builder(

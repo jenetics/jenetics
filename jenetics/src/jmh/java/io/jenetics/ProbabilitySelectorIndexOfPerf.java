@@ -140,7 +140,7 @@ public class ProbabilitySelectorIndexOfPerf {
 		return ProbabilitySelector.indexOfSerial(array.array250, 0.5);
 	}
 
-	public static void main(String[] args) throws RunnerException {
+	void main() throws RunnerException {
 		final Options opt = new OptionsBuilder()
 			.include(".*" + ProbabilitySelectorIndexOfPerf.class.getSimpleName() + ".*")
 			.warmupIterations(9)

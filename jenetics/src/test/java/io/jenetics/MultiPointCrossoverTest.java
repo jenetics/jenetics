@@ -335,7 +335,7 @@ public class MultiPointCrossoverTest extends AltererTester {
 		crossover.crossover(ms1, ms2);
 	}
 
-	public static void main(final String[] args) {
+	void main() {
 		final ISeq<Character> a = CharSeq.toISeq("12345678");
 		final ISeq<Character> b = CharSeq.toISeq("ABCDEFGH");
 

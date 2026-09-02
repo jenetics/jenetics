@@ -16,7 +16,7 @@ import io.jenetics.tool.trial.Gnuplot;
 import io.jenetics.util.ISeq;
 
 public class CirclePointsEncoding {
-	public static void main(final String[] args) throws IOException {
+	void main() throws IOException {
 		final String base = "/home/fwilhelm/Workspace/Development/Projects/" +
 			"Jenetics/jenetics.tool/src/main/resources/io/jenetics/tool/constraint";
 

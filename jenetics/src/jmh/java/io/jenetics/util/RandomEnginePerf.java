@@ -113,7 +113,7 @@ public class RandomEnginePerf {
 		return random.lcg64shift.nextDouble();
 	}
 
-	public static void main(String[] args) throws RunnerException {
+	void main() throws RunnerException {
 		final Options opt = new OptionsBuilder()
 			.include(".*" + RandomEnginePerf.class.getSimpleName() + ".*")
 			.warmupIterations(5)

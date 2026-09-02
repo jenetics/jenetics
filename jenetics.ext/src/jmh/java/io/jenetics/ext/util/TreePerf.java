@@ -58,7 +58,7 @@ public class TreePerf {
 		return root;
 	}
 
-	public static void main(String[] args) {
+	void main() {
 		System.out.println(new Trees().flatTree.size());
 	}
 

@@ -83,7 +83,7 @@ public class KnapsackGenerationPopulationSize {
 		"Runtime"
 	);
 
-	public static void main(final String[] args) throws InterruptedException {
+	void main(final String[] args) throws InterruptedException {
 		final Runner<String, BitGene, Double> runner = Runner.of(
 			param -> KNAPSACK(toPopulationSize(param)),
 			param -> Limits.byFixedGeneration(toGeneration(param)),

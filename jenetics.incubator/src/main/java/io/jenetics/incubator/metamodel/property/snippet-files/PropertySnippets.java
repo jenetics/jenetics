@@ -101,7 +101,7 @@ final class PropertySnippets {
 			// @end
 		}
 
-		public static void main(String[] args) {
+		void main() {
 			walkObject();
 		}
 

@@ -63,7 +63,7 @@ import io.jenetics.prog.regression.Sampling.Result;
  *         Sample.ofDouble(1.0, 2.0000)
  *     );
  *
- *     public static void main(final String[] args) {
+ *     void main() {
  *         final Engine<ProgramGene<Double>, Double> engine = Engine
  *             .builder(REGRESSION)
  *             .minimizing()

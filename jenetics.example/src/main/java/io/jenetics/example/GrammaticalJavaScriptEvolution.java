@@ -126,7 +126,7 @@ public class GrammaticalJavaScriptEvolution
 		};
 	}
 
-	public static void main(final String[] args) {
+	void main() {
 		// 4*x^3 - 3*x^2 + x
 		final var regression = new GrammaticalJavaScriptEvolution(SAMPLES);
 

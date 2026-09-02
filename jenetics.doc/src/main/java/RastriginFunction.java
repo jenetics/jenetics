@@ -27,7 +27,7 @@ public class RastriginFunction {
 		return value;
 	}
 
-	public static void main(final String[] args) {
+	void main() {
 		final Engine<DoubleGene, Double> engine = Engine
 			.builder(
 				RastriginFunction::fitness,

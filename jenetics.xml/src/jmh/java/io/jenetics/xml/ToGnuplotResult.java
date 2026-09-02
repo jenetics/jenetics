@@ -38,7 +38,7 @@ import java.util.stream.IntStream;
  */
 public class ToGnuplotResult {
 
-	public static void main(final String[] args) throws Exception {
+	void main() throws Exception {
 		final Path file = Paths.get("/home/fwilhelm/Workspace/Development/Projects/Jenetics/io.jenetics.xml/src/jmh/java/org/jenetics/xml/GenotypeReadPerf.java");//Paths.get(args[0]);
 		final String prefix = "GenotypeReadPerf";//args[1];
 

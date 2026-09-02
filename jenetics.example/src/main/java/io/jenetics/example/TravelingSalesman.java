@@ -84,7 +84,7 @@ public final class TravelingSalesman
 			.to(METER);
 	}
 
-	public static void main(String[] args) throws IOException {
+	void main() throws IOException {
 		final var tsm = new TravelingSalesman(districtCapitals().subSeq(0, 10));
 
 		final Engine<EnumGene<WayPoint>, Double> engine = Engine.builder(tsm)
