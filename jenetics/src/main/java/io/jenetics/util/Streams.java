@@ -39,7 +39,7 @@ import java.util.stream.Stream;
  * {@snippet lang="java":
  * final ISeq<Integer> values = new Random().ints(0, 100).boxed()
  *     .limit(100)
- *     .flatMap(Streams.toIntervalMax(13))
+ *     .gather(Streams.maxInterval(13))
  *     .collect(ISeq.toISeq());
  * }
  *
@@ -360,7 +360,7 @@ public final class Streams {
 		return sliceBest1((a, b) -> best(comparator, a, b), size);
 	}
 
-	@Deprecated
+	@Deprecated(forRemoval = true, since = "9.1")
 	private static <C> Function<C, Stream<C>> sliceBest1(
 		final BinaryOperator<C> comp,
 		final int rangeSize
@@ -548,7 +548,7 @@ public final class Streams {
 	 * @deprecated Will be removed. Use {@link #maxInterval(Duration, Clock)}
 	 *             instead.
 	 */
-	@Deprecated
+	@Deprecated(forRemoval = true, since = "9.1")
 	public static <C extends Comparable<? super C>>
 	Function<C, Stream<C>> toIntervalMax(final Duration timespan, final Clock clock) {
 		return sliceBest0(Streams::max, timespan, clock);
@@ -663,7 +663,7 @@ public final class Streams {
 		return sliceBest0((a, b) -> best(comparator, a, b), timespan, clock);
 	}
 
-	@Deprecated
+	@Deprecated(forRemoval = true, since = "9.1")
 	private static <C> Function<C, Stream<C>> sliceBest0(
 		final BinaryOperator<C> comp,
 		final Duration timespan,
