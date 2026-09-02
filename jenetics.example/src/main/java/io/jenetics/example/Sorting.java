@@ -49,7 +49,7 @@ public class Sorting {
 			.sum();
 	}
 
-	public static void main(final String[] args) {
+	void main() {
 		RandomRegistry.random(new Random());
 		final Engine<EnumGene<Integer>, Integer> engine = Engine
 			.builder(

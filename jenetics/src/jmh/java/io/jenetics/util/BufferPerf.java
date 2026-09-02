@@ -81,7 +81,7 @@ public class BufferPerf {
 	}
 
 
-	public static void main(final String[] args) throws RunnerException {
+	void main() throws RunnerException {
 		final Options opt = new OptionsBuilder()
 			.include(".*" + BufferPerf.class.getSimpleName() + ".*")
 			.warmupIterations(4)

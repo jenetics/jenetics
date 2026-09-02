@@ -1039,7 +1039,7 @@ public final class Codecs {
 	 *          return size <= 20 ? size : 0;
 	 *      }
 	 *
-	 *      public static void main(final String[] args) {
+	 *      void main() {
 	 *          final Engine<BitGene, Double> engine = Engine
 	 *              .builder(Main::fitness, codec.ofSubSet(SET))
 	 *              .build();

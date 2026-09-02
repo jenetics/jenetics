@@ -72,7 +72,7 @@ public class CodecExample {
 			});
 
 
-	public static void main(final String[] args) {
+	void main() {
 		for (int i = 0; i < 100; ++i) {
 			final Genotype<DoubleGene> gt = CODEC.encoding().newInstance();
 			System.out.println(CODEC.decode(gt));
@@ -129,7 +129,7 @@ public class CodecExample {
 		);
 	}
 
-//	public static void main(final String[] args) {
+//	void main() {
 //		// The domain of your fitness function.
 //		final IntRange domain1 = new IntRange(0, 100);
 //		final LongRange domain2 = new LongRange(0, 1_000_000_000_000L);

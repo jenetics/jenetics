@@ -19,8 +19,6 @@
  */
 package io.jenetics;
 
-import static io.jenetics.internal.util.Hashes.hash;
-
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -84,10 +82,7 @@ abstract class AbstractBoundedChromosome<
 
 	@Override
 	public int hashCode() {
-		return
-			hash(super.hashCode(),
-			hash(_min,
-			hash(_max)));
+		return Objects.hash(super.hashCode(), _min, _max);
 	}
 
 	@Override

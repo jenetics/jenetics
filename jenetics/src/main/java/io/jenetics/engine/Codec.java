@@ -45,7 +45,7 @@ import io.jenetics.util.ISeq;
  *         return cos(0.5 + sin(x)) * cos(x);
  *     }
  *
- *     public static void main(final String[] args) {
+ *     void main() {
  *         final Engine<DoubleGene, Double> engine = Engine
  *              // Create an Engine.Builder with the "pure" fitness function
  *              // and the appropriate Codec.

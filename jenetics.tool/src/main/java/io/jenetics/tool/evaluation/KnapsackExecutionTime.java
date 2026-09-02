@@ -62,7 +62,7 @@ public class KnapsackExecutionTime {
 		"Runtime"
 	);
 
-	public static void main(final String[] args) throws InterruptedException {
+	void main(final String[] args) throws InterruptedException {
 		final Runner<Long, BitGene, Double> runner = Runner.of(
 			duration -> KNAPSACK,
 			duration -> Limits.byExecutionTime(Duration.ofMillis(duration)),

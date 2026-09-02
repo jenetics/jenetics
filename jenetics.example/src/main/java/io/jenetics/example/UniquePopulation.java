@@ -42,7 +42,7 @@ public class UniquePopulation {
 			.bitCount();
 	}
 
-	public static void main(String[] args) {
+	void main() {
 		final Engine<BitGene, Integer> engine = Engine
 			.builder(
 				UniquePopulation::count,

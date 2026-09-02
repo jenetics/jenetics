@@ -22,6 +22,7 @@ package io.jenetics.ext.util;
 import static java.util.Objects.requireNonNull;
 
 import java.io.IOException;
+import java.io.Reader;
 import java.io.UncheckedIOException;
 import java.nio.CharBuffer;
 import java.util.Arrays;
@@ -588,7 +589,7 @@ public final class CsvSupport {
 					}
 				);
 
-				final var source = CharCursor.of(rdr);
+				final var source = new CharCursor(rdr);
 				final var line = new CharAppender();
 
 				final Supplier<String> nextLine = () -> {
@@ -623,7 +624,7 @@ public final class CsvSupport {
 				final char current = next != -2 ? (char)next : (char)i;
 				next = -2;
 
-				if (isLineBreak(current)) {
+				if (current == '\r' || current == '\n') {
 					if (quoted) {
 						line.append(current);
 					} else {
@@ -681,8 +682,8 @@ public final class CsvSupport {
 	 * {@snippet class="Snippets" region="LineSplitterSnippets.projectingSplit"}
 	 *
 	 * @implNote
-	 * The split {@code String[]} array will never contain {@code null} values.
-	 * Empty columns will be returned as empty strings.
+	 * The split {@code String[]} array will contain {@code null} value instead
+	 * of empty strings.
 	 *
 	 * @apiNote
 	 * A line splitter ist <b>not</b> thread-safe and can't be shared between
@@ -792,6 +793,9 @@ public final class CsvSupport {
 		 * @throws NullPointerException if the CSV {@code line} is {@code null}
 		 */
 		public String[] split(final CharSequence line) {
+			final char[] chars = line.toString().toCharArray();
+			final int length = chars.length;
+
 			columns.clear();
 			column.reset();
 
@@ -801,10 +805,10 @@ public final class CsvSupport {
 
 			int quoteIndex = 0;
 
-			for (int i = 0, n = line.length(); i < n && !full; ++i) {
-				final int previous = i > 0 ? line.charAt(i - 1) : -1;
-				final char current = line.charAt(i);
-				final int next = i + 1 < line.length() ? line.charAt(i + 1) : -1;
+			for (int i = 0; i < length && !full; ++i) {
+				final int previous = i > 0 ? chars[i - 1] : -1;
+				final char current = chars[i];
+				final int next = i + 1 < length ? chars[i + 1] : -1;
 
 				if (current == quote.value) {
 					if (quoted) {
@@ -816,13 +820,14 @@ public final class CsvSupport {
 								escaped = false;
 							} else {
 								if (next != -1 && separator.value != next) {
-									throw new IllegalArgumentException("""
+									throw new IllegalArgumentException(
+										"""
 										Only separator character, '%s', allowed \
 										after quote, but found '%c':
 										%s
 										""".formatted(
 											separator.value,
-										next,
+											next,
 											toErrorDesc(line, i + 1)
 										)
 									);
@@ -835,13 +840,14 @@ public final class CsvSupport {
 						}
 					} else {
 						if (previous != -1 && separator.value != previous) {
-							throw new IllegalArgumentException("""
+							throw new IllegalArgumentException(
+								"""
 								Only separator character, '%s', allowed before \
 								quote, but found '%c':
 								%s
 								""".formatted(
 									separator.value,
-								previous,
+									previous,
 									toErrorDesc(line, Math.max(i - 1, 0))
 								)
 							);
@@ -861,7 +867,9 @@ public final class CsvSupport {
 					// Read till the next token separator.
 					int j = i;
 					char c;
-					while (j < line.length() && !isTokenSeparator(c = line.charAt(j))) {
+					while (j < length &&
+						!((c = chars[j]) == separator.value || c == quote.value))
+					{
 						column.append(c);
 						++j;
 					}
@@ -877,14 +885,15 @@ public final class CsvSupport {
 			}
 
 			if (quoted) {
-				throw new IllegalArgumentException("""
+				throw new IllegalArgumentException(
+					"""
 					Unbalanced quote character.
 					%s
 					""".formatted(toErrorDesc(line, quoteIndex))
 				);
 			}
 			if (line.isEmpty() ||
-				separator.value == line.charAt(line.length() - 1))
+				separator.value == chars[length - 1])
 			{
 				add(column);
 			}
@@ -895,10 +904,6 @@ public final class CsvSupport {
 		private void add(final CharAppender column) {
 			columns.add(column.toString());
 			column.reset();
-		}
-
-		private boolean isTokenSeparator(final char c) {
-			return c == separator.value || c == quote.value;
 		}
 
 		private static String toErrorDesc(final CharSequence line, final int pos) {
@@ -934,7 +939,8 @@ public final class CsvSupport {
 		 */
 		void add(String column) {
 			if (!isFull()) {
-				count += set(column, index++);
+				count += set(column, index);
+				++index;
 			}
 		}
 
@@ -1039,11 +1045,10 @@ public final class CsvSupport {
 		private record Param(char separator, char quote, int... embedding) {
 
 			private String escape(Object value) {
-				final var quoteStr = String.valueOf(quote);
-
 				if (value == null) {
 					return "";
 				} else {
+					final var quoteStr = String.valueOf(quote);
 					var stringValue = value.toString();
 					var string = stringValue.replace(quoteStr, quoteStr + quoteStr);
 
@@ -1220,93 +1225,61 @@ public final class CsvSupport {
 	}
 
 	/**
-	 * Character source interface.
-	 *
-	 * @since 8.2
-	 * @version 8.2
-	 */
-	sealed interface CharCursor {
-		/**
-		 * Return the next character or -1 if there is no one.
-		 *
-		 * @return the next character or -1 if there is no one
-		 * @throws IOException if reading the next character failed
-		 */
-		int next() throws IOException;
-
-		/**
-		 * Return the correct kind of {@code CharCursor}, depending on the
-		 * given {@code readable} type
-		 *
-		 * @param readable the character source
-		 * @return a new character cursor
-		 */
-		static CharCursor of(final Readable readable) {
-			return readable instanceof CharBuffer cb
-				? new CharBufferCharCursor(cb)
-				: new ReadableCharCursor(readable);
-		}
-	}
-
-	/**
 	 * Cursor <em>view</em> on a readable object.
 	 *
 	 * @since 8.2
 	 * @version 8.2
 	 */
-	static final class ReadableCharCursor implements CharCursor {
+	static final class CharCursor {
 		private static final int SIZE = 1024;
 		private final Readable readable;
-		private final CharBuffer buffer;
 
-		ReadableCharCursor(final Readable readable) {
+		private final CharBuffer buffer;
+		private final char[] array;
+
+		private int length;
+		private int index;
+
+		CharCursor(final Readable readable) {
 			this.readable = requireNonNull(readable);
-			this.buffer = CharBuffer.allocate(SIZE).flip();
+
+			if (readable instanceof Reader) {
+				this.buffer = null;
+				this.array = new char[SIZE];
+			} else {
+				this.buffer = CharBuffer.allocate(SIZE).flip();
+				this.array = buffer.array();
+			}
 		}
 
-		@Override
 		public int next() throws IOException {
-			if (!buffer.hasRemaining()) {
-				if (!fill()) {
-					return -1;
-				}
+			if (index == length && !fill()) {
+				return -1;
 			}
 
-			return buffer.get();
+			final int result = array[index];
+			++index;
+			return result;
 		}
 
 		private boolean fill() throws IOException {
-			int n;
 			int i = 0;
-			buffer.clear();
-			do {
-				n = readable.read(buffer);
-			} while (n == 0 && i++ < 1000); // Make sure re-read will terminate.
-			buffer.flip();
 
-			return n > 0;
-		}
-	}
-
-	/**
-	 * Cursor <em>view</em> on a character buffer.
-	 *
-	 * @since 8.2
-	 * @version 8.2
-	 */
-	static final class CharBufferCharCursor implements CharCursor {
-		private final CharBuffer buffer;
-
-		CharBufferCharCursor(final CharBuffer buffer) {
-			this.buffer = requireNonNull(buffer);
-		}
-
-		@Override
-		public int next() {
-			if (!buffer.hasRemaining()) {
-				return -1;
+			if (readable instanceof Reader reader) {
+				do {
+					length = reader.read(array);
+				} while (length == 0 && i++ < 1000); // Make sure re-read will terminate.
+			} else {
+				buffer.clear();
+				do {
+					length = readable.read(buffer);
+				} while (length == 0 && i++ < 1000); // Make sure re-read will terminate.
+				buffer.flip();
 			}
-			return buffer.get();
+
+			index = 0;
+			length = Math.max(length, 0);
+			return length > 0;
 		}
 	}
 
@@ -1334,7 +1307,8 @@ public final class CsvSupport {
 				increaseSize(buffer.length*2);
 			}
 
-			buffer[index++] = c;
+			buffer[index] = c;
+			++index;
 		}
 
 		@Override
@@ -1361,23 +1335,25 @@ public final class CsvSupport {
 	 */
 	static final class StringList {
 		private static final int SIZE = 16;
+
 		private String[] elements;
-		private int size;
+		private int length;
 
 		StringList() {
-			size = 0;
+			length = 0;
 			elements = new String[SIZE];
 		}
 
 		public int size() {
-			return size;
+			return length;
 		}
 
 		public void add(final String value) {
-			if (size == elements.length) {
+			if (length == elements.length) {
 				increaseSize(elements.length*2);
 			}
-			elements[size++] = value;
+			elements[length] = value;
+			++length;
 		}
 
 		public void set(final int index, final String value) {
@@ -1385,23 +1361,22 @@ public final class CsvSupport {
 		}
 
 		public void clear() {
-			size = 0;
+			length = 0;
 		}
 
 		public String[] toArray() {
-			final var result = new String[size];
-			System.arraycopy(elements, 0, result, 0, size);
+			final var result = new String[length];
+			System.arraycopy(elements, 0, result, 0, length);
 			return result;
 		}
 
 		private void increaseSize(final int newSize) {
 			final String[] newElements = new String[newSize];
-			System.arraycopy(elements, 0, newElements, 0, size);
+			System.arraycopy(elements, 0, newElements, 0, length);
 			elements = newElements;
 		}
 
 	}
 
 }
-
 

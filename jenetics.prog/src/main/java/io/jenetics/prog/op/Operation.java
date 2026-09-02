@@ -20,7 +20,6 @@
 package io.jenetics.prog.op;
 
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -74,7 +73,7 @@ final class Operation<T> implements Op<T>, Serializable {
 
 	@Override
 	public int hashCode() {
-		return hash(_name, hash(_arity));
+		return Objects.hash(_name, _arity);
 	}
 
 	@Override

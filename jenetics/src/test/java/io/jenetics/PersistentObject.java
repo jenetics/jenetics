@@ -510,7 +510,7 @@ public class PersistentObject<T> {
 		RandomRegistry.with(random).run(PersistentObject::init);
 	}
 
-	public static void main(final String[] args) throws Exception {
+	void main() throws Exception {
 		write();
 	}
 

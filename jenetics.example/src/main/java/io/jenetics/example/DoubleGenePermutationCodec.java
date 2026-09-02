@@ -117,7 +117,7 @@ public class DoubleGenePermutationCodec {
 		.builder(DoubleGenePermutationCodec::fitness, CODEC_4)
 		.build();
 
-	public static void main(final String[] args) {
+	void main() {
 		Genotype<DoubleGene> genotype = ENGINE.stream()
 			.limit(100)
 			.collect(EvolutionResult.toBestGenotype());

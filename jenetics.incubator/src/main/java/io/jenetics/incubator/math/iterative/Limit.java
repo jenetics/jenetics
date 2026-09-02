@@ -24,5 +24,5 @@ package io.jenetics.incubator.math.iterative;
  * @param accuracy
  * @param iterations
  */
-public record Limit(Accuracy accuracy, IterationCount iterations) {
+public record Limit(Accuracy accuracy, IterationRange iterations) {
 }

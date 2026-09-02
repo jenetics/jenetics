@@ -19,16 +19,20 @@
  */
 package io.jenetics.internal.util;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
-import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -38,7 +42,7 @@ import io.jenetics.internal.util.Lifecycle.Value;
 
 public class LifecycleTest {
 
-	final static class Invokable {
+	static final class Invokable {
 		final AtomicBoolean called = new AtomicBoolean(false);
 		final Supplier<Exception> error;
 
@@ -58,24 +62,24 @@ public class LifecycleTest {
 	@Test(dataProvider = "invokables")
 	public void invokeAll0(
 		final List<Invokable> objects,
-		final Class<?> errorType,
-		final Class<?> suppressedType
+		final Class<? extends Throwable> errorType,
+		final Class<? extends Throwable> suppressedType
 	) {
-		Assert.assertTrue(objects.stream().noneMatch(i -> i.called.get()));
+		assertThat(objects).allMatch(i -> !i.called.get());
 
 		final var exception = Lifecycle.invokeAll0(Invokable::invoke, objects);
 
-		Assert.assertTrue(objects.stream().allMatch(i -> i.called.get()));
+		assertThat(objects).allMatch(i -> i.called.get());
 		if (exception != null) {
-			Assert.assertEquals(exception.getClass(), errorType);
+			assertThat(exception).isExactlyInstanceOf(errorType);
 
 			if (suppressedType != null) {
-				Assert.assertEquals(exception.getSuppressed().length, 1);
-				Assert.assertEquals(
-					exception.getSuppressed()[0].getClass(),
-					suppressedType
-				);
+				assertThat(exception.getSuppressed()).hasSize(1);
+				assertThat(exception.getSuppressed()[0])
+					.isExactlyInstanceOf(suppressedType);
 			}
+		} else {
+			assertThat(errorType).isNull();
 		}
 	}
 
@@ -132,11 +136,10 @@ public class LifecycleTest {
 		};
 	}
 
-	@Test(expectedExceptions = IOException.class)
 	public void close1() throws IOException {
 		final var count = new AtomicInteger();
 
-		try {
+		assertThatThrownBy(() -> {
 			final var closeables = Releasable.of(
 				count::incrementAndGet,
 				count::incrementAndGet,
@@ -144,17 +147,16 @@ public class LifecycleTest {
 				count::incrementAndGet
 			);
 			closeables.close();
-		} catch (IOException e) {
-			Assert.assertEquals(3, count.get());
-			throw e;
-		}
+		})
+			.isExactlyInstanceOf(IOException.class);
+
+		assertThat(count.get()).isEqualTo(3);
 	}
 
-	@Test(expectedExceptions = IOException.class)
 	public void close2() throws Exception {
 		final var count = new AtomicInteger();
 
-		try {
+		assertThatThrownBy(() -> {
 			final var closeables = Releasable.of(
 				count::incrementAndGet,
 				count::incrementAndGet,
@@ -163,31 +165,32 @@ public class LifecycleTest {
 				() -> { throw new IOException(); }
 			);
 			closeables.close();
-		} catch (IllegalArgumentException e) {
-			Assert.assertEquals(3, count.get());
-			Assert.assertEquals(e.getSuppressed().length, 1);
-			Assert.assertEquals(
-				e.getSuppressed()[0].getClass(),
-				IllegalArgumentException.class
-			);
-			throw e;
-		}
+		})
+			.isExactlyInstanceOf(IllegalArgumentException.class)
+			.satisfies(e -> {
+				assertThat(count.get()).isEqualTo(3);
+				assertThat(e.getSuppressed()).hasSize(1);
+				assertThat(e.getSuppressed()[0])
+					.isExactlyInstanceOf(IllegalArgumentException.class);
+			});
 	}
 
-	@Test(expectedExceptions = IOException.class)
 	public void extendedCloseableClose() throws Exception {
 		final var closeable = Releasable.of(
 			() -> { throw new IOException(); }
 		);
-		closeable.close();
+
+		assertThatThrownBy(closeable::close)
+			.isExactlyInstanceOf(IOException.class);
 	}
 
-	@Test(expectedExceptions = UncheckedIOException.class)
 	public void extendedCloseableUncheckedClose() {
 		final var closeable = Releasable.of(
 			() -> { throw new IOException(); }
 		);
-		closeable.release(UncheckedIOException::new);
+
+		assertThatThrownBy(() -> closeable.release(UncheckedIOException::new))
+			.isExactlyInstanceOf(UncheckedIOException.class);
 	}
 
 	@Test
@@ -207,10 +210,8 @@ public class LifecycleTest {
 		final var primary = new IllegalArgumentException();
 		closeable.silentRelease(primary);
 
-		Assert.assertEquals(
-			primary.getSuppressed()[0].getClass(),
-			IOException.class
-		);
+		assertThat(primary.getSuppressed()).hasSize(1);
+		assertThat(primary.getSuppressed()[0]).isExactlyInstanceOf(IOException.class);
 	}
 
 	@Test
@@ -220,9 +221,52 @@ public class LifecycleTest {
 			AtomicInteger::incrementAndGet
 		);
 
-		Assert.assertEquals(0, closeable.get().get());
+		assertThat(closeable.get().get()).isZero();
 		closeable.close();
-		Assert.assertEquals(1, closeable.get().get());
+		assertThat(closeable.get().get()).isEqualTo(1);
+	}
+
+	@Test
+	public void closeableValueCanOnlyBeClosedOnce() throws Exception {
+		final var closeable = new Value<>(
+			new AtomicInteger(),
+			AtomicInteger::incrementAndGet
+		);
+
+		closeable.close();
+		closeable.close();
+
+		assertThat(closeable.get().get()).isEqualTo(1);
+	}
+
+	@Test
+	public void closeableValueConcurrentCloseIsThreadSafe() throws Exception {
+		final var closeable = new Value<>(
+			new AtomicInteger(),
+			AtomicInteger::incrementAndGet
+		);
+		final var start = new CountDownLatch(1);
+		final var done = new CountDownLatch(16);
+		final var error = new AtomicReference<Throwable>();
+
+		for (int i = 0; i < 16; ++i) {
+			Thread.ofVirtual().start(() -> {
+				try {
+					start.await();
+					closeable.close();
+				} catch (Throwable e) {
+					error.compareAndSet(null, e);
+				} finally {
+					done.countDown();
+				}
+			});
+		}
+
+		start.countDown();
+		done.await();
+
+		assertThat(error.get()).isNull();
+		assertThat(closeable.get().get()).isEqualTo(1);
 	}
 
 	@Test
@@ -238,14 +282,14 @@ public class LifecycleTest {
 			return 123;
 		});
 
-		Assert.assertEquals(123, closeable.get().intValue());
-		Assert.assertEquals(0, resource1.get().get());
-		Assert.assertEquals(0, resource2.get().get());
-		Assert.assertEquals(0, resource3.get().get());
+		assertThat(closeable.get()).isEqualTo(123);
+		assertThat(resource1.get().get()).isZero();
+		assertThat(resource2.get().get()).isZero();
+		assertThat(resource3.get().get()).isZero();
 		closeable.close();
-		Assert.assertEquals(1, resource1.get().get());
-		Assert.assertEquals(1, resource2.get().get());
-		Assert.assertEquals(1, resource3.get().get());
+		assertThat(resource1.get().get()).isEqualTo(1);
+		assertThat(resource2.get().get()).isEqualTo(1);
+		assertThat(resource3.get().get()).isEqualTo(1);
 	}
 
 	private static Value<AtomicInteger, RuntimeException> atomic() {
@@ -255,25 +299,24 @@ public class LifecycleTest {
 		);
 	}
 
-	@Test(expectedExceptions = IOException.class)
 	public void buildCloseableValueWithError() throws IOException {
 		final var resource1 = atomic();
 		final var resource2 = atomic();
 		final var resource3 = atomic();
 
-		try {
+		assertThatThrownBy(() -> {
 			new Value<>(resources -> {
 				resources.use(resource1, Value::close);
 				resources.use(resource2, Value::close);
 				resources.use(resource3, Value::close);
 				throw new IOException();
 			});
-		} catch (IOException e) {
-			Assert.assertEquals(1, resource1.get().get());
-			Assert.assertEquals(1, resource2.get().get());
-			Assert.assertEquals(1, resource3.get().get());
-			throw e;
-		}
+		})
+			.isExactlyInstanceOf(IOException.class);
+
+		assertThat(resource1.get().get()).isEqualTo(1);
+		assertThat(resource2.get().get()).isEqualTo(1);
+		assertThat(resource3.get().get()).isEqualTo(1);
 	}
 
 	private static Value<Path, IOException> tempFile() throws IOException {
@@ -297,11 +340,11 @@ public class LifecycleTest {
 		file.trying(f -> f.toFile().deleteOnExit());
 
 		try (file) {
-			Assert.assertTrue(Files.exists(file.get()));
+			assertThat(Files.exists(file.get())).isTrue();
 			Files.write(file.get(), "foo".getBytes());
-			Assert.assertEquals(Files.readString(file.get()), "foo");
+			assertThat(Files.readString(file.get())).isEqualTo("foo");
 		}
-		Assert.assertFalse(Files.exists(file.get()));
+		assertThat(Files.exists(file.get())).isFalse();
 	}
 
 }

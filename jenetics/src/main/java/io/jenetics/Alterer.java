@@ -30,7 +30,7 @@ import io.jenetics.util.Seq;
  * {@link io.jenetics.engine.Engine.Builder#alterers(Alterer, Alterer[])} method.
  * {@snippet lang="java":
  * final Engine<DoubleGene, Double> engine = Engine
- *     .builder(gtf, ff)
+ *     .builder(ff, gtf)
  *     .alterers(
  *         new Crossover<>(0.1),
  *         new Mutator<>(0.05),
@@ -60,12 +60,12 @@ public interface Alterer<
 	double DEFAULT_ALTER_PROBABILITY = 0.2;
 
 	/**
-	 * Alters (recombine) a given population. If the {@code population} is empty,
-	 * nothing is altered. The altered population is part of the returned
-	 * {@code AlterResult} object.
+	 * Alters (recombine) a given population. If the {@code population} is
+	 * empty, nothing is altered. The altered population is part of the returned
+	 * {@code AltererResult} object.
 	 *
 	 * @param population The Population to be altered. If the {@code population}
-	 *        is {@code null} or empty, nothing is altered.
+	 *        is empty, nothing is altered.
 	 * @param generation the date of birth (generation) of the altered phenotypes.
 	 * @return the alter-result object, which contains the altered population
 	 *         and the alteration counts
@@ -92,7 +92,7 @@ public interface Alterer<
 	 * Returns a composed alterer that applies the {@code this} alterer
 	 * to its input, and then applies the {@code after} alterer to the result.
 	 *
-	 * @param after the alterer to apply first
+	 * @param after the alterer to apply after this alterer
 	 * @return the new composed alterer
 	 */
 	default Alterer<G, C> andThen(final Alterer<G, C> after) {

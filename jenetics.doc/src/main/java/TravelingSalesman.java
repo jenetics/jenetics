@@ -75,7 +75,7 @@ public class TravelingSalesman
 		return new TravelingSalesman(points.toISeq());
 	}
 
-	public static void main(String[] args) {
+	void main() {
 		int stops = 20; double R = 10;
 		double minPathLength = 2.0*stops*R*sin(PI/stops);
 

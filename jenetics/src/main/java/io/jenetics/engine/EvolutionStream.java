@@ -131,7 +131,7 @@ public interface EvolutionStream<
 	 *         return null;
 	 *     }
 	 *
-	 *     public static void main(final String[] args) {
+	 *     void main() {
 	 *         final Genotype<DoubleGene> best = EvolutionStream
 	 *             .ofEvolution(() -> start(50, 0), SpecialEngine::evolve)
 	 *             .limit(Limits.bySteadyFitness(10))
@@ -168,7 +168,7 @@ public interface EvolutionStream<
 	 * Create a new evolution stream with an <em>adjustable</em> evolution
 	 * function.
 	 * {@snippet lang="java":
-	 * public static void main(final String[] args) {
+	 * void main() {
 	 *     final Problem<double[], DoubleGene, Double> problem = Problem.of(
 	 *         v -> Math.sin(v[0])*Math.cos(v[1]),
 	 *         Codecs.ofVector(new DoubleRange(0, 2*Math.PI), 2)

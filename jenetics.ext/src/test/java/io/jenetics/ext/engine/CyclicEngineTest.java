@@ -138,7 +138,7 @@ public class CyclicEngineTest {
 	}
 
 
-	public static void main(final String[] args) {
+	void main() {
 		final Problem<double[], DoubleGene, Double> problem = Problem.of(
 			v -> Math.sin(v[0])*Math.cos(v[1]),
 			Codecs.ofVector(new DoubleRange(0, 2*Math.PI), 2)

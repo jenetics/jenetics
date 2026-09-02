@@ -38,7 +38,7 @@ import io.jenetics.ext.moea.Vec;
  */
 public class DTLZ1Diagram {
 
-	public static void main(final String[] args) throws IOException {
+	void main() throws IOException {
 		final String base = "/home/fwilhelm/Workspace/Development/Projects/" +
 			"Jenetics/jenetics.doc/src/main/resources/diagram";
 

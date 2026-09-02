@@ -25,7 +25,6 @@ import java.util.List;
 
 import org.testng.annotations.Test;
 
-import io.jenetics.ext.internal.util.FormulaParser;
 import io.jenetics.ext.util.TreeNode;
 
 /**

@@ -13,7 +13,7 @@
 
 ## Documentation
 
-The library is fully documented ([javadoc](https://jenetics.io/javadoc/combined/9.0/index.html)) and comes with a user manual ([pdf](http://jenetics.io/manual/manual-9.0.0.pdf)).
+The library is fully documented ([javadoc](https://jenetics.io/javadoc/combined/9.1/index.html)) and comes with a user manual ([pdf](http://jenetics.io/manual/manual-9.1.0.pdf)).
 
 ## Build Jenetics
 
@@ -77,7 +77,7 @@ public class HelloWorld {
             .bitCount();
     }
 
-    public static void main(String[] args) {
+    void main() {
         // 1.) Define the genotype (factory) suitable
         //     for the problem.
         Factory<Genotype<BitGene>> gtf =
@@ -300,6 +300,20 @@ Camarazo, D.; Ball, A.; Rorat, A.; Jairi, I.; Pujol-Söhne, N.; Canivet, L.; Zga
 </details>
 
 ## Release notes
+
+### [9.1.0](https://github.com/jenetics/jenetics/releases/tag/v9.1.0)
+
+#### Improvements
+
+* [#929](https://github.com/jenetics/jenetics/issues/929): Convert 'flatMap'-Functions in 'io.jenetics.util.Streams' class into 'Gatherer'.
+* [#958](https://github.com/jenetics/jenetics/issues/958): Replace home-grown hashing methods with calls to the JDK Objects.hash(...).
+
+#### Bugs
+
+* [#960](https://github.com/jenetics/jenetics/issues/960): Inconsistent calculation of `EvolutionParamter.offspringSize()`.
+* [#962](https://github.com/jenetics/jenetics/issues/962): Wrong Javadoc descriptions in `Engine` class.
+* [#964](https://github.com/jenetics/jenetics/issues/964): Fix edge case in `CompositeCodec`.
+
 
 ### [9.0.0](https://github.com/jenetics/jenetics/releases/tag/v9.0.0)
 

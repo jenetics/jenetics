@@ -89,4 +89,97 @@ public class CsvSupportLineReaderTest {
 		}
 	}
 
+	@Test
+	public void readEmptyInput() {
+		final var reader = new LineReader();
+
+		try (Stream<String> lines = reader.read(CharBuffer.wrap(""))) {
+			assertThat(lines.toList()).isEmpty();
+		}
+	}
+
+	@Test
+	public void readOnlyLineBreaks() {
+		final var reader = new LineReader();
+
+		try (Stream<String> lines = reader.read(CharBuffer.wrap("\n\r\n\r"))) {
+			assertThat(lines.toList()).isEmpty();
+		}
+	}
+
+	@Test
+	public void readSingleLine() {
+		final var reader = new LineReader();
+
+		try (Stream<String> lines = reader.read(CharBuffer.wrap("alpha,beta\n"))) {
+			assertThat(lines.toList()).containsExactly("alpha,beta");
+		}
+	}
+
+	@Test
+	public void readCrLfLineBreaks() {
+		final var csv = "alpha,beta\r\ngamma,delta\r\n";
+		final var reader = new LineReader();
+
+		try (Stream<String> lines = reader.read(CharBuffer.wrap(csv))) {
+			assertThat(lines.toList())
+				.containsExactly("alpha,beta", "gamma,delta");
+		}
+	}
+
+	@Test
+	public void readQuotedLineBreak() {
+		final var csv = "alpha,\"beta\nvalue\",gamma\nomega,delta\n";
+		final var reader = new LineReader();
+
+		try (Stream<String> lines = reader.read(CharBuffer.wrap(csv))) {
+			assertThat(lines.toList())
+				.containsExactly("alpha,\"beta\nvalue\",gamma", "omega,delta");
+		}
+	}
+
+	@Test
+	public void readEscapedQuoteBeforeQuotedLineBreak() {
+		final var csv = "\"alpha \"\"quoted\nvalue\"\"\",beta\nomega,delta\n";
+		final var reader = new LineReader();
+
+		try (Stream<String> lines = reader.read(CharBuffer.wrap(csv))) {
+			assertThat(lines.toList())
+				.containsExactly("\"alpha \"\"quoted\nvalue\"\"\",beta", "omega,delta");
+		}
+	}
+
+	@Test
+	public void readWithCustomQuote() {
+		final var csv = "alpha,'beta\nvalue',gamma\nomega,delta\n";
+		final var reader = new LineReader(new Quote('\''));
+
+		try (Stream<String> lines = reader.read(CharBuffer.wrap(csv))) {
+			assertThat(lines.toList())
+				.containsExactly("alpha,'beta\nvalue',gamma", "omega,delta");
+		}
+	}
+
+	@Test
+	public void readSkipsEmptyLinesBetweenRecords() {
+		final var csv = "\nalpha,beta\n\n\ngamma,delta\n";
+		final var reader = new LineReader();
+
+		try (Stream<String> lines = reader.read(CharBuffer.wrap(csv))) {
+			assertThat(lines.toList())
+				.containsExactly("alpha,beta", "gamma,delta");
+		}
+	}
+
+	@Test
+	public void readLastLineWithoutLineBreak() {
+		final var csv = "alpha,beta\nomega,delta";
+		final var reader = new LineReader();
+
+		try (Stream<String> lines = reader.read(CharBuffer.wrap(csv))) {
+			assertThat(lines.toList())
+				.containsExactly("alpha,beta", "omega,delta");
+		}
+	}
+
 }

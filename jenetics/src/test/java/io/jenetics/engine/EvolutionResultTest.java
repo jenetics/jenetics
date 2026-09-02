@@ -336,7 +336,7 @@ public class EvolutionResultTest
 		final ISeq<Integer> results = new Random()
 			.ints(100, 0, 100)
 			.mapToObj(value -> newResult(Optimize.MAXIMUM, value))
-			.flatMap(MinMax.toStrictlyIncreasing())
+			.gather(MinMax.strictlyIncreasing())
 			.map(EvolutionResult::bestFitness)
 			.collect(ISeq.toISeq());
 

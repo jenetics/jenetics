@@ -20,11 +20,11 @@
 package io.jenetics.tool.trial;
 
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.xml.stream.Writer.elem;
 import static io.jenetics.xml.stream.Writer.text;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import io.jenetics.xml.stream.Reader;
 import io.jenetics.xml.stream.Writer;
@@ -143,15 +143,16 @@ public final class Env implements Serializable  {
 
 	@Override
 	public int hashCode() {
-		return
-			hash(_osName,
-			hash(_osVersion,
-			hash(_osArch,
-			hash(_javaVersion,
-			hash(_javaRuntimeName,
-			hash(_javaRuntimeVersion,
-			hash(_javaVMName,
-			hash(_javaVMVersion))))))));
+		return Objects.hash(
+			_osName,
+			_osVersion,
+			_osArch,
+			_javaVersion,
+			_javaRuntimeName,
+			_javaRuntimeVersion,
+			_javaVMName,
+			_javaVMVersion
+		);
 	}
 
 	@Override

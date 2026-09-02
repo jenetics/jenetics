@@ -39,7 +39,7 @@ public class RngExample {
 		return ((BitChromosome)gt.chromosome()).bitCount();
 	}
 
-	public static void main(String[] args) {
+	void main() {
 		// Set the PRNG used by the evolution Engine.
 		RandomRegistry.random(RandomGeneratorFactory.of("LCG64ShiftRandom"));
 

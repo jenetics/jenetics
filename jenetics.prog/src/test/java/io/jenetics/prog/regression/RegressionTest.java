@@ -119,7 +119,7 @@ public class RegressionTest {
 			.build();
 
 		engine.stream()
-			.flatMap(Streams.toIntervalMax(Duration.ofSeconds(30)))
+			.gather(Streams.maxOfInterval(Duration.ofSeconds(30)))
 			.map(program -> program.bestPhenotype()
 				.genotype().gene()
 				.toParenthesesString())

@@ -218,7 +218,7 @@ public final class FlatTreeNode<V>
 		requireNonNull(reducer);
 
 		@SuppressWarnings("unchecked")
-		final class Reducing {
+		final class Reducer {
 			private U reduce(final int index) {
 				return _nodes.childCounts[index] == 0
 					? reducer.apply((V)_nodes.values[index], neutral)
@@ -236,7 +236,7 @@ public final class FlatTreeNode<V>
 			}
 		}
 
-		return isEmpty() ? null : new Reducing().reduce(_index);
+		return isEmpty() ? null : new Reducer().reduce(_index);
 	}
 
 	@Override

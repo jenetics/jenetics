@@ -21,7 +21,6 @@ package io.jenetics.ext;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -185,7 +184,7 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 
 	@Override
 	public int hashCode() {
-		return hash(_allele, hash(_childOffset, hash(_childCount)));
+		return Objects.hash(_allele, _childCount, _childCount);
 	}
 
 	@Override

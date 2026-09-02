@@ -76,7 +76,7 @@ public final class RxEvaluator<
 			.map(Observable::blockingSingle);
 	}
 
-	public static void main(final String[] args) {
+	void main() {
 		final Factory<Genotype<DoubleGene>> gtf =
 			Genotype.of(DoubleChromosome.of(0, 1));
 

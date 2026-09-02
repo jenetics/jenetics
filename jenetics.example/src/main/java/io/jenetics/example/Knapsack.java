@@ -154,7 +154,7 @@ public final class Knapsack implements Problem<ISeq<Item>, BitGene, Double> {
 		);
 	}
 
-	public static void main(final String[] args) {
+	void main() {
 		final Knapsack knapsack = Knapsack.of(15, new Random(123));
 
 		// Configure and build the evolution engine.

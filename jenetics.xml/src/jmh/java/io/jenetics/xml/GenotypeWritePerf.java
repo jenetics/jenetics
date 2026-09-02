@@ -101,7 +101,7 @@ public class GenotypeWritePerf {
 		return out.toByteArray();
 	}
 
-	public static void main(String[] args) throws RunnerException {
+	void main() throws RunnerException {
 		final Options opt = new OptionsBuilder()
 			.include(GenotypeWritePerf.class.getSimpleName())
 			.warmupIterations(10)

@@ -1,0 +1,810 @@
+openapi: 3.0.0
+info:
+    title: Redocly Museum API
+    description: Imaginary, but delightful Museum API for interacting with museum services and information. Built with love by Redocly.
+    version: 1.2.1
+    termsOfService: 'https://redocly.com/subscription-agreement/'
+    contact:
+        email: team@redocly.com
+        url: "https://redocly.com/docs/cli/"
+    license:
+        name: MIT
+        url: "https://opensource.org/license/mit/"
+paths:
+    /museum-hours:
+        get:
+            summary: Get museum hours
+            description: Get upcoming museum operating hours.
+            operationId: getMuseumHours
+            tags:
+                - Operations
+            parameters:
+                -   $ref: "#/components/parameters/StartDate"
+                -   $ref: "#/components/parameters/PaginationPage"
+                -   $ref: "#/components/parameters/PaginationLimit"
+            responses:
+                "200":
+                    description: Success.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/MuseumHours"
+                "400":
+                    $ref: '#/components/responses/BadRequest'
+                "404":
+                    $ref: '#/components/responses/NotFound'
+    /special-events:
+        post:
+            summary: Create special events
+            description: Creates a new special event for the museum.
+            operationId: createSpecialEvent
+            tags:
+                - Events
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/SpecialEvent"
+            responses:
+                "201":
+                    description: Created.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/SpecialEvent"
+                "400":
+                    $ref: '#/components/responses/BadRequest'
+                "404":
+                    $ref: '#/components/responses/NotFound'
+        get:
+            summary: List special events
+            description: Return a list of upcoming special events at the museum.
+            operationId: listSpecialEvents
+            tags:
+                - Events
+            parameters:
+                -   $ref: "#/components/parameters/StartDate"
+                -   $ref: "#/components/parameters/EndDate"
+                -   $ref: "#/components/parameters/PaginationPage"
+                -   $ref: "#/components/parameters/PaginationLimit"
+            responses:
+                "200":
+                    description: Success.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/SpecialEventCollection"
+                "400":
+                    $ref: '#/components/responses/BadRequest'
+                "404":
+                    $ref: '#/components/responses/NotFound'
+    /special-events/{eventId}:
+        get:
+            summary: Get special event
+            description: Get details about a special event.
+            operationId: getSpecialEvent
+            tags:
+                - Events
+            parameters:
+                -   $ref: "#/components/parameters/EventId"
+            responses:
+                "200":
+                    description: Success.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/SpecialEvent"
+                "400":
+                    $ref: '#/components/responses/BadRequest'
+                "404":
+                    $ref: '#/components/responses/NotFound'
+        patch:
+            summary: Update special event
+            description: Update the details of a special event.
+            operationId: updateSpecialEvent
+            tags:
+                - Events
+            parameters:
+                -   $ref: "#/components/parameters/EventId"
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/SpecialEventFields"
+            responses:
+                "200":
+                    description: Success.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/SpecialEvent"
+                "400":
+                    $ref: '#/components/responses/BadRequest'
+                "404":
+                    $ref: '#/components/responses/NotFound'
+        delete:
+            summary: Delete special event
+            description: Delete a special event from the collection. Allows museum to cancel planned events.
+            operationId: deleteSpecialEvent
+            tags:
+                - Events
+            parameters:
+                -   $ref: "#/components/parameters/EventId"
+            responses:
+                "204":
+                    description: Success - no content.
+                "400":
+                    $ref: '#/components/responses/BadRequest'
+                "401":
+                    $ref: '#/components/responses/Unauthorized'
+                "404":
+                    $ref: '#/components/responses/NotFound'
+    /tickets:
+        post:
+            summary: Buy museum tickets
+            description: Purchase museum tickets for general entry or special events.
+            operationId: buyMuseumTickets
+            tags:
+                - Tickets
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/BuyMuseumTickets"
+            responses:
+                "201":
+                    description: Created.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/MuseumTicketsConfirmation"
+                "400":
+                    $ref: '#/components/responses/BadRequest'
+                "404":
+                    $ref: '#/components/responses/NotFound'
+    /tickets/{ticketId}/qr:
+        get:
+            summary: Get ticket QR code
+            description: Return an image of your ticket with scannable QR code. Used for event entry.
+            operationId: getTicketCode
+            tags:
+                - Tickets
+            parameters:
+                -   $ref: "#/components/parameters/TicketId"
+            responses:
+                "200":
+                    description: Scannable event ticket in image format.
+                    content:
+                        image/png:
+                            schema:
+                                $ref: "#/components/schemas/TicketCodeImage"
+                "400":
+                    $ref: '#/components/responses/BadRequest'
+                "404":
+                    $ref: '#/components/responses/NotFound'
+
+components:
+    schemas:
+        TicketType:
+            description: Type of ticket being purchased. Use `general` for regular museum entry and `event` for tickets to special events.
+            type: string
+            enum:
+                - event
+                - general
+            example: event
+        Date:
+            type: string
+            format: date
+            example: '2023-10-29'
+        Email:
+            description: Email address for ticket purchaser.
+            type: string
+            format: email
+            example: museum-lover@example.com
+        BuyMuseumTickets:
+            description: Data to purchase a ticket.
+            type: object
+            allOf:
+                -   type: object
+                    properties:
+                        email:
+                            $ref: "#/components/schemas/Email"
+                -   $ref: "#/components/schemas/EventId"
+        Message:
+            oneOf:
+                -   $ref: "#/components/schemas/Ticket"
+                -   $ref: "#/components/schemas/Email"
+        TicketMessage:
+            description: Confirmation message after a ticket purchase.
+            type: string
+            example: Museum general entry ticket purchased
+        TicketId:
+            description: Unique identifier for museum ticket. Generated when purchased.
+            type: string
+            format: uuid
+            example: a54a57ca-36f8-421b-a6b4-2e8f26858a4c
+        TicketConfirmation:
+            description: Unique confirmation code used to verify ticket purchase.
+            type: string
+            example: 'ticket-event-a98c8f-7eb12'
+        Ticket:
+            description: Ticket for museum entry, can be general admission or special event.
+            type: object
+            properties:
+                ticketId:
+                    $ref: "#/components/schemas/TicketId"
+                ticketDate:
+                    description: Date when this ticket can be used for museum entry.
+                    $ref: "#/components/schemas/Date"
+                ticketType:
+                    $ref: "#/components/schemas/TicketType"
+                eventFields:
+                    $ref: "#/components/schemas/SpecialEventFields"
+                eventId:
+                    description: Unique identifier for a special event. Required if purchasing tickets for the museum's special events.
+                    $ref: "#/components/schemas/EventId"
+                download:
+                    type: string
+                    format: uri
+            required:
+                - ticketType
+                - ticketDate
+        MuseumTicketsConfirmation:
+            description: Details for a museum ticket after a successful purchase.
+            allOf:
+                -   $ref: "#/components/schemas/Ticket"
+                -   type: object
+                    properties:
+                        message:
+                            $ref: "#/components/schemas/TicketMessage"
+                        confirmationCode:
+                            $ref: "#/components/schemas/TicketConfirmation"
+                    required:
+                        - message
+                        - confirmationCode
+        TicketCodeImage:
+            description: Image of a ticket with a QR code used for museum or event entry.
+            type: string
+            format: binary
+        MuseumHours:
+            description: List of museum operating hours for a date range.
+            type: array
+            items:
+                $ref: "#/components/schemas/MuseumDailyHours"
+        MuseumDailyHours:
+            description: Daily operating hours for the museum.
+            type: object
+            properties:
+                date:
+                    description: Date the operating hours apply to.
+                    $ref: "#/components/schemas/Date"
+                    example: '2024-12-31'
+                timeOpen:
+                    type: string
+                    pattern: '^([01]\d|2[0-3]):?([0-5]\d)$'
+                    description: Time the museum opens on a specific date. Uses 24 hour time format (`HH:mm`).
+                    example: 09:00
+                timeClose:
+                    description: Time the museum closes on a specific date. Uses 24 hour time format (`HH:mm`).
+                    type: string
+                    pattern: '^([01]\d|2[0-3]):?([0-5]\d)$'
+                    example: 18:00
+                    nullable: true
+            required:
+                - date
+                - timeOpen
+                - timeClose
+        CodeType:
+            type: integer
+            enum:
+                - 10
+                - 20
+                - 25
+                - 30
+                - 40
+        EventId:
+            description: Identifier for a special event.
+            type: string
+            format: uuid
+            example: 3be6453c-03eb-4357-ae5a-984a0e574a54
+        EventName:
+            type: string
+            description: Name of the special event.
+            example: Pirate Coding Workshop
+        EventLocation:
+            type: string
+            description: Location where the special event is held.
+            example: Computer Room
+        EventDescription:
+            type: string
+            description: Description of the special event.
+            example: Captain Blackbeard shares his love of the C...language. And possibly Arrrrr (R lang).
+        EventDates:
+            type: array
+            items:
+                $ref: "#/components/schemas/Date"
+            description: List of planned dates for the special event.
+        EventPrice:
+            description: Price of a ticket for the special event.
+            type: number
+            format: float
+            example: 25
+        SpecialEventFields:
+            type: object
+            properties:
+                name:
+                    $ref: "#/components/schemas/EventName"
+                location:
+                    $ref: "#/components/schemas/EventLocation"
+                eventDescription:
+                    $ref: "#/components/schemas/EventDescription"
+                dates:
+                    $ref: "#/components/schemas/EventDates"
+                price:
+                    $ref: "#/components/schemas/EventPrice"
+        SpecialEvent:
+            type: object
+            properties:
+                eventId:
+                    $ref: "#/components/schemas/EventId"
+                name:
+                    $ref: "#/components/schemas/EventName"
+                location:
+                    $ref: "#/components/schemas/EventLocation"
+                eventDescription:
+                    $ref: "#/components/schemas/EventDescription"
+                dates:
+                    $ref: "#/components/schemas/EventDates"
+                price:
+                    $ref: "#/components/schemas/EventPrice"
+                page:
+                    type: string
+                    format: uri
+                    enum:
+                        - "http://google.com"
+                        - "http://x.com"
+                        - "http://jenetics.io"
+            required:
+                - name
+                - location
+                - eventDescription
+                - dates
+                - price
+        SpecialEventCollection:
+            description: List of upcoming special events.
+            type: array
+            items:
+                $ref: "#/components/schemas/SpecialEvent"
+        GalleryId:
+            description: Unique identifier for a museum gallery.
+            type: string
+            format: uuid
+            example: 795ca52a-3c64-4f7d-91c9-e10a77a25327
+        ArtifactId:
+            description: Unique identifier for an artifact in the collection.
+            type: string
+            format: uuid
+            example: a868d4e5-1c4c-4bc5-8a22-f4b7dd7f92c6
+        CuratorId:
+            description: Unique identifier for a museum curator.
+            type: string
+            format: uuid
+            example: 5a8e2c6d-3a17-47b8-b588-31521de8d29c
+        AccessionNumber:
+            description: Museum accession number assigned to an artifact.
+            type: string
+            pattern: '^[0-9]{4}\.[0-9]{1,4}(\.[0-9]{1,4})?$'
+            example: '2024.17.3'
+        ExhibitLabel:
+            description: Short public label shown beside an artifact.
+            type: string
+            example: Bronze votive figure
+        ArtifactAgeYears:
+            description: Estimated age of an artifact in years.
+            type: integer
+            format: int32
+            minimum: 0
+            example: 2400
+        GalleryCapacity:
+            description: Maximum visitor capacity for a gallery.
+            type: integer
+            format: int32
+            minimum: 1
+            example: 120
+        HumidityPercent:
+            description: Relative humidity percentage for gallery climate control.
+            type: number
+            format: double
+            minimum: 0
+            maximum: 100
+            example: 45.5
+        TemperatureCelsius:
+            description: Temperature reading in degrees Celsius.
+            type: number
+            format: float
+            example: 21.5
+        InsuranceValue:
+            description: Insured value of a loaned artifact.
+            type: number
+            format: double
+            minimum: 0
+            example: 1250000.00
+        InspectionTimestamp:
+            description: Date and time when a conservation inspection was recorded.
+            type: string
+            format: date-time
+            example: '2024-04-18T10:15:30+01:00'
+        GalleryWing:
+            description: Named area of the museum where a gallery is located.
+            type: string
+            enum:
+                - main-hall
+                - 19th-century
+                - kids and families
+                - rooftop sculpture
+            example: main-hall
+        ArtifactType:
+            description: Curatorial type assigned to an artifact.
+            type: string
+            enum:
+                - painting
+                - sculpture
+                - textile fragment
+                - 3d scan
+                - field-note
+            example: sculpture
+        AcquisitionMethod:
+            description: How an artifact entered the museum collection.
+            type: string
+            enum:
+                - purchase
+                - gift
+                - long-term loan
+                - field-collection
+                - 1910 legacy
+            example: gift
+        ConservationState:
+            description: Current conservation state of an artifact.
+            type: string
+            enum:
+                - stable
+                - monitored
+                - needs-treatment
+                - not display-ready
+            example: stable
+        AccessLevel:
+            description: Numeric access level required for staff-only collection areas.
+            type: integer
+            format: int32
+            enum:
+                - 1
+                - 2
+                - 3
+                - 4
+            example: 2
+        FloorNumber:
+            description: Public floor number within the museum building.
+            type: integer
+            format: int32
+            enum:
+                - 0
+                - 1
+                - 2
+                - 3
+            example: 1
+        HumidityBand:
+            description: Allowed humidity bands for sensitive galleries.
+            type: number
+            format: float
+            enum:
+                - 40.0
+                - 45.5
+                - 50.0
+            example: 45.5
+        ExhibitPublished:
+            description: Whether an exhibit is visible in public catalogue channels.
+            type: boolean
+            enum:
+                - true
+                - false
+            example: true
+        Dimensions:
+            description: Physical dimensions for an artifact.
+            type: object
+            properties:
+                heightCm:
+                    type: number
+                    format: double
+                    example: 32.5
+                widthCm:
+                    type: number
+                    format: double
+                    example: 12.0
+                depthCm:
+                    type: number
+                    format: double
+                    nullable: true
+                    example: 8.4
+                weightKg:
+                    type: number
+                    format: double
+                    nullable: true
+                    example: 2.75
+            required:
+                - heightCm
+                - widthCm
+        Curator:
+            description: Museum staff member responsible for a gallery or artifact.
+            type: object
+            properties:
+                curatorId:
+                    $ref: "#/components/schemas/CuratorId"
+                name:
+                    type: string
+                    example: Ada Lovelace
+                email:
+                    $ref: "#/components/schemas/Email"
+                accessLevel:
+                    $ref: "#/components/schemas/AccessLevel"
+            required:
+                - curatorId
+                - name
+                - email
+        ClimateReading:
+            description: Climate reading captured inside a gallery.
+            type: object
+            properties:
+                recordedAt:
+                    $ref: "#/components/schemas/InspectionTimestamp"
+                temperatureCelsius:
+                    $ref: "#/components/schemas/TemperatureCelsius"
+                humidityPercent:
+                    $ref: "#/components/schemas/HumidityPercent"
+                humidityBand:
+                    $ref: "#/components/schemas/HumidityBand"
+            required:
+                - recordedAt
+                - temperatureCelsius
+                - humidityPercent
+        ArtifactSummary:
+            description: Compact artifact data used in lists and nested views.
+            type: object
+            properties:
+                artifactId:
+                    $ref: "#/components/schemas/ArtifactId"
+                accessionNumber:
+                    $ref: "#/components/schemas/AccessionNumber"
+                label:
+                    $ref: "#/components/schemas/ExhibitLabel"
+                artifactType:
+                    $ref: "#/components/schemas/ArtifactType"
+                conservationState:
+                    $ref: "#/components/schemas/ConservationState"
+            required:
+                - artifactId
+                - accessionNumber
+                - label
+        Artifact:
+            description: Full catalogue record for an artifact.
+            type: object
+            properties:
+                artifactId:
+                    $ref: "#/components/schemas/ArtifactId"
+                accessionNumber:
+                    $ref: "#/components/schemas/AccessionNumber"
+                label:
+                    $ref: "#/components/schemas/ExhibitLabel"
+                artifactType:
+                    $ref: "#/components/schemas/ArtifactType"
+                acquisitionMethod:
+                    $ref: "#/components/schemas/AcquisitionMethod"
+                originDate:
+                    $ref: "#/components/schemas/Date"
+                acquisitionDate:
+                    $ref: "#/components/schemas/Date"
+                    nullable: true
+                estimatedAgeYears:
+                    $ref: "#/components/schemas/ArtifactAgeYears"
+                dimensions:
+                    $ref: "#/components/schemas/Dimensions"
+                primaryCurator:
+                    $ref: "#/components/schemas/Curator"
+                publicLabel:
+                    type: string
+                    nullable: true
+                    example: On view in Gallery 2
+            required:
+                - artifactId
+                - accessionNumber
+                - label
+                - artifactType
+                - acquisitionMethod
+                - dimensions
+        ArtifactCollection:
+            description: List of artifacts in the museum collection.
+            type: array
+            items:
+                $ref: "#/components/schemas/Artifact"
+        Gallery:
+            description: Museum gallery with climate and display information.
+            type: object
+            properties:
+                galleryId:
+                    $ref: "#/components/schemas/GalleryId"
+                name:
+                    type: string
+                    example: Ancient Worlds
+                wing:
+                    $ref: "#/components/schemas/GalleryWing"
+                floor:
+                    $ref: "#/components/schemas/FloorNumber"
+                capacity:
+                    $ref: "#/components/schemas/GalleryCapacity"
+                currentClimate:
+                    $ref: "#/components/schemas/ClimateReading"
+                featuredArtifacts:
+                    $ref: "#/components/schemas/ArtifactCollection"
+                primaryCurator:
+                    $ref: "#/components/schemas/Curator"
+                kind:
+                    type: integer
+                    format: int32
+                    enum:
+                        - 10
+                        - 20
+                        - 25
+                        - 30
+                        - 40
+            required:
+                - galleryId
+                - name
+                - wing
+                - floor
+                - capacity
+        GalleryCollection:
+            description: List of public museum galleries.
+            type: array
+            items:
+                $ref: "#/components/schemas/Gallery"
+        ConservationReport:
+            description: Report created after inspecting an artifact.
+            allOf:
+                -   $ref: "#/components/schemas/ArtifactSummary"
+                -   type: object
+                    properties:
+                        inspectedAt:
+                            $ref: "#/components/schemas/InspectionTimestamp"
+                        inspector:
+                            $ref: "#/components/schemas/Curator"
+                        condition:
+                            $ref: "#/components/schemas/ConservationState"
+                        notes:
+                            type: string
+                            nullable: true
+                            example: Minor surface dusting recommended.
+                    required:
+                        - inspectedAt
+                        - inspector
+                        - condition
+        ConservationReportCollection:
+            description: List of conservation reports.
+            type: array
+            items:
+                $ref: "#/components/schemas/ConservationReport"
+        LoanedArtifact:
+            description: Artifact temporarily held through an inter-museum loan.
+            allOf:
+                -   $ref: "#/components/schemas/Artifact"
+                -   type: object
+                    properties:
+                        lenderName:
+                            type: string
+                            example: City Museum of Applied Arts
+                        loanStart:
+                            $ref: "#/components/schemas/Date"
+                        loanEnd:
+                            $ref: "#/components/schemas/Date"
+                            nullable: true
+                        insuranceValue:
+                            $ref: "#/components/schemas/InsuranceValue"
+                    required:
+                        - lenderName
+                        - loanStart
+                        - insuranceValue
+        MuseumNotice:
+            description: Public notice shown to visitors or attached to an event.
+            oneOf:
+                -   $ref: "#/components/schemas/TicketMessage"
+                -   $ref: "#/components/schemas/ConservationReport"
+                -   $ref: "#/components/schemas/MuseumDailyHours"
+        Error:
+            type: object
+            properties:
+                type:
+                    type: string
+                    example: object
+                title:
+                    type: string
+                    example: Validation failed
+    parameters:
+        PaginationPage:
+            name: page
+            in: query
+            description: Page number to retrieve.
+            schema:
+                type: integer
+                default: 1
+                example: 2
+        PaginationLimit:
+            name: limit
+            in: query
+            description: Number of days per page.
+            schema:
+                type: integer
+                default: 10
+                maximum: 30
+                example: 15
+        EventId:
+            name: eventId
+            in: path
+            description: Identifier for a special event.
+            required: true
+            schema:
+                type: string
+                format: uuid
+                default: "foo"
+                example: dad4bce8-f5cb-4078-a211-995864315e39
+        StartDate:
+            name: startDate
+            in: query
+            description: Starting date to retrieve future operating hours from. Defaults to today's date.
+            schema:
+                type: string
+                format: date
+                example: '2023-02-23'
+        EndDate:
+            name: endDate
+            in: query
+            description: End of a date range to retrieve special events for. Defaults to 7 days after `startDate`.
+            schema:
+                type: string
+                format: date
+                example: '2023-04-18'
+        TicketId:
+            name: ticketId
+            in: path
+            description: Identifier for a ticket to a museum event. Used to generate ticket image.
+            required: true
+            schema:
+                type: string
+                format: uuid
+                example: a54a57ca-36f8-421b-a6b4-2e8f26858a4c
+    responses:
+        BadRequest:
+            description: Bad request.
+            content:
+                application/problem+json:
+                    schema:
+                        $ref: '#/components/schemas/Error'
+        NotFound:
+            description: Not found.
+            content:
+                application/problem+json:
+                    schema:
+                        $ref: '#/components/schemas/Error'
+        Unauthorized:
+            description: Unauthorized.
+            content:
+                application/problem+json:
+                    schema:
+                        $ref: '#/components/schemas/Error'
+tags:
+    -   name: Operations
+        description: Operational information about the museum.
+    -   name: Events
+        description: Special events hosted by the museum.
+    -   name: Tickets
+        description: Museum tickets for general entrance or special events.

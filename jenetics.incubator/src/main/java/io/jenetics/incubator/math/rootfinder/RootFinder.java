@@ -21,16 +21,40 @@ package io.jenetics.incubator.math.rootfinder;
 
 import java.util.function.DoubleUnaryOperator;
 
+import io.jenetics.incubator.math.iterative.Estimate;
 import io.jenetics.util.DoubleRange;
 
 /**
+ * Root finder function.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 8.2
- * @since 8.2
+ * @version !__version__!
+ * @since !__version__!
  */
 @FunctionalInterface
 public interface RootFinder {
 
-	double solve(DoubleUnaryOperator fn, DoubleRange interval);
+	/**
+	 * Represents the found root value plus error estimation and performed
+	 * iterations.
+	 *
+	 * @param value the found root value
+	 * @param error the error estimate
+	 * @param iterations the performed iterations
+	 */
+	record Root(double value, double error, long iterations)
+		implements Estimate
+	{
+	}
+
+	/**
+	 * Finds the <em>x</em>, where the function value of {@code fn} becomes
+	 * zero, or near zero.
+	 *
+	 * @param fn the function to find the root value for
+	 * @param interval the <em>search</em> interval
+	 * @return the root value for the given function {@code fn}
+	 */
+	Root solve(DoubleUnaryOperator fn, DoubleRange interval);
 
 }

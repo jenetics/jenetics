@@ -33,7 +33,7 @@ import io.jenetics.prngine.LCG64ShiftRandom;
 public class RandomPerformanceTests {
 
 
-	public static void main(final String[] args) {
+	void main() {
 		final int loops = Integer.MAX_VALUE;//1_000_000_000;
 
 		test(new Random(), loops);

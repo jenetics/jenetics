@@ -22,17 +22,21 @@ package io.jenetics.incubator.math.iterative;
 /**
  * Represents the desired accuracy of the iterative algorithm.
  *
- * @param relative the relative error
- * @param absolute the absolute error
+ * @param relative the relative accuracy
+ * @param absolute the absolute accuracy
+ * @param value the function value accuracy
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.3
  * @since 8.3
  */
-public record Accuracy(double relative, double absolute) {
+public record Accuracy(double relative, double absolute, double value) {
 	public Accuracy {
-		if (Double.isNaN(relative) || Double.isNaN(absolute)) {
-			throw new IllegalArgumentException();
+		if (Double.isNaN(relative) ||
+			Double.isNaN(absolute) ||
+			Double.isNaN(value))
+		{
+			throw new IllegalArgumentException("Invalid accuracy: " + this);
 		}
 	}
 }

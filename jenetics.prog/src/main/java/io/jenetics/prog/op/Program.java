@@ -21,7 +21,6 @@ package io.jenetics.prog.op;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -125,7 +124,7 @@ public class Program<T> implements Op<T>, Serializable {
 
 	@Override
 	public int hashCode() {
-		return hash(_name, hash(_tree));
+		return Objects.hash(_name, _tree);
 	}
 
 	@Override

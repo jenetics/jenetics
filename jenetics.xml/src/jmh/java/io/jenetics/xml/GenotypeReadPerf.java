@@ -132,7 +132,7 @@ public class GenotypeReadPerf {
 		}
 	}
 
-	public static void main(String[] args) throws RunnerException {
+	void main() throws RunnerException {
 		final Options opt = new OptionsBuilder()
 			.include(GenotypeReadPerf.class.getSimpleName())
 			.warmupIterations(10)

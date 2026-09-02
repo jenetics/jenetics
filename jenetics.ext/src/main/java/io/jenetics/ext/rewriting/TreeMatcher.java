@@ -28,7 +28,6 @@ import io.jenetics.ext.util.Tree;
 /**
  * Implementation of a pattern-based tree matcher. It allows you to iterate over
  * all matches of a tree for a given pattern.
- *
  * {@snippet lang="java":
  * final TreePattern<String> pattern = TreePattern.compile("add($x,$y)");
  * final Tree<String, ?> tree = TreeNode.parse("add(1,add(2,3))");

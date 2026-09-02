@@ -90,7 +90,7 @@ public class MultiRootGP {
 		return 1;
 	}
 
-	public static void main(final String[] args) {
+	void main() {
 		final Engine<ProgramGene<Double>, Double> engine = Engine
 			.builder(MultiRootGP::fitness, CODEC)
 			.minimizing()

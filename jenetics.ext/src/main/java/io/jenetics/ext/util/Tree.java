@@ -210,7 +210,6 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 	 * A tree is considered <em>empty</em> if it's {@link #value()} is
 	 * {@code null} and has no children and parent. A newly created tree node
 	 * with no value is <em>empty</em>.
-	 *
 	 * {@snippet lang="java":
 	 * final Tree<String, ?> tree = TreeNode.of();
 	 * assert tree.isEmpty();
@@ -500,7 +499,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Self<T>, Iterable<T> {
 	}
 
 	/**
-	 * Return the child which comes immediately before {@code this} node. This
+	 * Return the child who comes immediately before {@code this} node. This
 	 * method performs a linear search of this node's children for {@code child}
 	 * and is {@code O(n)} where n is the number of children.
 	 *

@@ -34,7 +34,7 @@ import io.jenetics.util.IntRange;
  */
 public class Matrix {
 
-	public static void main(final String[] args) {
+	void main() {
 		final Problem<int[][], IntegerGene, Integer> problem = Problem.of(
 			Matrix::fitness,
 			Codec.of(

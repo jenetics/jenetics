@@ -21,7 +21,7 @@ public class RealFunction {
 		return cos(0.5 + sin(x))*cos(x);
 	}
 
-	public static void main(final String[] args) {
+	void main() {
 		final Engine<DoubleGene, Double> engine = Engine
 			// Create a new builder with the given fitness
 			// function and chromosome.

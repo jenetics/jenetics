@@ -71,7 +71,7 @@ public class SymbolicRegression {
 			SAMPLES
 		);
 
-	public static void main(final String[] args) {
+	void main() {
 		final Engine<ProgramGene<Double>, Double> engine = Engine
 			.builder(REGRESSION)
 			.minimizing()

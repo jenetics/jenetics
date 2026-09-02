@@ -42,7 +42,7 @@ public class Squares {
 		return dim.getHeight()*dim.getWidth();
 	}
 
-	public static void main(final String[] args) {
+	void main() {
 		final Engine<AnyGene<Dimension>, Double> engine = Engine
 			.builder(Squares::area, Codecs.ofScalar(Squares::nextDimension))
 			.build();

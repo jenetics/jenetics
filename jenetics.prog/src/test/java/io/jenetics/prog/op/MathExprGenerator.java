@@ -58,7 +58,7 @@ public final class MathExprGenerator {
 	 */
 
 
-	public static void main(final String[] args) {
+	void main() {
 		final var random = RandomGenerator.getDefault();
 		final var sentences = Stream.generate(() -> sentence(random))
 			.limit(150)

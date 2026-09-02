@@ -21,7 +21,6 @@ package io.jenetics.ext.rewriting;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.IOException;
 import java.io.InvalidObjectException;
@@ -32,6 +31,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
@@ -164,7 +164,7 @@ public final class TreeRewriteRule<V> implements TreeRewriter<V>, Serializable {
 
 	@Override
 	public int hashCode() {
-		return hash(_left, hash(_right));
+		return Objects.hash(_left, _right);
 	}
 
 	@Override

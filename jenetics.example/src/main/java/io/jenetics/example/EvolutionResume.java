@@ -1,3 +1,5 @@
+
+
 /*
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
@@ -69,7 +71,7 @@ public class EvolutionResume {
 			.collect(EvolutionResult.toBestEvolutionResult());
 	}
 
-	public static void main(final String[] args)
+	void main(final String[] args)
 		throws IOException, InterruptedException, ExecutionException
 	{
 		if (args.length == 0) {

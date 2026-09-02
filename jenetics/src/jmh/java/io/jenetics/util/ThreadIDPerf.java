@@ -52,7 +52,7 @@ public class ThreadIDPerf {
 		return Thread.currentThread().threadId();
 	}
 
-	public static void main(String[] args) throws RunnerException {
+	void main() throws RunnerException {
 		final Options opt = new OptionsBuilder()
 			.include(".*" + ThreadIDPerf.class.getSimpleName() + ".*")
 			.warmupIterations(3)

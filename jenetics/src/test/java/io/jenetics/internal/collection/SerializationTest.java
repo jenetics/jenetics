@@ -62,7 +62,7 @@ public class SerializationTest {
 		}
 	}
 
-	public static void main(final String[] args) throws IOException {
+	void main() throws IOException {
 		final File baseDir = new File(
 			"jenetics/src/test/resources/io/jenetics/collection/serialization");
 		if (!baseDir.isDirectory() && !baseDir.mkdirs()) {

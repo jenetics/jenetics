@@ -205,7 +205,7 @@ public class Diagram {
 			.collect(Collectors.joining(" "));
 	}
 
-	public static void main(final String[] arguments) throws Exception {
+	void main(final String[] arguments) throws Exception {
 		final Args args = Args.of(arguments);
 
 		final Path input = args.arg("input")

@@ -19,7 +19,6 @@
  */
 package io.jenetics;
 
-import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.internal.util.SerialIO.readInt;
 import static io.jenetics.internal.util.SerialIO.writeInt;
 
@@ -222,7 +221,7 @@ public final class Genotype<G extends Gene<?, G>>
 
 	@Override
 	public int hashCode() {
-		return hash(_chromosomes);
+		return _chromosomes.hashCode();
 	}
 
 	@Override

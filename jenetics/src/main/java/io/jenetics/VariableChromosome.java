@@ -21,7 +21,6 @@ package io.jenetics;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.Hashes.hash;
 
 import java.util.Objects;
 
@@ -102,7 +101,7 @@ abstract class VariableChromosome<G extends Gene<?, G>>
 
 	@Override
 	public int hashCode() {
-		return hash(super.hashCode(), hash(_lengthRange));
+		return Objects.hash(super.hashCode(), _lengthRange);
 	}
 
 	@Override

@@ -86,7 +86,7 @@ public class DoubleGeneTravelingSalesman
 			.to(METER);
 	}
 
-	public static void main(String[] args) throws IOException {
+	void main() throws IOException {
 		final var tsm = new DoubleGeneTravelingSalesman(
 			districtCapitals().subSeq(0, 10)
 		);

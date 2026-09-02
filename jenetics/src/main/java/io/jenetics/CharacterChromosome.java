@@ -21,7 +21,6 @@ package io.jenetics;
 
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.CharacterGene.DEFAULT_CHARACTERS;
-import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.internal.util.SerialIO.readInt;
 import static io.jenetics.internal.util.SerialIO.readString;
 import static io.jenetics.internal.util.SerialIO.writeInt;
@@ -156,7 +155,7 @@ public class CharacterChromosome
 
 	@Override
 	public int hashCode() {
-		return hash(super.hashCode(), hash(_validCharacters));
+		return Objects.hash(super.hashCode(), _validCharacters);
 	}
 
 	@Override

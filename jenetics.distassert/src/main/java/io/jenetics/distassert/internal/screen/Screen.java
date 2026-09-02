@@ -107,7 +107,7 @@ public class Screen {
 
 
 
-	public static void main(String[] args) {
+	void main() {
 		final var screen = new Screen(80, 20);
 		screen.draw(new Rectangle(2, 2, 76, 16));
 		screen.draw(new Rectangle(15, 7, 30, 30));

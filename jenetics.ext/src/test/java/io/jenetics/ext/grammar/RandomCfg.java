@@ -98,7 +98,7 @@ public final class RandomCfg {
 		return "r%03d".formatted(random.nextInt(1_000));
 	}
 
-	public static void main(final String[] args) {
+	void main() {
 		final var bnf = next(RandomGenerator.getDefault());
 
 	}

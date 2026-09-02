@@ -22,7 +22,6 @@ package io.jenetics.internal.math;
 import static java.lang.Double.isInfinite;
 import static java.lang.Double.isNaN;
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serial;
 
@@ -208,7 +207,7 @@ public final class DoubleAdder
 
 	@Override
 	public int hashCode() {
-		return hash(doubleValue());
+		return Double.hashCode(doubleValue());
 	}
 
 	@Override

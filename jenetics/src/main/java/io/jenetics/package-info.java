@@ -56,7 +56,7 @@
  *         return ((BitChromosome)gt.chromosome()).bitCount();
  *     }
  *
- *     public static void main(String[] args) {
+ *     void main() {
  *         // 1.) Define the genotype (factory) suitable
  *         //     for the problem.
  *         Factory<Genotype<BitGene>> gtf =

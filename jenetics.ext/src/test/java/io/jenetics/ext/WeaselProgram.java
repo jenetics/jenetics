@@ -30,7 +30,7 @@ public class WeaselProgram {
 			.sum();
 	}
 
-	public static void main(String[] args) throws Exception {
+	void main() throws Exception {
 		final CharSeq chars = CharSeq.of("A-Z ");
 		final Factory<Genotype<CharacterGene>> gtf = Genotype.of(
 			CharacterChromosome.of(chars, TARGET.length())

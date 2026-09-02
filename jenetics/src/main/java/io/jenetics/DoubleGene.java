@@ -19,7 +19,6 @@
  */
 package io.jenetics;
 
-import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.util.RandomRegistry.random;
 
 import java.io.DataInput;
@@ -29,6 +28,7 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Objects;
 
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
@@ -191,7 +191,7 @@ public final class DoubleGene
 
 	@Override
 	public int hashCode() {
-		return hash(_allele, hash(_min, hash(_max)));
+		return Objects.hash(_allele, _min, _max);
 	}
 
 	@Override

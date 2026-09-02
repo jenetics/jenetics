@@ -55,7 +55,7 @@ public class MathStringTokenizerTest {
 			.toArray(Object[][]::new);
 	}
 
-	public static void main(final String[] args) {
+	void main() {
 		MathExprTestData.EXPRESSIONS.forEach(expr -> {
 			final var tokenizer = new MathStringTokenizer(expr);
 			final var tokens = tokenizer.tokens()

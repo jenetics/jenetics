@@ -267,7 +267,7 @@ public final class ObjectHash {
 
 	record Foo(String a, int b, long c, double d) {}
 
-	public static void main(final String[] args) {
+	void main() {
 		final var foo = new Foo("asdf", 1, 2, 4);
 
 		final var fields = fields(foo.getClass(), f -> true);

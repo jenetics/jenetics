@@ -98,7 +98,7 @@ public final class RectFill
 		);
 	}
 
-	public static void main(final String[] args) {
+	void main() {
 		final RectFill problem = new RectFill(new Rect(0, 100, 0, 100));
 
 		final Engine<AnyGene<Rect>, Double> engine = Engine.builder(problem)

@@ -19,7 +19,6 @@
  */
 package io.jenetics;
 
-import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.internal.util.SerialIO.readLong;
 import static io.jenetics.internal.util.SerialIO.writeLong;
 import static io.jenetics.util.RandomRegistry.random;
@@ -31,6 +30,7 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Objects;
 
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
@@ -194,7 +194,7 @@ public final class LongGene
 
 	@Override
 	public int hashCode() {
-		return hash(_allele, hash(_min, hash(_max)));
+		return Objects.hash(_allele, _min, _max);
 	}
 
 	@Override

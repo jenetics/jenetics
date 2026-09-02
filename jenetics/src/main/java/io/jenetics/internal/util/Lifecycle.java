@@ -29,6 +29,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -286,11 +287,8 @@ public final class Lifecycle {
 		implements Supplier<T>, Releasable<E>
 	{
 
-		T _value;
-		ThrowingConsumer<? super T, ? extends E> _release;
-
-		private Value() {
-		}
+		final T _value;
+		final AtomicReference<ThrowingConsumer<? super T, ? extends E>> _release;
 
 		/**
 		 * Create a new closeable value with the given resource {@code value}
@@ -306,7 +304,7 @@ public final class Lifecycle {
 			final ThrowingConsumer<? super T, ? extends E> release
 		) {
 			_value = value;
-			_release = requireNonNull(release);
+			_release = new AtomicReference<>(requireNonNull(release));
 		}
 
 		/**
@@ -349,12 +347,25 @@ public final class Lifecycle {
 		)
 			throws BE
 		{
+			this(Resources::new, builder);
+		}
+
+		<R extends Resources<E>, BE extends Exception> Value(
+			final Supplier<? extends R> resourceFactory,
+			final ThrowingFunction<
+				? super R,
+				? extends T,
+				? extends BE> builder
+		)
+			throws BE
+		{
+			requireNonNull(resourceFactory);
 			requireNonNull(builder);
 
-			final var resources = new Resources<E>();
+			final var resources = resourceFactory.get();
 			try {
 				_value = builder.apply(resources);
-				_release = value -> resources.close();
+				_release = new AtomicReference<>(_ -> resources.close());
 			} catch (Throwable error) {
 				resources.silentRelease(error);
 				throw error;
@@ -368,7 +379,10 @@ public final class Lifecycle {
 
 		@Override
 		public void close() throws E {
-			_release.accept(get());
+			final var release = _release.getAndSet(null);
+			if (release != null) {
+				release.accept(get());
+			}
 		}
 
 		@Override
@@ -501,16 +515,7 @@ public final class Lifecycle {
 		)
 			throws BE
 		{
-			requireNonNull(builder);
-
-			final var resources = new IOResources();
-			try {
-				_value = builder.apply(resources);
-				_release = value -> resources.close();
-			} catch (Throwable error) {
-				resources.silentRelease(error);
-				throw error;
-			}
+			super(IOResources::new, builder);
 		}
 
 	}
@@ -654,10 +659,7 @@ public final class Lifecycle {
 		 * @param releases the release methods
 		 */
 		@SafeVarargs
-		public IOResources(
-			final ThrowingRunnable<
-				? extends IOException>... releases
-		) {
+		public IOResources(final ThrowingRunnable<? extends IOException>... releases) {
 			super(releases);
 		}
 

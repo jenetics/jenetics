@@ -85,7 +85,7 @@ public class Springsteen
 		return Codecs.ofSubSet(_records);
 	}
 
-	public static void main(final String[] args) {
+	void main() {
 		final double maxPricePerUniqueSong = 2.5;
 
 		final Springsteen springsteen = new Springsteen(

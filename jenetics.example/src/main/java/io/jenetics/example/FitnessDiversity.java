@@ -41,7 +41,7 @@ import io.jenetics.ext.engine.CyclicEngine;
  */
 public class FitnessDiversity {
 
-	public static void main(final String[] args) {
+	void main() {
 		final Knapsack knapsack = Knapsack.of(15, new Random(123));
 
 		// The base engine tries to approximate to a good solution in the current

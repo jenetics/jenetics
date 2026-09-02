@@ -61,7 +61,7 @@ public class DTLZ1 {
 			.minimizing()
 			.build();
 
-	public static void main(final String[] args) {
+	void main() {
 		final ISeq<Vec<double[]>> front = ENGINE.stream()
 			.limit(2500)
 			.collect(MOEA.toParetoSet(new IntRange(1000, 1100)))

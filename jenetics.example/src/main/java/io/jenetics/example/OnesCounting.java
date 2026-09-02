@@ -66,7 +66,7 @@ public class OnesCounting implements Problem<ISeq<BitGene>, BitGene, Integer> {
 		);
 	}
 
-	public static void main(final String[] args) {
+	void main() {
 		final var problem = new OnesCounting(15, 0.13);
 		final var engine = Engine.builder(problem).build();
 

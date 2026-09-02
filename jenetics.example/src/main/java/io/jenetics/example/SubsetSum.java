@@ -79,7 +79,7 @@ public class SubsetSum
 	}
 
 
-	public static void main(final String[] args) {
+	void main() {
 		final SubsetSum problem = of(500, 15, new LCG64ShiftRandom(101010));
 
 		final Engine<EnumGene<Integer>, Integer> engine = Engine.builder(problem)

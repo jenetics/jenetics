@@ -57,7 +57,7 @@ public class KnapsackFitnessConvergence {
 		"Runtime"
 	);
 
-	public static void main(final String[] args) throws InterruptedException {
+	void main(final String[] args) throws InterruptedException {
 		final Args arguments = Args.of(args);
 		final ISeq<Integer> sizes = arguments.intArgs("params");
 

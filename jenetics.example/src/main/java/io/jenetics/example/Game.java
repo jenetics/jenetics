@@ -48,7 +48,7 @@ public class Game {
 		}
 	}
 
-	public static void main(final String[] args) {
+	void main() {
 
 		final Codec<Player, DoubleGene> codec = Codec.of(
 			Genotype.of(DoubleChromosome.of(0, 1)),

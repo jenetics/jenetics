@@ -87,7 +87,7 @@ import java.util.random.RandomGeneratorFactory;
  * random generator setup.
  * {@snippet lang="java":
  * public class GA {
- *     public static void main(final String[] args) {
+ *     void main() {
  *         // Initialize the registry with the factory of the PRGN.
  *         final var factory = RandomGeneratorFactory.of("L128X1024MixRandom");
  *         RandomRegistry.random(factory);
@@ -106,7 +106,7 @@ import java.util.random.RandomGeneratorFactory;
  * for initialize the engine stream with the same initial population.
  * {@snippet lang="java":
  * public class GA {
- *     public static void main(final String[] args) {
+ *     void main() {
  *         // Create a reproducible list of genotypes.
  *         final var factory = RandomGeneratorFactory.of("L128X1024MixRandom");
  *         final List<Genotype<DoubleGene>> genotypes = RandomRegistry

@@ -61,7 +61,7 @@ public class Knapsack {
 		};
 	}
 
-	public static void main(final String[] args) {
+	void main() {
 		final int nitems = 15;
 		final double kssize = nitems*100.0/3.0;
 

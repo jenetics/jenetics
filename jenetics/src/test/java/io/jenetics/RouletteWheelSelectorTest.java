@@ -144,7 +144,7 @@ public class RouletteWheelSelectorTest
 			}).toArray(Object[][]::new);
 	}
 
-	public static void main(final String[] args) {
+	void main() {
 		writeDistributionData(Optimize.MAXIMUM);
 		writeDistributionData(Optimize.MINIMUM);
 	}

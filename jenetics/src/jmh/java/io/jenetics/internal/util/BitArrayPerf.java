@@ -86,7 +86,7 @@ public class BitArrayPerf {
 		return array.toBigInteger().hashCode();
 	}
 
-	public static void main(String[] args) throws RunnerException {
+	void main() throws RunnerException {
 		final Options opt = new OptionsBuilder()
 			.include(".*" + BitArrayPerf.class.getSimpleName() + ".*")
 			.warmupIterations(4)
