@@ -11,31 +11,31 @@ commons-rng-sampling = "1.7"
 commons-rng-simple = "1.7"
 commons-statistics-descriptive = "1.3"
 commons-statistics-distribution = "1.3"
-equalsverifier = "4.5"
-guava = "33.6.0-jre"
+equalsverifier = "4.5.2"
+guava = "33.7.1-jre"
 jackson = "2.22"
 jackson-databind-nullable = "0.2.11"
-jackson-datatype-jsr310 = "2.22.1"
+jackson-datatype-jsr310 = "2.22.2"
 jacoco-agent = "0.8.15"
 jakarta-annotation-api = "3.0.0"
 jakarta-validation-api = "3.1.1"
 javacsv = "2.0"
 jexl = "3.7.0"
 jmh = "0.7.3"
-jspecify = "1.0.1"
 jpx = "4.0.0"
-mvel = "2.5.2.Final"
+jspecify = "1.0.1"
+mvel = "2.5.4.Final"
 nashorn = "15.7"
-openapi-generator = "7.24.0"
+openapi-generator = "7.25.0"
 opencsv = "5.12.0"
 prngine = "2.0.0"
-reactor-core = "3.8.6"
+reactor-core = "3.8.7"
 rxjava = "2.2.21"
 supercsv = "2.4.0"
-swagger-models = "2.2.52"
-swagger-parser = "2.1.45"
+swagger-models = "2.2.55"
+swagger-parser = "2.1.48"
 testng = "7.12.0"
-version-catalog-update = "1.1.0"
+version-catalog-update = "1.1.1"
 
 [plugins]
 jmh = { id = "me.champeau.jmh", version.ref = "jmh" }
@@ -58,7 +58,7 @@ commons-statistics-distribution = { module = "org.apache.commons:commons-statist
 equalsverifier = { module = "nl.jqno.equalsverifier:equalsverifier", version.ref = "equalsverifier" }
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
 jackson-annotations = { module = "com.fasterxml.jackson.core:jackson-annotations", version.ref = "jackson" }
-jackson-databind = "com.fasterxml.jackson.core:jackson-databind:2.22.1"
+jackson-databind = "com.fasterxml.jackson.core:jackson-databind:2.22.2"
 jackson-databind-nullable = { module = "org.openapitools:jackson-databind-nullable", version.ref = "jackson-databind-nullable" }
 jackson-datatype-jsr310 = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310", version.ref = "jackson-datatype-jsr310" }
 jacoco-agent = { module = "org.jacoco:org.jacoco.agent", version.ref = "jacoco-agent" }
@@ -66,8 +66,8 @@ jakarta-annotation-api = { module = "jakarta.annotation:jakarta.annotation-api",
 jakarta-validation-api = { module = "jakarta.validation:jakarta.validation-api", version.ref = "jakarta-validation-api" }
 javacsv = { module = "net.sourceforge.javacsv:javacsv", version.ref = "javacsv" }
 jexl = { module = "org.apache.commons:commons-jexl3", version.ref = "jexl" }
-jspecify = { module = "org.jspecify:jspecify", version.ref = "jspecify" }
 jpx = { module = "io.jenetics:jpx", version.ref = "jpx" }
+jspecify = { module = "org.jspecify:jspecify", version.ref = "jspecify" }
 mvel = { module = "org.mvel:mvel2", version.ref = "mvel" }
 nashorn-core = { module = "org.openjdk.nashorn:nashorn-core", version.ref = "nashorn" }
 opencsv = { module = "com.opencsv:opencsv", version.ref = "opencsv" }
