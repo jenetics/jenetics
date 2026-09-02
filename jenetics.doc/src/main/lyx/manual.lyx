@@ -1014,7 +1014,7 @@ public final class HelloWorld {
 \end_layout
 
 \begin_layout Plain Layout
-    public static void main(final String[] args) {
+    void main() {
 \end_layout
 
 \begin_layout Plain Layout
@@ -1085,7 +1085,7 @@ public final class HelloWorld {
 \end_layout
 
 \begin_layout Plain Layout
-        System.out.println("Hello World:
+        IO.println("Hello World:
 \backslash
 n
 \backslash
@@ -8721,7 +8721,7 @@ public class Main {
 \end_layout
 
 \begin_layout Plain Layout
-    public static void main(final String[] args) {
+    void main() {
 \end_layout
 
 \begin_layout Plain Layout
@@ -11010,12 +11010,12 @@ public class TSM {
 \end_layout
 
 \begin_layout Plain Layout
-            System.out.print(result.generation() + ":
+            IO.print(result.generation() + ":
  ");
 \end_layout
 
 \begin_layout Plain Layout
-            System.out.println("Found best phenotype:
+            IO.println("Found best phenotype:
  " + best);
 \end_layout
 
@@ -11036,7 +11036,7 @@ public class TSM {
 \end_layout
 
 \begin_layout Plain Layout
-    public static void main(final String[] args) {
+    void main() {
 \end_layout
 
 \begin_layout Plain Layout
@@ -11064,7 +11064,7 @@ public class TSM {
 \end_layout
 
 \begin_layout Plain Layout
-        System.out.println(result);
+        IO.println(result);
 \end_layout
 
 \begin_layout Plain Layout
@@ -11411,7 +11411,7 @@ static Future<Double> fitness(final double x) {
 \end_layout
 
 \begin_layout Plain Layout
-public static void main(final String[] args) {
+void main() {
 \end_layout
 
 \begin_layout Plain Layout
@@ -11685,7 +11685,7 @@ public class Main {
 \end_layout
 
 \begin_layout Plain Layout
-    public static void main(final String[] args) {
+    void main() {
 \end_layout
 
 \begin_layout Plain Layout
@@ -16600,7 +16600,7 @@ public class LastMonday {
 \end_layout
 
 \begin_layout Plain Layout
-    public static void main(final String[] args) {
+    void main() {
 \end_layout
 
 \begin_layout Plain Layout
@@ -16647,7 +16647,7 @@ public class LastMonday {
 \end_layout
 
 \begin_layout Plain Layout
-        System.out.println(best);
+        IO.println(best);
 \end_layout
 
 \begin_layout Plain Layout
@@ -17671,7 +17671,7 @@ public final class SpecialEngine {
 \end_layout
 
 \begin_layout Plain Layout
-    public static void main(final String[] args) {
+    void main() {
 \end_layout
 
 \begin_layout Plain Layout
@@ -17701,7 +17701,7 @@ public final class SpecialEngine {
 \end_layout
 
 \begin_layout Plain Layout
-        System.out.println("Best Genotype:
+        IO.println("Best Genotype:
  " + best));
 \end_layout
 
@@ -17772,7 +17772,7 @@ inline false
 status open
 
 \begin_layout Plain Layout
-public static void main(final String[] args) {
+void main() {
 \end_layout
 
 \begin_layout Plain Layout
@@ -20836,7 +20836,7 @@ class Main {
 \end_layout
 
 \begin_layout Plain Layout
-    public static void main(String[] args) {
+    void main() {
 \end_layout
 
 \begin_layout Plain Layout
@@ -21087,7 +21087,7 @@ class Main {
 \end_layout
 
 \begin_layout Plain Layout
-    public static void main(String[] args) {
+    void main() {
 \end_layout
 
 \begin_layout Plain Layout
@@ -21580,7 +21580,7 @@ class Main {
 \end_layout
 
 \begin_layout Plain Layout
-    public static void main(String[] args) {
+    void main() {
 \end_layout
 
 \begin_layout Plain Layout
@@ -22104,7 +22104,7 @@ public class TSM {
 \end_layout
 
 \begin_layout Plain Layout
-    public static void main(final String[] args) {
+    void main() {
 \end_layout
 
 \begin_layout Plain Layout
@@ -22132,7 +22132,7 @@ public class TSM {
 \end_layout
 
 \begin_layout Plain Layout
-        System.out.println(result);
+        IO.println(result);
 \end_layout
 
 \begin_layout Plain Layout
@@ -23052,7 +23052,7 @@ class Main {
 \end_layout
 
 \begin_layout Plain Layout
-    public static void main(String[] args) {
+    void main() {
 \end_layout
 
 \begin_layout Plain Layout
@@ -32210,7 +32210,7 @@ public class WeaselProgram {
 \end_layout
 
 \begin_layout Plain Layout
-	public static void main(final String[] args) {
+	void main() {
 \end_layout
 
 \begin_layout Plain Layout
@@ -32274,7 +32274,7 @@ public class WeaselProgram {
 \end_layout
 
 \begin_layout Plain Layout
-			.peek(r -> System.out.println(
+			.peek(r -> IO.println(
 \end_layout
 
 \begin_layout Plain Layout
@@ -32291,7 +32291,7 @@ public class WeaselProgram {
 \end_layout
 
 \begin_layout Plain Layout
-		System.out.println(result);
+		IO.println(result);
 \end_layout
 
 \begin_layout Plain Layout
