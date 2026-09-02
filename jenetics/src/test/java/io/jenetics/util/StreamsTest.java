@@ -259,7 +259,7 @@ public class StreamsTest {
 			.collect(ISeq.toISeq());
 
 		final ISeq<Integer> gathered = source.stream()
-			.gather(Streams.maxInterval(sliceSize))
+			.gather(Streams.maxOfInterval(sliceSize))
 			.collect(ISeq.toISeq());
 
 		assertThat(gathered).isEqualTo(flatMapped);
@@ -280,7 +280,7 @@ public class StreamsTest {
 			.collect(ISeq.toISeq());
 
 		final ISeq<Integer> gathered = source.stream()
-			.gather(Streams.minInterval(sliceSize))
+			.gather(Streams.minOfInterval(sliceSize))
 			.collect(ISeq.toISeq());
 
 		assertThat(gathered).isEqualTo(flatMapped);
@@ -301,7 +301,7 @@ public class StreamsTest {
 			.collect(ISeq.toISeq());
 
 		final ISeq<Integer> gathered = source.stream()
-			.gather(Streams.bestInterval(Comparator.reverseOrder(), sliceSize))
+			.gather(Streams.bestOfInterval(Comparator.reverseOrder(), sliceSize))
 			.collect(ISeq.toISeq());
 
 		assertThat(gathered).isEqualTo(flatMapped);
@@ -310,7 +310,7 @@ public class StreamsTest {
 	@Test
 	public void maxInterval() {
 		final ISeq<Integer> values = Stream.of(9, 8, 3, 3, 5, 4, 2, 9)
-			.gather(Streams.maxInterval(3))
+			.gather(Streams.maxOfInterval(3))
 			.collect(ISeq.toISeq());
 
 		assertThat(values).isEqualTo(ISeq.of(9, 5));
@@ -319,7 +319,7 @@ public class StreamsTest {
 	@Test
 	public void minInterval() {
 		final ISeq<Integer> values = Stream.of(9, 8, 3, 3, 1, 4, 2, 9)
-			.gather(Streams.minInterval(3))
+			.gather(Streams.minOfInterval(3))
 			.collect(ISeq.toISeq());
 
 		assertThat(values).isEqualTo(ISeq.of(3, 1));
@@ -328,7 +328,7 @@ public class StreamsTest {
 	@Test
 	public void bestInterval() {
 		final ISeq<String> values = Stream.of("a", "bbb", "bb", "cccc", "d", "ee")
-			.gather(Streams.bestInterval(Comparator.comparing(String::length), 3))
+			.gather(Streams.bestOfInterval(Comparator.comparing(String::length), 3))
 			.collect(ISeq.toISeq());
 
 		assertThat(values).isEqualTo(ISeq.of("bbb", "cccc"));
@@ -347,7 +347,7 @@ public class StreamsTest {
 			.collect(ISeq.toISeq());
 
 		final ISeq<Integer> gathered = source.stream()
-			.gather(Streams.maxInterval(timespan, new TestClock()))
+			.gather(Streams.maxOfInterval(timespan, new TestClock()))
 			.collect(ISeq.toISeq());
 
 		assertThat(gathered).isEqualTo(flatMapped);
@@ -366,7 +366,7 @@ public class StreamsTest {
 			.collect(ISeq.toISeq());
 
 		final ISeq<Integer> gathered = source.stream()
-			.gather(Streams.minInterval(timespan, new TestClock()))
+			.gather(Streams.minOfInterval(timespan, new TestClock()))
 			.collect(ISeq.toISeq());
 
 		assertThat(gathered).isEqualTo(flatMapped);
@@ -389,7 +389,7 @@ public class StreamsTest {
 			.collect(ISeq.toISeq());
 
 		final ISeq<Integer> gathered = source.stream()
-			.gather(Streams.bestInterval(
+			.gather(Streams.bestOfInterval(
 				Comparator.reverseOrder(),
 				timespan,
 				new TestClock()
@@ -402,21 +402,21 @@ public class StreamsTest {
 	@Test
 	public void invalidIntervalSize() {
 		assertThatIllegalArgumentException()
-			.isThrownBy(() -> Streams.maxInterval(0));
+			.isThrownBy(() -> Streams.maxOfInterval(0));
 		assertThatIllegalArgumentException()
-			.isThrownBy(() -> Streams.minInterval(0));
+			.isThrownBy(() -> Streams.minOfInterval(0));
 		assertThatIllegalArgumentException()
-			.isThrownBy(() -> Streams.bestInterval(Comparator.naturalOrder(), 0));
+			.isThrownBy(() -> Streams.bestOfInterval(Comparator.naturalOrder(), 0));
 	}
 
 	@Test
 	public void intervalNullComparator() {
 		assertThatNullPointerException()
-			.isThrownBy(() -> Streams.bestInterval(null, 10));
+			.isThrownBy(() -> Streams.bestOfInterval(null, 10));
 		assertThatNullPointerException()
-			.isThrownBy(() -> Streams.bestInterval(null, Duration.ofMillis(10)));
+			.isThrownBy(() -> Streams.bestOfInterval(null, Duration.ofMillis(10)));
 		assertThatNullPointerException()
-			.isThrownBy(() -> Streams.bestInterval(
+			.isThrownBy(() -> Streams.bestOfInterval(
 				null,
 				Duration.ofMillis(10),
 				new TestClock()
@@ -426,17 +426,17 @@ public class StreamsTest {
 	@Test
 	public void timespanIntervalNullArguments() {
 		assertThatNullPointerException()
-			.isThrownBy(() -> Streams.maxInterval((Duration)null));
+			.isThrownBy(() -> Streams.maxOfInterval((Duration)null));
 		assertThatNullPointerException()
-			.isThrownBy(() -> Streams.minInterval((Duration)null));
+			.isThrownBy(() -> Streams.minOfInterval((Duration)null));
 		assertThatNullPointerException()
-			.isThrownBy(() -> Streams.bestInterval(Comparator.naturalOrder(), null));
+			.isThrownBy(() -> Streams.bestOfInterval(Comparator.naturalOrder(), null));
 		assertThatNullPointerException()
-			.isThrownBy(() -> Streams.maxInterval(Duration.ofMillis(10), null));
+			.isThrownBy(() -> Streams.maxOfInterval(Duration.ofMillis(10), null));
 		assertThatNullPointerException()
-			.isThrownBy(() -> Streams.minInterval(Duration.ofMillis(10), null));
+			.isThrownBy(() -> Streams.minOfInterval(Duration.ofMillis(10), null));
 		assertThatNullPointerException()
-			.isThrownBy(() -> Streams.bestInterval(
+			.isThrownBy(() -> Streams.bestOfInterval(
 				Comparator.naturalOrder(),
 				Duration.ofMillis(10),
 				null
