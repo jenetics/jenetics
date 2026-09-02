@@ -41,6 +41,7 @@ import io.jenetics.util.RandomRegistry;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
+@SuppressWarnings("removal")
 public class MinMaxTest {
 
 	private static final Named<Comparator<Integer>> NORMAL = Named.of(

@@ -27,6 +27,7 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collector;
+import java.util.stream.Gatherer;
 import java.util.stream.Stream;
 
 import io.jenetics.util.Streams;
@@ -287,8 +288,7 @@ public final class MinMax<C> implements Consumer<C> {
 	 * order</em> elements.
 	 * <p>
 	 * {@snippet lang="java":
-	 * final ISeq<Integer> values = new Random().ints(0, 100)
-	 *     .boxed()
+	 * final ISeq<Integer> values = new Random().ints(0, 100).boxed()
 	 *     .limit(100)
 	 *     .flatMap(MinMax.toStrictlyIncreasing())
 	 *     .collect(ISeq.toISeq());
@@ -301,10 +301,68 @@ public final class MinMax<C> implements Consumer<C> {
 	 *
 	 * @param <C> the comparable type
 	 * @return a new flat-mapper function
+	 * @deprecated Used {@link #strictlyIncreasing()} instead.
 	 */
+	@SuppressWarnings("removal")
+	@Deprecated(forRemoval = true, since = "9.1")
 	public static <C extends Comparable<? super C>>
 	Function<C, Stream<C>> toStrictlyIncreasing() {
 		return Streams.toStrictlyIncreasing();
+	}
+
+	/**
+	 * Return a new gatherer, which guarantees a strictly increasing stream, from
+	 * an arbitrarily ordered source stream. Note that this gatherer doesn't sort
+	 * the stream. It <em>just</em> skips the <em>out of order</em> elements.
+	 * <p>
+	 * {@snippet lang="java":
+	 * final ISeq<Integer> values = new Random().ints(0, 100).boxed()
+	 *     .limit(100)
+	 *     .gather(MinMax.strictlyIncreasing())
+	 *     .collect(ISeq.toISeq());
+	 *
+	 * System.out.println(values);
+	 * // [6,47,65,78,96,96,99]
+	 * }
+	 * @since 9.1
+	 *
+	 * @param <C> the comparable type
+	 * @return a new flat-mapper function
+	 */
+	public static <C extends Comparable<? super C>>
+	Gatherer<C, ?, C> strictlyIncreasing() {
+		return Streams.strictlyIncreasing();
+	}
+
+	/**
+	 * Return a new gatherer, which guarantees a strictly decreasin stream, from
+	 * an arbitrarily ordered source stream. Note that this gatherer doesn't sort
+	 * the stream. It <em>just</em> skips the <em>out of order</em> elements.
+	 *
+	 * <pre>{@code
+	 *     +----9--8--9--5--6--6--2--9----|
+	 *        strictlyDecreasing()
+	 *     +----9--8-----5--------2-------|
+	 * }</pre>
+	 *
+	 * {@snippet lang="java":
+	 * final ISeq<Integer> values = new Random().ints(0, 100)
+	 *     .boxed()
+	 *     .limit(100)
+	 *     .gather(Streams.strictlyDecreasing())
+	 *     .collect(ISeq.toISeq());
+	 *
+	 * System.out.println(values);
+	 * // [45,32,15,12,3,1]
+	 * }
+	 * @since 9.1
+	 *
+	 * @param <C> the comparable type
+	 * @return a new flat-mapper function
+	 */
+	public static <C extends Comparable<? super C>>
+	Gatherer<C, ?, C> strictlyDecreasing() {
+		return Streams.strictlyDecreasing();
 	}
 
 	/**
@@ -314,8 +372,7 @@ public final class MinMax<C> implements Consumer<C> {
 	 * order</em> elements.
 	 * <p>
 	 * {@snippet lang="java":
-	 * final ISeq<Integer> values = new Random().ints(0, 100)
-	 *     .boxed()
+	 * final ISeq<Integer> values = new Random().ints(0, 100).boxed()
 	 *     .limit(100)
 	 *     .flatMap(MinMax.toStrictlyDecreasing())
 	 *     .collect(ISeq.toISeq());
@@ -328,7 +385,10 @@ public final class MinMax<C> implements Consumer<C> {
 	 *
 	 * @param <C> the comparable type
 	 * @return a new flat-mapper function
+	 * @deprecated Used {@link #strictlyDecreasing()} instead.
 	 */
+	@SuppressWarnings("removal")
+	@Deprecated(forRemoval = true, since = "9.1")
 	public static <C extends Comparable<? super C>>
 	Function<C, Stream<C>> toStrictlyDecreasing() {
 		return Streams.toStrictlyDecreasing();
@@ -341,8 +401,7 @@ public final class MinMax<C> implements Consumer<C> {
 	 * order</em> elements.
 	 * <p>
 	 * {@snippet lang="java":
-	 * final ISeq<Integer> values = new Random().ints(0, 100)
-	 *     .boxed()
+	 * final ISeq<Integer> values = new Random().ints(0, 100).boxed()
 	 *     .limit(100)
 	 *     .flatMap(MinMax.toStrictlyImproving(Comparator.naturalOrder()))
 	 *     .collect(ISeq.toISeq());
@@ -359,10 +418,43 @@ public final class MinMax<C> implements Consumer<C> {
 	 * @param <T> the element type
 	 * @param comparator the comparator used for testing the elements
 	 * @return a new flat-mapper function
+	 * @deprecated Use {@link #strictlyImproving(Comparator)} instead.
 	 */
+	@SuppressWarnings("removal")
+	@Deprecated(forRemoval = true, since = "9.1")
 	public static <T> Function<T, Stream<T>>
 	toStrictlyImproving(final Comparator<? super T> comparator) {
 		return Streams.toStrictlyImproving(comparator);
+	}
+
+	/**
+	 * Return a new flat-mapper function, which guarantees a strictly improving
+	 * stream, from an arbitrarily ordered source stream. Note that this
+	 * function doesn't sort the stream. It <em>just</em> skips the <em>out of
+	 * order</em> elements.
+	 * <p>
+	 * {@snippet lang="java":
+	 * final ISeq<Integer> values = new Random().ints(0, 100).boxed()
+	 *     .limit(100)
+	 *     .gather(MinMax.strictlyImproving(Comparator.naturalOrder()))
+	 *     .collect(ISeq.toISeq());
+	 *
+	 * System.out.println(values);
+	 * // [6,47,65,78,96,96,99]
+	 * }
+	 *
+	 * @since 9.1
+	 *
+	 * @see #strictlyIncreasing()
+	 * @see #toStrictlyDecreasing()
+	 *
+	 * @param <T> the element type
+	 * @param comparator the comparator used for testing the elements
+	 * @return a new flat-mapper function
+	 */
+	public static <T> Gatherer<T, ?, T>
+	strictlyImproving(final Comparator<? super T> comparator) {
+		return Streams.strictlyImproving(comparator);
 	}
 
 }

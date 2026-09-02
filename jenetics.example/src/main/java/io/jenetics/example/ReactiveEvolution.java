@@ -59,7 +59,7 @@ public class ReactiveEvolution implements AutoCloseable {
 		final var stream = _engine.stream()
 			.limit(r -> !Thread.currentThread().isInterrupted())
 			// Only emit results which are better then the previous one.
-			.flatMap(MinMax.toStrictlyIncreasing());
+			.gather(MinMax.strictlyIncreasing());
 
 		_publisher = new StreamPublisher<>();
 		_publisher.subscribe(subscriber);
