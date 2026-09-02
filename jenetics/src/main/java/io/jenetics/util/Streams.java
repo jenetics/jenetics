@@ -403,7 +403,7 @@ public final class Streams {
 	 *          +----3---+----3---+
 	 *          |        |        |
 	 *     +----9--8--3--3--5--4--2--9----|
-	 *        maxInterval(3)
+	 *        maxOfInterval(3)
 	 *     +----------9--------5----------|
 	 * }</pre>
 	 *
@@ -425,7 +425,7 @@ public final class Streams {
 	 *          +----3---+----3---+
 	 *          |        |        |
 	 *     +----9--8--3--3--1--4--2--9----|
-	 *        minInterval(3)
+	 *        minOfInterval(3)
 	 *     +----------3--------1----------|
 	 * }</pre>
 	 *
@@ -710,7 +710,7 @@ public final class Streams {
 	 *          +---3s---+---3s---+
 	 *          |        |        |
 	 *     +----9--8--3--3--5--4--2--9----|
-	 *        maxInterval(3s)
+	 *        maxOfInterval(3s)
 	 *     +----------9--------5----------|
 	 * }</pre>
 	 *
@@ -736,7 +736,7 @@ public final class Streams {
 	 *          +---3s---+---3s---+
 	 *          |        |        |
 	 *     +----9--8--3--3--5--4--2--9----|
-	 *        maxInterval(3s)
+	 *        maxOfInterval(3s)
 	 *     +----------9--------5----------|
 	 * }</pre>
 	 *
@@ -763,7 +763,7 @@ public final class Streams {
 	 *          +---3s---+---3s---+
 	 *          |        |        |
 	 *     +----9--8--3--3--1--4--2--9----|
-	 *        minInterval(3s)
+	 *        minOfInterval(3s)
 	 *     +----------3--------1----------|
 	 * }</pre>
 	 *
@@ -789,7 +789,7 @@ public final class Streams {
 	 *          +---3s---+---3s---+
 	 *          |        |        |
 	 *     +----9--8--3--3--1--4--2--9----|
-	 *        minInterval(3s)
+	 *        minOfInterval(3s)
 	 *     +----------3--------1----------|
 	 * }</pre>
 	 *
