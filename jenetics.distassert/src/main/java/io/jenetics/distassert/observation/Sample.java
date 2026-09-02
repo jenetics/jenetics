@@ -19,11 +19,11 @@
  */
 package io.jenetics.distassert.observation;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.function.DoubleConsumer;
 import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * This functional interface represents a data sample. It is used for

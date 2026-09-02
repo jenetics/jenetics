@@ -31,8 +31,6 @@ import java.util.stream.Collectors;
 
 import javax.xml.stream.XMLStreamException;
 
-import io.jenetics.BitChromosome;
-import io.jenetics.BoundedChromosome;
 import io.jenetics.BoundedGene;
 import io.jenetics.Chromosome;
 import io.jenetics.DoubleGene;

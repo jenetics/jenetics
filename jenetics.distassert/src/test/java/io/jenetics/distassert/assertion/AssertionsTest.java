@@ -28,8 +28,8 @@ import org.testng.annotations.Test;
 
 import io.jenetics.distassert.observation.Histogram;
 import io.jenetics.distassert.observation.Interval;
-import io.jenetics.distassert.observation.Sampler;
 import io.jenetics.distassert.observation.Sample;
+import io.jenetics.distassert.observation.Sampler;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

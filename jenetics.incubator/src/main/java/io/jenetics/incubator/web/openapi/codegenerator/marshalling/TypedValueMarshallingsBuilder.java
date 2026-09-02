@@ -1,11 +1,6 @@
 package io.jenetics.incubator.web.openapi.codegenerator.marshalling;
 
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.helger.jcodemodel.JCodeModel;
-
 import io.jenetics.incubator.web.openapi.codegenerator.Qname;
-import io.jenetics.incubator.web.openapi.codegenerator.internal.JCodeModels;
-import io.jenetics.incubator.web.openapi.codegenerator.model.TypedValueSchema;
 
 public class TypedValueMarshallingsBuilder {
 

@@ -19,12 +19,12 @@
  */
 package io.jenetics.incubator.statemachine;
 
-import static io.jenetics.incubator.statemachine.FsmTest.Command.BEGIN;
-import static io.jenetics.incubator.statemachine.FsmTest.ProcessState.ACTIVE;
-import static io.jenetics.incubator.statemachine.FsmTest.ProcessState.INACTIVE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNullPointerException;
+import static io.jenetics.incubator.statemachine.FsmTest.Command.BEGIN;
+import static io.jenetics.incubator.statemachine.FsmTest.ProcessState.ACTIVE;
+import static io.jenetics.incubator.statemachine.FsmTest.ProcessState.INACTIVE;
 
 import java.util.ArrayList;
 import java.util.List;

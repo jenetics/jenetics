@@ -19,12 +19,12 @@
  */
 package io.jenetics.incubator.statemachine;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * This class wraps an existing stepper and notifies registered listeners on

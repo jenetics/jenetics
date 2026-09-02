@@ -19,17 +19,17 @@
  */
 package io.jenetics.incubator.statemachine;
 
+import static java.util.Objects.requireNonNull;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.testng.Assert.fail;
 import static io.jenetics.incubator.statemachine.FsmTest.Command.BEGIN;
 import static io.jenetics.incubator.statemachine.FsmTest.Command.END;
 import static io.jenetics.incubator.statemachine.FsmTest.Command.EXIT;
 import static io.jenetics.incubator.statemachine.FsmTest.ProcessState.ACTIVE;
 import static io.jenetics.incubator.statemachine.FsmTest.ProcessState.INACTIVE;
 import static io.jenetics.incubator.statemachine.FsmTest.ProcessState.TERMINATED;
-import static java.util.Objects.requireNonNull;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static org.testng.Assert.fail;
 
 import java.time.Duration;
 import java.util.List;

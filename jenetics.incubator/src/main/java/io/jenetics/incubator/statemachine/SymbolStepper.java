@@ -19,9 +19,9 @@
  */
 package io.jenetics.incubator.statemachine;
 
-import java.util.Optional;
-
 import static java.util.Objects.requireNonNull;
+
+import java.util.Optional;
 
 /**
  * This class steps through the FSM, with the {@link #next(Fsm.Symbol)} method.

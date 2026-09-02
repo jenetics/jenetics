@@ -19,24 +19,27 @@
  */
 package io.jenetics.prog.regression;
 
+import java.time.Duration;
+import java.util.Random;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
+import org.testng.annotations.Test;
+
 import io.jenetics.engine.Codec;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.FitnessNullifier;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.RandomRegistry;
+import io.jenetics.util.Streams;
+
 import io.jenetics.ext.util.Tree;
+
 import io.jenetics.prog.ProgramGene;
 import io.jenetics.prog.op.EphemeralConst;
 import io.jenetics.prog.op.MathOp;
 import io.jenetics.prog.op.Op;
 import io.jenetics.prog.op.Var;
-import io.jenetics.util.ISeq;
-import io.jenetics.util.RandomRegistry;
-import io.jenetics.util.Streams;
-import org.testng.annotations.Test;
-
-import java.time.Duration;
-import java.util.Random;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

@@ -19,12 +19,12 @@
  */
 package io.jenetics.incubator.statemachine;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.concurrent.Executor;
 import java.util.concurrent.Flow;
 import java.util.concurrent.SubmissionPublisher;
 import java.util.function.BiConsumer;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * Reactive signal transition publisher.

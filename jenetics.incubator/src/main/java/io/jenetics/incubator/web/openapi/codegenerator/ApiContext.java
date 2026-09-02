@@ -4,7 +4,6 @@ import static java.util.Objects.requireNonNull;
 
 import io.swagger.v3.oas.models.OpenAPI;
 
-import java.util.concurrent.Callable;
 import java.util.function.Supplier;
 
 /**
