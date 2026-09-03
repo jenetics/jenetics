@@ -81,7 +81,7 @@ public class EventStepper<
 			);
 		}
 
-		final var next = fsm.delta().apply(state, event.kind()).orElse(null);
+		final var next = fsm.delta().apply(state, event).orElse(null);
 		if (next != null) {
 			final var transition = new Fsm.Transition<>(state, event, next);
 			state = next;
