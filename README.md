@@ -94,7 +94,7 @@ public class HelloWorld {
             .limit(100)
             .collect(EvolutionResult.toBestGenotype());
 
-        System.out.println("Hello World:\n" + result);
+        IO.println("Hello World:\n" + result);
     }
 }
 ```
