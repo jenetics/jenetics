@@ -394,7 +394,17 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 
 		/**
 		 * Applies the transition from the {@code current} state to the next
-		 * state when the {@code event} is signaled.
+		 * state when the {@code event} is signaled. The default implementation
+		 * forwards this call to {@link #apply(State, Symbol)}, by using the
+		 * event kind, {@link Event#kind()}.
+		 *
+		 * @apiNote
+		 * Users might want to override this method, when a greater flexibility
+		 * is required for the state transition, e.g. when one want to implement
+		 * <em>guards</em>.
+		 *
+		 * @see #of(BiFunction)
+		 * @see #of(Function)
 		 *
 		 * @param current the current state
 		 * @param event the signaled event
