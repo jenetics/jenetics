@@ -30,6 +30,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Gatherer;
@@ -300,7 +302,7 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 				}
 			}
 
-			return new  SimpleSymbol(name);
+			return new SimpleSymbol(name);
 		}
 
 	}
@@ -391,8 +393,33 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 		Optional<ST> apply(ST current, SY symbol);
 
 		/**
+		 * Applies the transition from the {@code current} state to the next
+		 * state when the {@code event} is signaled. The default implementation
+		 * forwards this call to {@link #apply(State, Symbol)}, by using the
+		 * event kind, {@link Event#kind()}.
+		 *
+		 * @apiNote
+		 * Users might want to override this method, when a greater flexibility
+		 * is required for the state transition, e.g. when one want to implement
+		 * <em>guards</em>.
+		 *
+		 * @see #of(BiFunction)
+		 * @see #of(Function)
+		 *
+		 * @param current the current state
+		 * @param event the signaled event
+		 * @return the next state, if a transition is defined
+		 */
+		default Optional<ST> apply(ST current, Event<SY> event) {
+			return apply(current, event.kind());
+		}
+
+		/**
 		 * Creates a <em>delta</em> function from the given set of
 		 * {@code transitions}.
+		 *
+		 * @see #of(Transition[])
+		 * @see #of(BiFunction)
 		 *
 		 * @param transitions the state transitions which defines the
 		 *        <em>delta</em> function
@@ -405,17 +432,11 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 		 */
 		static <ST extends State, SY extends Symbol>
 		Delta<ST, SY> of(Set<Transition<ST, SY>> transitions) {
-
-			record StateSymbol<ST extends State, SY extends Symbol>(
-				ST state,
-				SY symbol
-			) {}
-
-			final Map<StateSymbol<ST, SY>, List<Transition<ST, SY>>> map =
+			final Map<StateSignal<ST, SY>, List<Transition<ST, SY>>> map =
 				transitions.stream()
-					.collect(groupingBy(t -> new StateSymbol<>(t.before(), t.signal())));
+					.collect(groupingBy(t -> new StateSignal<>(t.before(), t.signal())));
 
-			final List<StateSymbol<ST, SY>> duplicates = map.entrySet().stream()
+			final List<StateSignal<ST, SY>> duplicates = map.entrySet().stream()
 				.filter(t -> t.getValue().size() > 1)
 				.map(Map.Entry::getKey)
 				.toList();
@@ -424,22 +445,33 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 				throw new IllegalArgumentException(
 					"Found ambiguous transitions: %s.".formatted(
 						duplicates.stream()
-							.map(ss -> "(%s, %s)".formatted(ss.state, ss.symbol))
+							.map(ss -> "(%s, %s)".formatted(ss.state, ss.signal))
 							.collect(Collectors.joining(", "))
 					)
 				);
 			}
 
 			return (state, symbol) -> Optional
-				.ofNullable(map.get(new StateSymbol<>(state, symbol)))
+				.ofNullable(map.get(new StateSignal<>(state, symbol)))
 				.map(t -> t.getFirst().after());
 		}
 
 		/**
 		 * Creates a <em>delta</em> function from the given set of
 		 * {@code transitions}.
+		 * {@snippet lang=java:
+		 * Fsm.Delta.of(
+		 *     new Fsm.Transition<>(INACTIVE, BEGIN, ACTIVE),
+		 *     new Fsm.Transition<>(ACTIVE, PAUSE, PAUSED),
+		 *     new Fsm.Transition<>(PAUSED, RESUME, ACTIVE),
+		 *     new Fsm.Transition<>(ACTIVE, END, INACTIVE),
+		 *     new Fsm.Transition<>(PAUSED, END, INACTIVE),
+		 *     new Fsm.Transition<>(INACTIVE, EXIT, TERMINATED)
+		 * )
+		 * }
 		 *
 		 * @see #of(Set)
+		 * @see #of(BiFunction)
 		 *
 		 * @param transitions the state transitions which defines the
 		 *        <em>delta</em> function
@@ -456,6 +488,81 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 			return of(Set.of(transitions));
 		}
 
+		/**
+		 * Creates a <em>delta</em> function from the given (transition)
+		 * bi-function {@code fn}.
+		 * {@snippet lang=java:
+		 * Fsm.Delta.of((source, signal) -> {
+		 *     final var target = switch (source) {
+		 *         case INACTIVE -> switch (signal) {
+		 *             case BEGIN -> ACTIVE;
+		 *             case EXIT -> TERMINATED;
+		 *             default -> null;
+		 *         };
+		 *         case ACTIVE -> switch (signal) {
+		 *             case PAUSE -> PAUSED;
+		 *             case END -> INACTIVE;
+		 *             default -> null;
+		 *         };
+		 *         case PAUSED -> switch (signal) {
+		 *             case RESUME -> ACTIVE;
+		 *             case END -> INACTIVE;
+		 *             default -> null;
+		 *         };
+		 *         default -> null;
+		 *     };
+		 *     return Optional.ofNullable(target);
+		 * })
+		 * }
+		 *
+		 * @see #of(Transition[])
+		 * @see #of(Set)
+		 *
+		 * @param fn the transition function
+		 * @return a new <em>delta</em> function
+		 * @param <ST> the state type
+		 * @param <SY> the symbol (signal) type
+		 */
+		static <ST extends State, SY extends Symbol>
+		Delta<ST, SY> of(BiFunction<? super ST, ? super Signal, Optional<ST>> fn) {
+			requireNonNull(fn);
+
+			return new Delta<>() {
+				@Override
+				public Optional<ST> apply(ST current, SY symbol) {
+					return fn.apply(current, symbol);
+				}
+				@Override
+				public Optional<ST> apply(ST current, Event<SY> event) {
+					return fn.apply(current, event)
+						.or(() -> fn.apply(current, event.kind()));
+				}
+			};
+		}
+
+		static <ST extends State, SY extends Symbol>
+		Delta<ST, SY> of(Function<? super StateSignal<ST, ? extends Signal>, Optional<ST>> fn) {
+			requireNonNull(fn);
+
+			return of((state, signal) -> fn.apply(new StateSignal<>(state, signal)));
+		}
+
+	}
+
+	/**
+	 * Combines a {@code state} with a {@code signal} associated to that
+	 * {@code state},
+	 *
+	 * @param state the (current) state
+	 * @param signal the signal (on that state)
+	 * @param <ST> the state type
+	 * @param <SI> the signal type
+	 */
+	public record StateSignal<ST extends State, SI extends Signal>(ST state, SI signal) {
+		public StateSignal {
+			requireNonNull(state);
+			requireNonNull(signal);
+		}
 	}
 
 	/**

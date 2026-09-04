@@ -27,7 +27,21 @@ import java.util.concurrent.SubmissionPublisher;
 import java.util.function.BiConsumer;
 
 /**
- * Reactive signal transition publisher.
+ * Reactive signal transition publisher. The actual state transitions are created
+ * by the wrapped stepper.
+ * {@snippet lang=java:
+ * try (var publisher = new SignalPublisher<>(new SymbolStepper<>(FSM))) {
+ *     publisher.subscribe(
+ *         new SignalSubscriber<>(transition -> handle(transition))
+ *     );
+ *
+ *     publisher.submit(BEGIN);
+ *     publisher.submit(END);
+ *     publisher.submit(EXIT);
+ * }
+ * }
+ *
+ * @see SignalSubscriber
  *
  * @param <ST> the state type
  * @param <SI> the symbol type
@@ -42,29 +56,73 @@ public class SignalPublisher<ST extends Fsm.State, SI extends Fsm.Signal>
 
 	private final Stepper<ST, SI> stepper;
 
+	/**
+	 * Creates a new signal publisher. The actual transition objects are created
+	 * by the given {@code stepper}.
+	 *
+	 * @param stepper the stepper used by the publisher
+	 */
 	public SignalPublisher(Stepper<ST, SI> stepper) {
 		this.stepper = requireNonNull(stepper);
 	}
 
+	/**
+	 * Creates a new signal publisher. The actual transition objects are created
+	 * by the given {@code stepper}.
+	 *
+	 * @param stepper the stepper used by the publisher
+	 * @param executor the executor to use for async delivery, supporting
+	 *        creation of at least one independent thread
+	 * @param maxBufferCapacity the maximum capacity for each subscriber's
+	 *        buffer (the enforced capacity may be rounded up to the nearest
+	 *        power of two and/or bounded by the largest value supported by this
+	 *        implementation; method {@link #getMaxBufferCapacity} returns the
+	 *        actual value)
+	 */
 	public SignalPublisher(
 		Stepper<ST, SI> stepper,
 		Executor executor,
 		int maxBufferCapacity
 	) {
-		super(requireNonNull(executor), maxBufferCapacity);
 		this.stepper = requireNonNull(stepper);
+		super(requireNonNull(executor), maxBufferCapacity);
 	}
 
+	/**
+	 * Creates a new signal publisher. The actual transition objects are created
+	 * by the given {@code stepper}.
+	 *
+	 * @param stepper the stepper used by the publisher
+	 * @param executor the executor to use for async delivery, supporting
+	 *        creation of at least one independent thread
+	 * @param maxBufferCapacity the maximum capacity for each subscriber's
+	 *        buffer (the enforced capacity may be rounded up to the nearest
+	 *        power of two and/or bounded by the largest value supported by this
+	 *        implementation; method {@link #getMaxBufferCapacity} returns the
+	 *        actual value)
+	 * @param handler if non-null, procedure to invoke upon exception thrown in
+	 *        method {@code onNext}
+	 */
 	public SignalPublisher(
 		Stepper<ST, SI> stepper,
 		Executor executor,
 		int maxBufferCapacity,
-		BiConsumer<? super Flow.Subscriber<? super Fsm.Transition<ST, SI>>, ? super Throwable> handler
+		BiConsumer<
+			? super Flow.Subscriber<? super Fsm.Transition<ST, SI>>,
+			? super Throwable> handler
 	) {
-		super(requireNonNull(executor), maxBufferCapacity, handler);
 		this.stepper = requireNonNull(stepper);
+		super(requireNonNull(executor), maxBufferCapacity, handler);
 	}
 
+	/**
+	 * Submits the given {@code signal}, which is transformed by the stepper into
+	 * a transition object. The transition is then published to the registered
+	 * subscribers.
+	 *
+	 * @param signal the signal (event) to process
+	 * @return the estimated maximum lag among subscribers
+	 */
 	public synchronized int submit(SI signal) {
 		requireNonNull(signal);
 		if (isClosed()) {

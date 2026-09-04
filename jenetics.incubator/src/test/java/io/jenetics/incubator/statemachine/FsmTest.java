@@ -71,6 +71,39 @@ public class FsmTest {
 			new Fsm.Transition<>(PAUSED, END, INACTIVE),
 			new Fsm.Transition<>(INACTIVE, EXIT, TERMINATED)
 		),
+		/*
+		Fsm.Delta.of((source, signal) -> {
+			final var target = switch (source) {
+				case INACTIVE -> switch (signal) {
+					case BEGIN -> ACTIVE;
+					case EXIT -> TERMINATED;
+					default -> null;
+				};
+				case ACTIVE -> switch (signal) {
+					case PAUSE -> PAUSED;
+					case END -> INACTIVE;
+					default -> null;
+				};
+				case PAUSED -> switch (signal) {
+					case RESUME -> ACTIVE;
+					case END -> INACTIVE;
+					default -> null;
+				};
+				default -> null;
+			};
+			return Optional.ofNullable(target);
+		}),
+		 */
+		/*
+		Fsm.Delta.of(ss -> {
+			final var target = switch (ss) {
+				case Fsm.StateSignal(var a, var b)
+					when a == INACTIVE && b == BEGIN -> ACTIVE;
+				default -> null;
+			};
+			return Optional.ofNullable(target);
+		}),
+		 */
 		EnumSet.of(TERMINATED)
 	);
 

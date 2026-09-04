@@ -47,6 +47,10 @@
  * where the {@link Stepper} maintains an internal state, which is updated after
  * every event.
  *
+ * <blockquote><strong>Note:</strong> The main design principle of the package is
+ * the separation of the FSN <strong>definition</strong> from its
+ * <strong>execution</strong>.</blockquote>
+ *
  * <h2>Defining an FSM</h2>
  *
  * The {@link Fsm} record implements the FSM quintuple. Since the {@link Fsm} is
@@ -82,6 +86,9 @@
  * );
  * }
  *
+ * <blockquote><strong>Note:</strong> The {@link Fsm} implements the static
+ * definition of the state machine.</blockquote>
+ *
  * <h2>Execution</h2>
  *
  * A {@link Stepper} executes the state machine and holds the current state.
@@ -116,6 +123,9 @@
  *     .ifPresent(transition -> handle(transition));
  * }
  *
+ * <blockquote><strong>Note:</strong> The {@link Stepper} is the low level
+ * building block of the FSM execution.</blockquote>
+ *
  * <h2>Streams and Reactive Use</h2>
  *
  * For stream processing, {@link Fsm#transitions(java.util.function.Supplier)}
@@ -128,6 +138,9 @@
  *     .gather(Fsm.transitions(() -> new SymbolStepper<>(FSM)))
  *     .forEach(transition -> handle(transition));
  * }
+ *
+ * <blockquote><strong>Note:</strong> The {@link Fsm#transitions(java.util.function.Supplier)}
+ * is used for converting <em>signals</em> into <em>transitions</em>.</blockquote>
  *
  * The same execution model can be used with the {@link java.util.concurrent.Flow}
  * API. {@link SignalPublisher} accepts input signals, publishes resulting
@@ -146,6 +159,9 @@
  * }
  * }
  *
+ * <blockquote><strong>Note:</strong> The {@link SignalPublisher} lets you execute
+ * the FSM in a <em>reactive</em> manner.</blockquote>
+ *
  * <h2>Observing Transitions</h2>
  *
  * {@link OberservableStepper} wraps an existing stepper and notifies registered
@@ -158,6 +174,9 @@
  * stepper.register(transition -> handle(transition));
  * stepper.next(BEGIN);
  * }
+ *
+ * <blockquote><strong>Note:</strong> The {@link OberservableStepper} pushes
+ * converted transitions to registered listeners.</blockquote>
  *
  * @apiNote
  * This package does not prescribe how user actions are executed for a
