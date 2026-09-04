@@ -31,6 +31,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Gatherer;
@@ -421,17 +422,11 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 		 */
 		static <ST extends State, SY extends Symbol>
 		Delta<ST, SY> of(Set<Transition<ST, SY>> transitions) {
-
-			record StateSymbol<ST extends State, SY extends Symbol>(
-				ST state,
-				SY symbol
-			) {}
-
-			final Map<StateSymbol<ST, SY>, List<Transition<ST, SY>>> map =
+			final Map<StateSignal<ST, SY>, List<Transition<ST, SY>>> map =
 				transitions.stream()
-					.collect(groupingBy(t -> new StateSymbol<>(t.before(), t.signal())));
+					.collect(groupingBy(t -> new StateSignal<>(t.before(), t.signal())));
 
-			final List<StateSymbol<ST, SY>> duplicates = map.entrySet().stream()
+			final List<StateSignal<ST, SY>> duplicates = map.entrySet().stream()
 				.filter(t -> t.getValue().size() > 1)
 				.map(Map.Entry::getKey)
 				.toList();
@@ -440,14 +435,14 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 				throw new IllegalArgumentException(
 					"Found ambiguous transitions: %s.".formatted(
 						duplicates.stream()
-							.map(ss -> "(%s, %s)".formatted(ss.state, ss.symbol))
+							.map(ss -> "(%s, %s)".formatted(ss.state, ss.signal))
 							.collect(Collectors.joining(", "))
 					)
 				);
 			}
 
 			return (state, symbol) -> Optional
-				.ofNullable(map.get(new StateSymbol<>(state, symbol)))
+				.ofNullable(map.get(new StateSignal<>(state, symbol)))
 				.map(t -> t.getFirst().after());
 		}
 
@@ -535,6 +530,29 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 			};
 		}
 
+		static <ST extends State, SY extends Symbol>
+		Delta<ST, SY> of(Function<? super StateSignal<ST, ? extends Signal>, Optional<ST>> fn) {
+			requireNonNull(fn);
+
+			return of((state, signal) -> fn.apply(new StateSignal<>(state, signal)));
+		}
+
+	}
+
+	/**
+	 * Combines a {@code state} with a {@code signal} associated to that
+	 * {@code state},
+	 *
+	 * @param state the (current) state
+	 * @param signal the signal (on that state)
+	 * @param <ST> the state type
+	 * @param <SI> the signal type
+	 */
+	public record StateSignal<ST extends State, SI extends Signal>(ST state, SI signal) {
+		public StateSignal {
+			requireNonNull(state);
+			requireNonNull(signal);
+		}
 	}
 
 	/**

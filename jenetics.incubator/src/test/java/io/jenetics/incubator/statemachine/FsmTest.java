@@ -63,6 +63,15 @@ public class FsmTest {
 		EnumSet.allOf(Command.class),
 		EnumSet.allOf(ProcessState.class),
 		INACTIVE,
+		Fsm.Delta.of(
+			new Fsm.Transition<>(INACTIVE, BEGIN, ACTIVE),
+			new Fsm.Transition<>(ACTIVE, PAUSE, PAUSED),
+			new Fsm.Transition<>(PAUSED, RESUME, ACTIVE),
+			new Fsm.Transition<>(ACTIVE, END, INACTIVE),
+			new Fsm.Transition<>(PAUSED, END, INACTIVE),
+			new Fsm.Transition<>(INACTIVE, EXIT, TERMINATED)
+		),
+		/*
 		Fsm.Delta.of((source, signal) -> {
 			final var target = switch (source) {
 				case INACTIVE -> switch (signal) {
@@ -84,15 +93,16 @@ public class FsmTest {
 			};
 			return Optional.ofNullable(target);
 		}),
+		 */
 		/*
-		Fsm.Delta.of(
-			new Fsm.Transition<>(INACTIVE, BEGIN, ACTIVE),
-			new Fsm.Transition<>(ACTIVE, PAUSE, PAUSED),
-			new Fsm.Transition<>(PAUSED, RESUME, ACTIVE),
-			new Fsm.Transition<>(ACTIVE, END, INACTIVE),
-			new Fsm.Transition<>(PAUSED, END, INACTIVE),
-			new Fsm.Transition<>(INACTIVE, EXIT, TERMINATED)
-		),
+		Fsm.Delta.of(ss -> {
+			final var target = switch (ss) {
+				case Fsm.StateSignal(var a, var b)
+					when a == INACTIVE && b == BEGIN -> ACTIVE;
+				default -> null;
+			};
+			return Optional.ofNullable(target);
+		}),
 		 */
 		EnumSet.of(TERMINATED)
 	);
