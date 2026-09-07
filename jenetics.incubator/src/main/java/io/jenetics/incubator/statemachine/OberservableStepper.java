@@ -43,11 +43,20 @@ public final class OberservableStepper<ST extends Fsm.State, SI extends Fsm.Sign
 
 	private final Stepper<ST, SI> adoptee;
 
+	private final Consumer<? super Fsm.StateSignal<ST, SI>> before;
 	private final List<Consumer<? super Fsm.Transition<ST, SI>>>
 		listeners = new CopyOnWriteArrayList<>();
 
-	public OberservableStepper(final Stepper<ST, SI> adoptee) {
+	public OberservableStepper(
+		final Stepper<ST, SI> adoptee,
+		final Consumer<? super Fsm.StateSignal<ST, SI>> before
+	) {
 		this.adoptee = requireNonNull(adoptee);
+		this.before = requireNonNull(before);
+	}
+
+	public OberservableStepper(final Stepper<ST, SI> adoptee) {
+		this(adoptee, _ -> {});
 	}
 
 	@Override
@@ -62,6 +71,7 @@ public final class OberservableStepper<ST extends Fsm.State, SI extends Fsm.Sign
 
 	@Override
 	public Optional<Fsm.Transition<ST, SI>> next(SI signal) {
+		before.accept(new Fsm.StateSignal<>(adoptee.state(), signal));
 		final var result = adoptee.next(signal);
 		result.ifPresent(t -> listeners.forEach(c -> c.accept(t)));
 		return result;
