@@ -592,10 +592,11 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 	 * ************************************************************************/
 
 	/**
-	 * Return a gatherer which enriches a signal stream with the states, defined
-	 * by the given state machine, {@code fsm}. The gatherer ignores invalid
-	 * signal (transitions) and stops when a final state, as defined by the
-	 * {@code fsm}, has been reached.
+	 * Return a gatherer which enriches a signal stream with the transitions
+	 * performed by the given {@code stepper}. The gatherer ignores signals
+	 * without a defined transition and stops when the {@code stepper} reaches a
+	 * final state. Signals rejected by the {@code stepper}, for example unknown
+	 * signals, are not ignored.
 	 *
 	 * @param stepper the stepper used for gathering the transitions.
 	 * @return a new transition gatherer

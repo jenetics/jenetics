@@ -117,8 +117,9 @@ public class SignalPublisher<ST extends Fsm.State, SI extends Fsm.Signal>
 
 	/**
 	 * Submits the given {@code signal}, which is transformed by the stepper into
-	 * a transition object. The transition is then published to the registered
-	 * subscribers.
+	 * a transition object, if a transition is defined. A created transition is
+	 * published to the registered subscribers. If no transition is defined for
+	 * the signal, no item is published.
 	 *
 	 * @param signal the signal (event) to process
 	 * @return the estimated maximum lag among subscribers

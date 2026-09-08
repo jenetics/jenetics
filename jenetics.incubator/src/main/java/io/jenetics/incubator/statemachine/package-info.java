@@ -94,9 +94,10 @@
  * A {@link Stepper} executes the state machine and holds the current state.
  * Calling {@link Stepper#next(Fsm.Signal)} applies one signal and returns the
  * performed {@link Fsm.Transition}, if a transition is defined. Undefined
- * transitions are ignored by returning an empty {@link java.util.Optional};
- * unknown signals and signals after reaching a final state are rejected with an
- * {@link java.lang.IllegalArgumentException}.
+ * transitions are ignored by returning an empty {@link java.util.Optional}.
+ * Unknown signals are rejected with an
+ * {@link java.lang.IllegalArgumentException}; signals after reaching a final
+ * state are rejected with an {@link java.lang.IllegalStateException}.
  * <p>
  * {@link SymbolStepper} accepts plain {@link Fsm.Symbol symbols}. Use it when
  * the signal alone is enough to decide the transition.
@@ -144,7 +145,8 @@
  *
  * The same execution model can be used with the {@link java.util.concurrent.Flow}
  * API. {@link SignalPublisher} accepts input signals, publishes resulting
- * transitions and closes when the stepper reaches a final state.
+ * transitions, if the submitted signal triggers one, and closes when the
+ * stepper reaches a final state.
  * {@link SignalSubscriber} is a small subscriber adapter which requests one
  * transition at a time and forwards transitions to a {@link java.util.function.Consumer}.
  * {@snippet lang=java:
@@ -165,9 +167,10 @@
  * <h2>Observing Transitions</h2>
  *
  * {@link OberservableStepper} wraps an existing stepper and notifies registered
- * listeners whenever the wrapped stepper performs a transition. It is useful
- * when state transitions should trigger actions without mixing those actions
- * into the FSM definition.
+ * listeners whenever the wrapped stepper performs a transition. It can also
+ * notify a callback before a signal is applied to the wrapped stepper. It is
+ * useful when state transitions should trigger actions without mixing those
+ * actions into the FSM definition.
  * {@snippet lang=java:
  * final var stepper = new OberservableStepper<>(new SymbolStepper<>(FSM));
  *

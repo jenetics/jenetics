@@ -28,7 +28,8 @@ import java.util.function.Consumer;
 
 /**
  * This class wraps an existing stepper and notifies registered listeners on
- * state changes (transitions).
+ * state changes (transitions). The optional {@code before} callback is invoked
+ * before a signal is applied to the wrapped stepper.
  *
  * @param <ST> the state type
  * @param <SI> the symbol (signal) type
@@ -47,6 +48,14 @@ public final class OberservableStepper<ST extends Fsm.State, SI extends Fsm.Sign
 	private final List<Consumer<? super Fsm.Transition<ST, SI>>>
 		listeners = new CopyOnWriteArrayList<>();
 
+	/**
+	 * Create a new observable stepper which delegates transition handling to the
+	 * given {@code adoptee}. The {@code before} callback is invoked with the
+	 * current state and signal before the signal is passed to the wrapped stepper.
+	 *
+	 * @param adoptee the wrapped stepper
+	 * @param before the callback invoked before applying a signal
+	 */
 	public OberservableStepper(
 		final Stepper<ST, SI> adoptee,
 		final Consumer<? super Fsm.StateSignal<ST, SI>> before
@@ -55,6 +64,12 @@ public final class OberservableStepper<ST extends Fsm.State, SI extends Fsm.Sign
 		this.before = requireNonNull(before);
 	}
 
+	/**
+	 * Create a new observable stepper which delegates transition handling to the
+	 * given {@code adoptee}.
+	 *
+	 * @param adoptee the wrapped stepper
+	 */
 	public OberservableStepper(final Stepper<ST, SI> adoptee) {
 		this(adoptee, _ -> {});
 	}
@@ -77,6 +92,12 @@ public final class OberservableStepper<ST extends Fsm.State, SI extends Fsm.Sign
 		return result;
 	}
 
+	/**
+	 * Register a listener which is notified whenever the wrapped stepper performs
+	 * a transition.
+	 *
+	 * @param listener the transition listener
+	 */
 	public void register(final Consumer<? super Fsm.Transition<ST, SI>> listener) {
 		listeners.add(requireNonNull(listener));
 	}
