@@ -585,6 +585,11 @@ public record Fsm<ST extends Fsm.State, SY extends Fsm.Symbol>(
 			requireNonNull(signal);
 			requireNonNull(after);
 		}
+
+		public Transition(StateSignal<ST, SI> stsi, ST after) {
+			this(stsi.state(), stsi.signal(), after);
+		}
+
 	}
 
 	/* *************************************************************************
