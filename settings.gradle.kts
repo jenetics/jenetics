@@ -42,6 +42,7 @@ include("jenetics.xml")
 include("jenetics.distassert")
 include("jenetics.doc")
 include("jenetics.example")
+include("jenetics.example.wasm")
 include("jenetics.tool")
 
 // Incubation code

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jenetics - Evolving Images (WebAssembly)</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Jenetics Evolving Images (WebAssembly)</h1>
+            <p>Approximating an image with semi-transparent polygons using Genetic Algorithms in WebAssembly</p>
+        </header>
+
+        <div id="statusBanner">Loading WebAssembly module...</div>
+
+        <div class="main-layout">
+            <div class="canvases-section">
+                <div class="canvases-container">
+                    <div class="canvas-card">
+                        <h3>Source Image</h3>
+                        <canvas id="sourceCanvas" width="300" height="300"></canvas>
+                    </div>
+                    <div class="canvas-card">
+                        <h3>Evolving Polygons</h3>
+                        <canvas id="polygonCanvas" width="300" height="300"></canvas>
+                    </div>
+                </div>
+
+                <div class="controls-bar">
+                    <button id="startBtn" disabled>Start</button>
+                    <button id="pauseBtn" class="secondary" disabled>Pause</button>
+                    <button id="stopBtn" class="danger" disabled>Stop</button>
+                    <button id="openBtn" class="secondary" disabled>Open Image...</button>
+                    <button id="saveBtn" class="secondary" disabled>Save Image...</button>
+                    <input type="file" id="fileInput" accept="image/*" style="display: none;">
+                </div>
+            </div>
+
+            <div class="side-panel">
+                <fieldset>
+                    <legend>Statistics</legend>
+                    <div class="stats-grid">
+                        <div>
+                            <strong>Current Result</strong>
+                            <div class="stat-item">
+                                <span class="stat-label">Generation:</span>
+                                <span class="stat-value" id="curGen">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Best Fitness:</span>
+                                <span class="stat-value" id="curFit">0.00000</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Pop. Age:</span>
+                                <span class="stat-value" id="curAge">0.0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Eval. Time:</span>
+                                <span class="stat-value" id="curEval">0.0 ms</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <strong>Best Result</strong>
+                            <div class="stat-item">
+                                <span class="stat-label">Generation:</span>
+                                <span class="stat-value" id="bestGen">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Best Fitness:</span>
+                                <span class="stat-value" id="bestFit">0.00000</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Pop. Age:</span>
+                                <span class="stat-value" id="bestAge">0.0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Eval. Time:</span>
+                                <span class="stat-value" id="bestEval">0.0 ms</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="speed-badge">Speed: <span id="genPerSec">0.0</span> generations/sec</div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Engine Parameters</legend>
+                    <form id="paramForm" onsubmit="return false;">
+                        <div class="params-grid">
+                            <div class="form-group">
+                                <label for="paramPopSize">Population Size</label>
+                                <input type="number" id="paramPopSize" min="3" max="2147483647" value="50">
+                            </div>
+                            <div class="form-group">
+                                <label for="paramTournSize">Tournament Size</label>
+                                <input type="number" id="paramTournSize" min="2" max="2147483647" value="3">
+                            </div>
+                            <div class="form-group">
+                                <label for="paramMutRate">Mutation Rate</label>
+                                <input type="number" id="paramMutRate" min="0.0" max="1.0" step="0.001" value="0.025">
+                            </div>
+                            <div class="form-group">
+                                <label for="paramMutMult">Mutation Multitude</label>
+                                <input type="number" id="paramMutMult" min="0.0" max="1.0" step="0.001" value="0.15">
+                            </div>
+                            <div class="form-group">
+                                <label for="paramPolyLength">Polygon Length</label>
+                                <input type="number" id="paramPolyLength" min="3" max="2147483647" value="4">
+                            </div>
+                            <div class="form-group">
+                                <label for="paramPolyCount">Polygon Count</label>
+                                <input type="number" id="paramPolyCount" min="2" max="2147483647" value="250">
+                            </div>
+                            <div class="form-group">
+                                <label for="paramRefWidth">Reference Width</label>
+                                <input type="number" id="paramRefWidth" min="2" max="32767" value="60">
+                            </div>
+                            <div class="form-group">
+                                <label for="paramRefHeight">Reference Height</label>
+                                <input type="number" id="paramRefHeight" min="2" max="32767" value="60">
+                            </div>
+                        </div>
+                        <div id="paramError" class="error-msg"></div>
+                    </form>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+
+    <script src="evolving-images.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

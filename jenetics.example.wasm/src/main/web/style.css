@@ -1,0 +1,235 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f4f6f8;
+    color: #333;
+    line-height: 1.5;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    padding: 24px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #e1e4e8;
+    padding-bottom: 15px;
+}
+
+header h1 {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #1a202c;
+}
+
+header p {
+    color: #64748b;
+    font-size: 0.95rem;
+    margin-top: 4px;
+}
+
+.main-layout {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+}
+
+.canvases-section {
+    flex: 1 1 500px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.canvases-container {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.canvas-card {
+    flex: 1 1 240px;
+    max-width: 320px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 12px;
+    text-align: center;
+}
+
+.canvas-card h3 {
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+    color: #475569;
+}
+
+canvas {
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    width: 100%;
+    aspect-ratio: 1;
+    display: block;
+    image-rendering: auto;
+}
+
+.controls-bar {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+
+button {
+    padding: 8px 18px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background-color: #2563eb;
+    color: white;
+}
+
+button:hover:not(:disabled) {
+    background-color: #1d4ed8;
+}
+
+button:disabled {
+    background-color: #cbd5e1;
+    color: #64748b;
+    cursor: not-allowed;
+}
+
+button.secondary {
+    background-color: #f1f5f9;
+    border-color: #cbd5e1;
+    color: #334155;
+}
+
+button.secondary:hover:not(:disabled) {
+    background-color: #e2e8f0;
+}
+
+button.danger {
+    background-color: #dc2626;
+}
+
+button.danger:hover:not(:disabled) {
+    background-color: #b91c1c;
+}
+
+.side-panel {
+    flex: 1 1 340px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+fieldset {
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 14px 16px;
+    background: #fafafa;
+}
+
+legend {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #334155;
+    padding: 0 6px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.88rem;
+    padding: 3px 0;
+    border-bottom: 1px dashed #e2e8f0;
+}
+
+.stat-label {
+    color: #64748b;
+}
+
+.stat-value {
+    font-weight: 600;
+    color: #0f172a;
+    font-variant-numeric: tabular-nums;
+}
+
+.speed-badge {
+    text-align: center;
+    margin-top: 8px;
+    font-size: 0.88rem;
+    color: #2563eb;
+    font-weight: 600;
+}
+
+.params-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.form-group label {
+    font-size: 0.8rem;
+    color: #475569;
+    font-weight: 500;
+}
+
+.form-group input {
+    padding: 6px 8px;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    font-size: 0.88rem;
+}
+
+.form-group input:disabled {
+    background-color: #e2e8f0;
+    color: #64748b;
+}
+
+.error-msg {
+    color: #dc2626;
+    font-size: 0.82rem;
+    margin-top: 6px;
+    min-height: 1.2em;
+}
+
+#statusBanner {
+    text-align: center;
+    padding: 8px;
+    margin-bottom: 16px;
+    background-color: #eff6ff;
+    color: #1e40af;
+    border-radius: 6px;
+    font-size: 0.9rem;
+}
