@@ -19,8 +19,6 @@
  */
 package io.jenetics.incubator.util;
 
-import static java.util.function.Predicate.not;
-
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -30,6 +28,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
+
+import static java.util.function.Predicate.not;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -500,27 +500,9 @@ public sealed interface DateRange extends Iterable<LocalDate> {
 		}
 
 		public boolean contains(Continuous range) {
-			if (range.isEmpty()) {
-				return true;
-			} else if (isEmpty()) {
-				return false;
-			} else {
-				final LocalDate coveredUntil = ranges.stream()
-					.reduce(
-						range.start(),
-						(end, subrange) ->
-							!subrange.start().isAfter(end) && end.isBefore(subrange.end())
-								? subrange.end()
-								: end,
-						(_, _) -> {
-							throw new UnsupportedOperationException(
-								"No parallel streams allowed."
-							);
-						}
-					);
-
-				return !coveredUntil.isBefore(range.end());
-			}
+			return range.isEmpty() || ranges.stream()
+				.takeWhile(candidate -> !candidate.start().isAfter(range.start()))
+				.anyMatch(candidate -> candidate.contains(range));
 		}
 
 		public boolean contains(Composite range) {
