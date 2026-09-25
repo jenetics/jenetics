@@ -369,9 +369,6 @@ public sealed interface DateRange extends Iterable<LocalDate> {
 			}
 		}
 
-		/////////////////////////////////////////////////////////
-
-
 		@Override
 		public int compareTo(final Continuous other) {
 			return start.compareTo(other.start());
@@ -432,6 +429,9 @@ public sealed interface DateRange extends Iterable<LocalDate> {
 			if (ranges.isEmpty()) {
 				return List.of();
 			}
+			if (isNormalized(ranges)) {
+				return List.copyOf(ranges);
+			}
 
 			final var sorted = ranges.stream()
 				.filter(not(DateRange::isEmpty))
@@ -461,6 +461,20 @@ public sealed interface DateRange extends Iterable<LocalDate> {
 			normalized.add(DateRange.range(start, end));
 
 			return List.copyOf(normalized);
+		}
+
+		private static boolean isNormalized(final List<Continuous> ranges) {
+			Continuous previous = null;
+			for (var range : ranges) {
+				if (range.isEmpty() ||
+					previous != null && !range.start().isAfter(previous.end()))
+				{
+					return false;
+				}
+				previous = range;
+			}
+
+			return true;
 		}
 
 		@Override
@@ -498,7 +512,11 @@ public sealed interface DateRange extends Iterable<LocalDate> {
 							!subrange.start().isAfter(end) && end.isBefore(subrange.end())
 								? subrange.end()
 								: end,
-						(left, right) -> left.isAfter(right) ? left : right
+						(_, _) -> {
+							throw new UnsupportedOperationException(
+								"No parallel streams allowed."
+							);
+						}
 					);
 
 				return !coveredUntil.isBefore(range.end());
@@ -615,22 +633,41 @@ public sealed interface DateRange extends Iterable<LocalDate> {
 				return this;
 			}
 
-			var result = ranges;
-			final var temp = new ArrayList<Continuous>();
+			final var result = new ArrayList<Continuous>();
+			var subtrahendIndex = 0;
 
-			for (var sub : subtrahend.ranges) {
-				for (var range : result) {
-					switch (range.difference(sub)) {
-						case Continuous r -> temp.add(r);
-						case Composite r -> temp.addAll(r.ranges);
+			// Both lists are normalized, so their cursors only move forward.
+			for (var range : ranges) {
+				var start = range.start();
+
+				while (subtrahendIndex < subtrahend.ranges.size() &&
+					!subtrahend.ranges.get(subtrahendIndex).end().isAfter(start))
+				{
+					++subtrahendIndex;
+				}
+
+				while (subtrahendIndex < subtrahend.ranges.size() &&
+					subtrahend.ranges.get(subtrahendIndex).start().isBefore(range.end()))
+				{
+					final var sub = subtrahend.ranges.get(subtrahendIndex);
+					if (sub.start().isAfter(start)) {
+						result.add(DateRange.range(start, sub.start()));
 					}
+
+					if (!sub.end().isBefore(range.end())) {
+						start = range.end();
+						break;
+					}
+
+					if (sub.end().isAfter(start)) {
+						start = sub.end();
+					}
+					++subtrahendIndex;
 				}
 
-				result = normalize(temp);
-				if (result.isEmpty()) {
-					return EMPTY;
+				if (start.isBefore(range.end())) {
+					result.add(DateRange.range(start, range.end()));
 				}
-				temp.clear();
 			}
 
 			return new Composite(result).simplify();

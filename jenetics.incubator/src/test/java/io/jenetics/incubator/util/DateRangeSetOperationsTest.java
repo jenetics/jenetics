@@ -64,6 +64,16 @@ public class DateRangeSetOperationsTest {
 		assertDates(continuous.intersect(composite), expected);
 	}
 
+	@Test
+	void differenceAcrossMultipleRanges() {
+		final var minuend = composite(1, 6, 8, 13, 15, 20, 22, 28);
+		final var subtrahend = composite(1, 2, 4, 9, 11, 16, 18, 24, 26, 30);
+
+		assertThat((Object)minuend.difference(subtrahend)).isEqualTo(
+			composite(2, 4, 9, 11, 16, 18, 24, 26)
+		);
+	}
+
 	@DataProvider
 	static Object[][] rangePairs() {
 		return SAMPLES.stream()
