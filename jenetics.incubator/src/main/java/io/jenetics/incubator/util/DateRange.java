@@ -182,7 +182,7 @@ public sealed interface DateRange extends Iterable<LocalDate> {
 
 		public static final Continuous
 			EMPTY =
-			new Continuous(LocalDate.of(0, 1, 1), LocalDate.of(0, 1, 1));
+			new Continuous(LocalDate.MIN, LocalDate.MIN);
 
 		/**
 		 * Create a new continuous date range object.
@@ -200,8 +200,8 @@ public sealed interface DateRange extends Iterable<LocalDate> {
 			}
 
 			if (start.equals(end)) {
-				start = LocalDate.of(0, 1, 1);
-				end = LocalDate.of(0, 1, 1);
+				start = LocalDate.MIN;
+				end = LocalDate.MIN;
 			}
 		}
 
