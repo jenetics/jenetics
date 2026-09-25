@@ -299,7 +299,7 @@ public sealed interface DateRange extends Iterable<LocalDate> {
 			} else if (other.isEmpty()) {
 				return this;
 			} else {
-				if (!end.isBefore(other.start) || !other.end.isBefore(start)) {
+				if (contains(other.start) || contains(other.end)) {
 					return DateRange.range(
 						start.isBefore(other.start) ? start : other.start,
 						end.isAfter(other.end) ? end : other.end
