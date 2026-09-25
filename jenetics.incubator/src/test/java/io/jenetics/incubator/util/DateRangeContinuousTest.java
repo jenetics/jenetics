@@ -144,7 +144,6 @@ public class DateRangeContinuousTest {
 
 	@Test(dataProvider = "differenceDateRanges")
 	public void difference(final DateRange a, final DateRange b, final DateRange expected) {
-		System.out.println(a.difference(b));
 		assertThat(a.difference(b)).isEqualTo(expected);
 	}
 

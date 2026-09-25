@@ -223,7 +223,7 @@ public sealed interface DateRange extends Iterable<LocalDate> {
 		public boolean contains(DateRange other) {
 			return switch (other) {
 				case Continuous range -> contains(range);
-				case Composite range -> contains(range);
+				case Composite range -> range.ranges.stream().allMatch(this::contains);
 			};
 		}
 
@@ -236,7 +236,10 @@ public sealed interface DateRange extends Iterable<LocalDate> {
 		 *         composed range, {@code false} otherwise
 		 */
 		public boolean contains(Continuous other) {
-			return !start.isAfter(other.start) && !end.isBefore(other.end);
+			return other.isEmpty() ||
+				!isEmpty() &&
+				!start.isAfter(other.start) &&
+				!end.isBefore(other.end);
 		}
 
 		/**
@@ -335,25 +338,26 @@ public sealed interface DateRange extends Iterable<LocalDate> {
 		}
 
 		public DateRange difference(final Continuous subtrahend) {
-			if (isEmpty() ||
-				subtrahend.isEmpty() ||
-				!contains(subtrahend.start) && !contains(subtrahend.end))
+			if (isEmpty() || subtrahend.isEmpty() ||
+				!subtrahend.end.isAfter(start) ||
+				!subtrahend.start.isBefore(end))
 			{
 				return this;
-			} else if (contains(subtrahend)) {
+			} else if (!subtrahend.start.isAfter(start) &&
+				!subtrahend.end.isBefore(end))
+			{
+				return EMPTY;
+			} else if (subtrahend.start.isAfter(start) &&
+				subtrahend.end.isBefore(end))
+			{
 				return DateRange.of(
 					DateRange.range(start,  subtrahend.start),
 					DateRange.range(subtrahend.end, end)
 				);
-			} else if (contains(subtrahend.start)) {
+			} else if (subtrahend.start.isAfter(start)) {
 				return DateRange.range(start, subtrahend.start);
-			} else if (contains(subtrahend.end)) {
-				return DateRange.range(subtrahend.end, end);
 			} else {
-				return DateRange.range(
-					subtrahend.end.isAfter(start) ? subtrahend.end : start,
-					subtrahend.start.isBefore(end) ? subtrahend.start : end
-				);
+				return DateRange.range(subtrahend.end, end);
 			}
 		}
 
@@ -361,7 +365,7 @@ public sealed interface DateRange extends Iterable<LocalDate> {
 			if (isEmpty() || subtrahend.isEmpty()) {
 				return this;
 			} else {
-				return DateRange.of(this).difference(subtrahend);
+				return new Composite(List.of(this)).difference(subtrahend);
 			}
 		}
 
@@ -434,6 +438,9 @@ public sealed interface DateRange extends Iterable<LocalDate> {
 				.sorted()
 				.distinct()
 				.toList();
+			if (sorted.isEmpty()) {
+				return List.of();
+			}
 
 			final var normalized = new ArrayList<Continuous>();
 
@@ -479,9 +486,9 @@ public sealed interface DateRange extends Iterable<LocalDate> {
 		}
 
 		public boolean contains(Continuous range) {
-			if (isEmpty()) {
+			if (range.isEmpty()) {
 				return true;
-			} else if (range.isEmpty()) {
+			} else if (isEmpty()) {
 				return false;
 			} else {
 				final LocalDate coveredUntil = ranges.stream()
@@ -499,13 +506,7 @@ public sealed interface DateRange extends Iterable<LocalDate> {
 		}
 
 		public boolean contains(Composite range) {
-			if (isEmpty()) {
-				return true;
-			} else if (range.isEmpty()) {
-				return false;
-			} else {
-				return range.ranges.stream().allMatch(this::contains);
-			}
+			return range.ranges.stream().allMatch(this::contains);
 		}
 
 		/* *********************************************************************
@@ -622,11 +623,11 @@ public sealed interface DateRange extends Iterable<LocalDate> {
 					switch (range.difference(sub)) {
 						case Continuous r -> temp.add(r);
 						case Composite r -> temp.addAll(r.ranges);
-					};
+					}
 				}
 
 				result = normalize(temp);
-				if (!result.isEmpty()) {
+				if (result.isEmpty()) {
 					return EMPTY;
 				}
 				temp.clear();

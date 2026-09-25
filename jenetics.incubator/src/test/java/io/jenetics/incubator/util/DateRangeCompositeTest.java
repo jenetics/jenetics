@@ -30,7 +30,7 @@ public class DateRangeCompositeTest {
 			new  Object[] {
 				composite(),
 				range("20200101-20200102"),
-				true
+				false
 			},
 			new  Object[] {
 				composite("20200101-20200301"),
@@ -224,12 +224,6 @@ public class DateRangeCompositeTest {
 				.map(DateRangeCompositeTest::range)
 				.toList()
 		);
-	}
-
-	private static List<DateRange.Continuous> ranges(final String... ranges) {
-		return Stream.of(ranges)
-			.map(DateRangeCompositeTest::range)
-			.toList();
 	}
 
 	private static DateRange.Continuous range(final String value) {
