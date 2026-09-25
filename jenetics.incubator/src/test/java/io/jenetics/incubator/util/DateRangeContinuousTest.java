@@ -7,8 +7,6 @@ import java.time.LocalDate;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.DateRange;
-
 public class DateRangeContinuousTest {
 
 	@Test(dataProvider = "containsDateRanges")

@@ -10,8 +10,6 @@ import java.util.TreeSet;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.DateRange;
-
 public class DateRangeSetOperationsTest {
 
 	private static final List<Sample> SAMPLES = List.of(

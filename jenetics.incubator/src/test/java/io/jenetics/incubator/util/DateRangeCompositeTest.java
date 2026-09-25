@@ -4,13 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.stream.Stream;
 
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import io.jenetics.incubator.DateRange;
 
 public class DateRangeCompositeTest {
 
