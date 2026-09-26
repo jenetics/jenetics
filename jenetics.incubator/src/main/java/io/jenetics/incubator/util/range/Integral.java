@@ -17,9 +17,10 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.util;
+package io.jenetics.incubator.util.range;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Comparator;
 
 /**
@@ -40,8 +41,12 @@ public interface Integral<T> extends Comparator<T> {
 			return LocalDate.MIN;
 		}
 		@Override
-		public LocalDate next(LocalDate value) {
-			return value.plusDays(1);
+		public LocalDate add(LocalDate value, long n) {
+			return value.plusDays(n);
+		}
+		@Override
+		public long distance(LocalDate a, LocalDate b) {
+			return ChronoUnit.DAYS.between(a, b);
 		}
 		@Override
 		public int compare(LocalDate a, LocalDate b) {
@@ -55,8 +60,15 @@ public interface Integral<T> extends Comparator<T> {
 			return Integer.MIN_VALUE;
 		}
 		@Override
-		public Integer next(Integer value) {
-			return value + 1;
+		public Integer add(Integer value, long n) {
+			if (n > Integer.MAX_VALUE) {
+				throw new ArithmeticException("Overflow: " + n);
+			}
+			return Math.addExact(value, (int)n);
+		}
+		@Override
+		public long distance(Integer a, Integer b) {
+			return Math.abs(a - b);
 		}
 		@Override
 		public int compare(Integer a, Integer b) {
@@ -66,7 +78,13 @@ public interface Integral<T> extends Comparator<T> {
 
 	T min();
 
-	T next(T value);
+	T add(T a, long n);
+
+	default T next(T value) {
+		return add(value, 1);
+	}
+
+	long distance(T a, T b);
 
 	default boolean isBefore(T a, T b) {
 		return compare(a, b) < 0;
