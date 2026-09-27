@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 import io.jenetics.incubator.util.range.Integral;
 import io.jenetics.incubator.util.range.Range;
 
-public class DateRangeContinuousTest {
+public class DenseRangeTest {
 
 	private static final Range.Factory<LocalDate>
 		DATE_RANGE =
