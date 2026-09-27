@@ -316,4 +316,17 @@ public class DenseRangeTest {
 		};
 	}
 
+	@Test
+	public void get() {
+		final var range = Range.LOCAL_DATE.dense(
+			LocalDate.of(2020, 1, 1),
+			LocalDate.of(2020, 1, 10)
+		);
+
+		assertThat(range.size()).isEqualTo(9);
+		for (int i = 0; i < range.size(); ++i) {
+			assertThat(range.get(i)).isEqualTo(range.start().plusDays(i));
+		}
+	}
+
 }

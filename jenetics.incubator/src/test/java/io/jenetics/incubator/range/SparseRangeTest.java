@@ -23,6 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 import org.testng.annotations.DataProvider;
@@ -253,6 +254,45 @@ public class SparseRangeTest {
 			LocalDate.parse(parts[0], DATE_FORMATTER),
 			LocalDate.parse(parts[1], DATE_FORMATTER)
 		);
+	}
+
+	@Test
+	public void get() {
+		final var range = Range.LOCAL_DATE.of(
+			Range.LOCAL_DATE.dense(
+				LocalDate.of(2020, 1, 1),
+				LocalDate.of(2020, 1, 11)
+			),
+			Range.LOCAL_DATE.dense(
+				LocalDate.of(2020, 2, 1),
+				LocalDate.of(2020, 2, 11)
+			),
+			Range.LOCAL_DATE.of(
+				Range.LOCAL_DATE.dense(
+					LocalDate.of(2020, 3, 1),
+					LocalDate.of(2020, 3, 11)
+				),
+				Range.LOCAL_DATE.of(
+					Range.LOCAL_DATE.dense(
+						LocalDate.of(2020, 4, 1),
+						LocalDate.of(2020, 4, 11)
+					),
+					Range.LOCAL_DATE.dense(
+						LocalDate.of(2020, 5, 1),
+						LocalDate.of(2020, 5, 11)
+					)
+				)
+			)
+		);
+
+		final var elements = LongStream.range(0, range.size())
+			.mapToObj(range::get)
+			.toList();
+		final var expected = range.stream().toList();
+
+		assertThat(range.size()).isEqualTo(50);
+		assertThat(expected).hasSize((int)range.size());
+		assertThat(elements).isEqualTo(expected);
 	}
 
 }

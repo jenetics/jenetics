@@ -108,6 +108,11 @@ public final class SparseRange<T> implements Range<T> {
 	}
 
 	@Override
+	public boolean isEmpty() {
+		return ranges.isEmpty();
+	}
+
+	@Override
 	public T get(long index) {
 		Objects.checkIndex(index, size());
 
