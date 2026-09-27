@@ -29,17 +29,12 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.incubator.util.range.DenseRange;
-import io.jenetics.incubator.util.range.Integral;
 import io.jenetics.incubator.util.range.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public class SparseRangeTest {
-
-	private static final Range.Factory<LocalDate>
-		DATE_RANGE =
-		Range.factory(Integral.LOCAL_DATE);
 
 	@Test(dataProvider = "compositeDateRanges")
 	void contains(
@@ -54,121 +49,121 @@ public class SparseRangeTest {
 	static Object[][] compositeDateRanges() {
 		return new Object[][] {
 			new  Object[] {
-				composite(),
-				range("20200101-20200102"),
+				sparse(),
+				dense("20200101-20200102"),
 				false
 			},
 			new  Object[] {
-				composite("20200101-20200301"),
-				range("20200101-20200301"),
+				sparse("20200101-20200301"),
+				dense("20200101-20200301"),
 				true
 			},
 			new  Object[] {
-				composite("20200101-20200301"),
-				range("20200110-20200220"),
+				sparse("20200101-20200301"),
+				dense("20200110-20200220"),
 				true
 			},
 			new  Object[] {
-				composite("20200101-20200201", "20200201-20200301"),
-				range("20200110-20200220"),
+				sparse("20200101-20200201", "20200201-20200301"),
+				dense("20200110-20200220"),
 				true
 			},
 			new  Object[] {
-				composite("20200101-20200211", "20200201-20200301"),
-				range("20200110-20200220"),
+				sparse("20200101-20200211", "20200201-20200301"),
+				dense("20200110-20200220"),
 				true
 			},
 			new  Object[] {
-				composite("20200115-20200301", "20200101-20200201"),
-				range("20200110-20200220"),
+				sparse("20200115-20200301", "20200101-20200201"),
+				dense("20200110-20200220"),
 				true
 			},
 			new  Object[] {
-				composite(
+				sparse(
 					"20200301-20200401",
 					"20191201-20200115",
 					"20200115-20200301"
 				),
-				range("20200101-20200320"),
+				dense("20200101-20200320"),
 				true
 			},
 			new  Object[] {
-				composite(
+				sparse(
 					"20200201-20200301",
 					"20200115-20200210",
 					"20200301-20200401",
 					"20200101-20200115"
 				),
-				range("20200101-20200401"),
+				dense("20200101-20200401"),
 				true
 			},
 			new  Object[] {
-				composite(
+				sparse(
 					"20200101-20200115",
 					"20200115-20200201",
 					"20200201-20200301",
 					"20200302-20200401"
 				),
-				range("20200101-20200401"),
+				dense("20200101-20200401"),
 				false
 			},
 			new  Object[] {
-				composite(
+				sparse(
 					"20200401-20200501",
 					"20200101-20200115",
 					"20200110-20200201",
 					"20200130-20200301",
 					"20200215-20200401"
 				),
-				range("20200110-20200401"),
+				dense("20200110-20200401"),
 				true
 			},
 
 			new  Object[] {
-				composite(
+				sparse(
 					"20200401-20200402",
 					"20200402-20200403",
 					"20200403-20200404",
 					"20200404-20200405",
 					"20200405-20200406"
 				),
-				range("20200401-20200406"),
+				dense("20200401-20200406"),
 				true
 			},
 			new  Object[] {
-				composite(
+				sparse(
 					"20200101-20200201",
 					"20200201-20200301",
 					"20200302-20200401",
 					"20200401-20200501",
 					"20200501-20200601"
 				),
-				range("20200101-20200601"),
+				dense("20200101-20200601"),
 				false
 			},
 			new  Object[] {
-				composite("20200101-20200201", "20200202-20200301"),
-				range("20200101-20200301"),
+				sparse("20200101-20200201", "20200202-20200301"),
+				dense("20200101-20200301"),
 				false
 			},
 			new  Object[] {
-				composite("20200102-20200201", "20200201-20200301"),
-				range("20200101-20200301"),
+				sparse("20200102-20200201", "20200201-20200301"),
+				dense("20200101-20200301"),
 				false
 			},
 			new  Object[] {
-				composite("20200101-20200211", "20200212-20200301"),
-				range("20200110-20200220"),
+				sparse("20200101-20200211", "20200212-20200301"),
+				dense("20200110-20200220"),
 				false
 			},
 			new  Object[] {
-				composite("20200101-20200201", "20200201-20200229"),
-				range("20200101-20200301"),
+				sparse("20200101-20200201", "20200201-20200229"),
+				dense("20200101-20200301"),
 				false
 			},
 			new  Object[] {
-				composite("20200101-20200301"),
-				range("20200301-20200302"),
+				sparse("20200101-20200301"),
+				dense("20200301-20200302"),
 				false
 			}
 		};
@@ -189,53 +184,53 @@ public class SparseRangeTest {
 	static Object[][] intersectedDateRanges() {
 		return new Object[][] {
 			new  Object[] {
-				composite(),
-				range("20200101-20200201"),
-				composite()
+				sparse(),
+				dense("20200101-20200201"),
+				sparse()
 			},
 			new  Object[] {
-				composite("20200101-20200201"),
-				range("20200101-20200201"),
-				composite("20200101-20200201")
+				sparse("20200101-20200201"),
+				dense("20200101-20200201"),
+				sparse("20200101-20200201")
 			},
 			new  Object[] {
-				composite("20200101-20200301"),
-				range("20200110-20200220"),
-				composite("20200110-20200220")
+				sparse("20200101-20200301"),
+				dense("20200110-20200220"),
+				sparse("20200110-20200220")
 			},
 			new  Object[] {
-				composite("20200110-20200220"),
-				range("20200101-20200301"),
-				composite("20200110-20200220")
+				sparse("20200110-20200220"),
+				dense("20200101-20200301"),
+				sparse("20200110-20200220")
 			},
 			new  Object[] {
-				composite(
+				sparse(
 					"20191201-20200115",
 					"20200201-20200301",
 					"20200401-20200501"
 				),
-				range("20200101-20200415"),
-				composite(
+				dense("20200101-20200415"),
+				sparse(
 					"20200101-20200115",
 					"20200201-20200301",
 					"20200401-20200415"
 				)
 			},
 			new  Object[] {
-				composite(
+				sparse(
 					"20200101-20200301",
 					"20200201-20200401"
 				),
-				range("20200115-20200315"),
-				composite(
+				dense("20200115-20200315"),
+				sparse(
 					"20200115-20200301",
 					"20200201-20200315"
 				)
 			},
 			new  Object[] {
-				composite("20200101-20200201"),
-				range("20200201-20200301"),
-				composite()
+				sparse("20200101-20200201"),
+				dense("20200201-20200301"),
+				sparse()
 			}
 		};
 	}
@@ -244,17 +239,17 @@ public class SparseRangeTest {
 		DATE_FORMATTER =
 		DateTimeFormatter.ofPattern("yyyyMMdd");
 
-	private static Range<LocalDate> composite(final String... ranges) {
-		return DATE_RANGE.of(
+	private static Range<LocalDate> sparse(final String... ranges) {
+		return Range.LOCAL_DATE.of(
 			Stream.of(ranges)
-				.map(SparseRangeTest::range)
+				.map(SparseRangeTest::dense)
 				.toList()
 		);
 	}
 
-	private static DenseRange<LocalDate> range(final String value) {
+	private static DenseRange<LocalDate> dense(final String value) {
 		final var parts = value.split("-");
-		return DATE_RANGE.dense(
+		return Range.LOCAL_DATE.dense(
 			LocalDate.parse(parts[0], DATE_FORMATTER),
 			LocalDate.parse(parts[1], DATE_FORMATTER)
 		);

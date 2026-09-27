@@ -22,6 +22,7 @@ package io.jenetics.incubator.util.range;
 import static java.util.Objects.requireNonNull;
 import static java.util.function.Predicate.not;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -35,6 +36,9 @@ import java.util.stream.Stream;
 public sealed interface Range<T> extends Iterable<T>
 	permits DenseRange, SparseRange
 {
+
+	Range.Factory<LocalDate> LOCAL_DATE = Range.factory(Integral.LOCAL_DATE);
+	Range.Factory<Integer> INTEGER = Range.factory(Integral.INTEGER);
 
 	final class Factory<T> {
 

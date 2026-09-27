@@ -26,17 +26,12 @@ import java.time.LocalDate;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.util.range.Integral;
 import io.jenetics.incubator.util.range.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public class DenseRangeTest {
-
-	private static final Range.Factory<LocalDate>
-		DATE_RANGE =
-		Range.factory(Integral.LOCAL_DATE);
 
 	@Test(dataProvider = "containsDateRanges")
 	public void containsDateRange(
@@ -50,64 +45,121 @@ public class DenseRangeTest {
 	@DataProvider
 	static Object[][] containsDateRanges() {
 		return new Object[][] {
-			new  Object[] {
-				DATE_RANGE.dense(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 3, 1)),
-				DATE_RANGE.dense(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 3, 1)),
+			new Object[] {
+				Range.LOCAL_DATE.dense(
+					LocalDate.of(2020, 1, 1),
+					LocalDate.of(2020, 3, 1)
+				),
+				Range.LOCAL_DATE.dense(
+					LocalDate.of(2020, 1, 1),
+					LocalDate.of(2020, 3, 1)
+				),
 				true
 			},
-			new  Object[] {
-				DATE_RANGE.of(LocalDate.of(2020, 1, 1)),
-				DATE_RANGE.of(LocalDate.of(2020, 1, 1)),
+			new Object[] {
+				Range.LOCAL_DATE.of(LocalDate.of(2020, 1, 1)),
+				Range.LOCAL_DATE.of(LocalDate.of(2020, 1, 1)),
 				true
 			},
-			new  Object[] {
-				DATE_RANGE.dense(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 3, 1)),
-				DATE_RANGE.dense(LocalDate.of(2020, 1, 10), LocalDate.of(2020, 2, 20)),
+			new Object[] {
+				Range.LOCAL_DATE.dense(
+					LocalDate.of(2020, 1, 1),
+					LocalDate.of(2020, 3, 1)
+				),
+				Range.LOCAL_DATE.dense(
+					LocalDate.of(2020, 1, 10),
+					LocalDate.of(2020, 2, 20)
+				),
 				true
 			},
-			new  Object[] {
-				DATE_RANGE.dense(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 3, 1)),
-				DATE_RANGE.dense(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 2, 20)),
+			new Object[] {
+				Range.LOCAL_DATE.dense(
+					LocalDate.of(2020, 1, 1),
+					LocalDate.of(2020, 3, 1)
+				),
+				Range.LOCAL_DATE.dense(
+					LocalDate.of(2020, 1, 1),
+					LocalDate.of(2020, 2, 20)
+				),
 				true
 			},
-			new  Object[] {
-				DATE_RANGE.dense(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 3, 1)),
-				DATE_RANGE.dense(LocalDate.of(2020, 1, 10), LocalDate.of(2020, 3, 1)),
+			new Object[] {
+				Range.LOCAL_DATE.dense(
+					LocalDate.of(2020, 1, 1),
+					LocalDate.of(2020, 3, 1)
+				),
+				Range.LOCAL_DATE.dense(
+					LocalDate.of(2020, 1, 10),
+					LocalDate.of(2020, 3, 1)
+				),
 				true
 			},
-			new  Object[] {
-				DATE_RANGE.dense(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 3, 1)),
-				DATE_RANGE.of(LocalDate.of(2020, 2, 29)),
+			new Object[] {
+				Range.LOCAL_DATE.dense(
+					LocalDate.of(2020, 1, 1),
+					LocalDate.of(2020, 3, 1)
+				),
+				Range.LOCAL_DATE.of(LocalDate.of(2020, 2, 29)),
 				true
 			},
-			new  Object[] {
-				DATE_RANGE.dense(LocalDate.of(2020, 1, 10), LocalDate.of(2020, 3, 1)),
-				DATE_RANGE.dense(LocalDate.of(2020, 1, 9), LocalDate.of(2020, 3, 1)),
+			new Object[] {
+				Range.LOCAL_DATE.dense(
+					LocalDate.of(2020, 1, 10),
+					LocalDate.of(2020, 3, 1)
+				),
+				Range.LOCAL_DATE.dense(
+					LocalDate.of(2020, 1, 9),
+					LocalDate.of(2020, 3, 1)
+				),
 				false
 			},
-			new  Object[] {
-				DATE_RANGE.dense(LocalDate.of(2020, 1, 10), LocalDate.of(2020, 3, 1)),
-				DATE_RANGE.dense(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 3, 2)),
+			new Object[] {
+				Range.LOCAL_DATE.dense(
+					LocalDate.of(2020, 1, 10),
+					LocalDate.of(2020, 3, 1)
+				),
+				Range.LOCAL_DATE.dense(
+					LocalDate.of(2020, 1, 1),
+					LocalDate.of(2020, 3, 2)
+				),
 				false
 			},
-			new  Object[] {
-				DATE_RANGE.dense(LocalDate.of(2020, 1, 10), LocalDate.of(2020, 3, 1)),
-				DATE_RANGE.of(LocalDate.of(2020, 1, 9)),
+			new Object[] {
+				Range.LOCAL_DATE.dense(
+					LocalDate.of(2020, 1, 10),
+					LocalDate.of(2020, 3, 1)
+				),
+				Range.LOCAL_DATE.of(LocalDate.of(2020, 1, 9)),
 				false
 			},
-			new  Object[] {
-				DATE_RANGE.dense(LocalDate.of(2020, 1, 10), LocalDate.of(2020, 3, 1)),
-				DATE_RANGE.dense(LocalDate.of(2020, 1, 9), LocalDate.of(2020, 1, 11)),
+			new Object[] {
+				Range.LOCAL_DATE.dense(
+					LocalDate.of(2020, 1, 10),
+					LocalDate.of(2020, 3, 1)
+				),
+				Range.LOCAL_DATE.dense(
+					LocalDate.of(2020, 1, 9),
+					LocalDate.of(2020, 1, 11)
+				),
 				false
 			},
-			new  Object[] {
-				DATE_RANGE.dense(LocalDate.of(2020, 1, 10), LocalDate.of(2020, 3, 1)),
-				DATE_RANGE.dense(LocalDate.of(2020, 2, 29), LocalDate.of(2020, 3, 2)),
+			new Object[] {
+				Range.LOCAL_DATE.dense(
+					LocalDate.of(2020, 1, 10),
+					LocalDate.of(2020, 3, 1)
+				),
+				Range.LOCAL_DATE.dense(
+					LocalDate.of(2020, 2, 29),
+					LocalDate.of(2020, 3, 2)
+				),
 				false
 			},
-			new  Object[] {
-				DATE_RANGE.dense(LocalDate.of(2020, 1, 10), LocalDate.of(2020, 3, 1)),
-				DATE_RANGE.of(LocalDate.of(2020, 3, 1)),
+			new Object[] {
+				Range.LOCAL_DATE.dense(
+					LocalDate.of(2020, 1, 10),
+					LocalDate.of(2020, 3, 1)
+				),
+				Range.LOCAL_DATE.of(LocalDate.of(2020, 3, 1)),
 				false
 			}
 		};
@@ -122,49 +174,49 @@ public class DenseRangeTest {
 	@DataProvider
 	static Object[][] unionDateRanges() {
 		return new Object[][] {
-			new  Object[] {
-				DATE_RANGE.dense(
+			new Object[] {
+				Range.LOCAL_DATE.dense(
 					LocalDate.of(2020, 1, 1),
 					LocalDate.of(2020, 1, 10)
 				),
-				DATE_RANGE.dense(
+				Range.LOCAL_DATE.dense(
 					LocalDate.of(2020, 1, 10),
 					LocalDate.of(2020, 1, 20)
 				),
-				DATE_RANGE.dense(
+				Range.LOCAL_DATE.dense(
 					LocalDate.of(2020, 1, 1),
 					LocalDate.of(2020, 1, 20)
 				)
 			},
-			new  Object[] {
-				DATE_RANGE.dense(
+			new Object[] {
+				Range.LOCAL_DATE.dense(
 					LocalDate.of(2020, 1, 1),
 					LocalDate.of(2020, 1, 15)
 				),
-				DATE_RANGE.dense(
+				Range.LOCAL_DATE.dense(
 					LocalDate.of(2020, 1, 10),
 					LocalDate.of(2020, 1, 20)
 				),
-				DATE_RANGE.dense(
+				Range.LOCAL_DATE.dense(
 					LocalDate.of(2020, 1, 1),
 					LocalDate.of(2020, 1, 20)
 				)
 			},
-			new  Object[] {
-				DATE_RANGE.dense(
+			new Object[] {
+				Range.LOCAL_DATE.dense(
 					LocalDate.of(2020, 1, 1),
 					LocalDate.of(2020, 1, 10)
 				),
-				DATE_RANGE.dense(
+				Range.LOCAL_DATE.dense(
 					LocalDate.of(2020, 1, 15),
 					LocalDate.of(2020, 1, 30)
 				),
-				DATE_RANGE.of(
-					DATE_RANGE.dense(
+				Range.LOCAL_DATE.of(
+					Range.LOCAL_DATE.dense(
 						LocalDate.of(2020, 1, 1),
 						LocalDate.of(2020, 1, 10)
 					),
-					DATE_RANGE.dense(
+					Range.LOCAL_DATE.dense(
 						LocalDate.of(2020, 1, 15),
 						LocalDate.of(2020, 1, 30)
 					)
@@ -174,84 +226,88 @@ public class DenseRangeTest {
 	}
 
 	@Test(dataProvider = "differenceDateRanges")
-	public void difference(final Range<LocalDate> a, final Range<LocalDate> b, final Range<LocalDate> expected) {
+	public void difference(
+		final Range<LocalDate> a,
+		final Range<LocalDate> b,
+		final Range<LocalDate> expected
+	) {
 		assertThat(a.difference(b)).isEqualTo(expected);
 	}
 
 	@DataProvider
 	static Object[][] differenceDateRanges() {
 		return new Object[][] {
-			new  Object[] {
-				DATE_RANGE.dense(
+			new Object[] {
+				Range.LOCAL_DATE.dense(
 					LocalDate.of(2020, 1, 1),
 					LocalDate.of(2020, 1, 10)
 				),
-				DATE_RANGE.dense(
+				Range.LOCAL_DATE.dense(
 					LocalDate.of(2020, 1, 10),
 					LocalDate.of(2020, 1, 20)
 				),
-				DATE_RANGE.dense(
+				Range.LOCAL_DATE.dense(
 					LocalDate.of(2020, 1, 1),
 					LocalDate.of(2020, 1, 10)
 				)
 			},
-			new  Object[] {
-				DATE_RANGE.dense(
+			new Object[] {
+				Range.LOCAL_DATE.dense(
 					LocalDate.of(2020, 1, 10),
 					LocalDate.of(2020, 1, 20)
 				),
-				DATE_RANGE.dense(
+				Range.LOCAL_DATE.dense(
 					LocalDate.of(2020, 1, 1),
 					LocalDate.of(2020, 1, 10)
 				),
-				DATE_RANGE.dense(
+				Range.LOCAL_DATE.dense(
 					LocalDate.of(2020, 1, 10),
 					LocalDate.of(2020, 1, 20)
 				)
 			},
-			new  Object[] {
-				DATE_RANGE.dense(
+			new Object[] {
+				Range.LOCAL_DATE.dense(
 					LocalDate.of(2020, 1, 1),
 					LocalDate.of(2020, 1, 10)
 				),
-				DATE_RANGE.dense(
+				Range.LOCAL_DATE.dense(
 					LocalDate.of(2020, 1, 5),
 					LocalDate.of(2020, 1, 20)
 				),
-				DATE_RANGE.dense(
+				Range.LOCAL_DATE.dense(
 					LocalDate.of(2020, 1, 1),
 					LocalDate.of(2020, 1, 5)
 				)
 			},
-			new  Object[] {
-				DATE_RANGE.dense(
+			new Object[] {
+				Range.LOCAL_DATE.dense(
 					LocalDate.of(2020, 1, 5),
 					LocalDate.of(2020, 1, 20)
 				),
-				DATE_RANGE.dense(
+				Range.LOCAL_DATE.dense(
 					LocalDate.of(2020, 1, 1),
 					LocalDate.of(2020, 1, 10)
 				),
-				DATE_RANGE.dense(
+				Range.LOCAL_DATE.dense(
 					LocalDate.of(2020, 1, 10),
 					LocalDate.of(2020, 1, 20)
 				)
 			},
-			new  Object[] {
-				DATE_RANGE.dense(
+			new Object[] {
+				Range.LOCAL_DATE.dense(
 					LocalDate.of(2020, 1, 1),
 					LocalDate.of(2020, 1, 20)
 				),
-				DATE_RANGE.dense(
+				Range.LOCAL_DATE.dense(
 					LocalDate.of(2020, 1, 5),
 					LocalDate.of(2020, 1, 10)
 				),
-				DATE_RANGE.of(
-					DATE_RANGE.dense(
+				Range.LOCAL_DATE.of(
+					Range.LOCAL_DATE.dense(
 						LocalDate.of(2020, 1, 1),
 						LocalDate.of(2020, 1, 5)
 					),
-					DATE_RANGE.dense(
+					Range.LOCAL_DATE.dense(
 						LocalDate.of(2020, 1, 10),
 						LocalDate.of(2020, 1, 20)
 					)

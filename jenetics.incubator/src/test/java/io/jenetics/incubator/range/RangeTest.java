@@ -30,7 +30,6 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.incubator.util.range.DenseRange;
-import io.jenetics.incubator.util.range.Integral;
 import io.jenetics.incubator.util.range.Range;
 
 /**
@@ -38,20 +37,16 @@ import io.jenetics.incubator.util.range.Range;
  */
 public class RangeTest {
 
-	private static final Range.Factory<LocalDate>
-		DATE_RANGE =
-		Range.factory(Integral.LOCAL_DATE);
-
 	private static final List<Sample> SAMPLES = List.of(
-		new Sample("empty continuous", DATE_RANGE.emptyDense()),
-		new Sample("continuous", range(2, 8)),
-		new Sample("overlapping continuous", range(6, 12)),
-		new Sample("contained continuous", range(4, 6)),
-		new Sample("disjoint continuous", range(14, 17)),
-		new Sample("empty composite", DATE_RANGE.emptySparse()),
-		new Sample("gapped composite", composite(1, 4, 7, 10)),
-		new Sample("overlapping composite", composite(3, 6, 9, 15)),
-		new Sample("normalized composite", composite(2, 5, 4, 8))
+		new Sample("empty continuous", Range.LOCAL_DATE.emptyDense()),
+		new Sample("continuous", dense(2, 8)),
+		new Sample("overlapping continuous", dense(6, 12)),
+		new Sample("contained continuous", dense(4, 6)),
+		new Sample("disjoint continuous", dense(14, 17)),
+		new Sample("empty composite", Range.LOCAL_DATE.emptySparse()),
+		new Sample("gapped composite", sparse(1, 4, 7, 10)),
+		new Sample("overlapping composite", sparse(3, 6, 9, 15)),
+		new Sample("normalized composite", sparse(2, 5, 4, 8))
 	);
 
 	@Test(dataProvider = "rangePairs")
@@ -86,8 +81,8 @@ public class RangeTest {
 
 	@Test
 	void continuousCompositeIntersectionOverload() {
-		final var continuous = range(2, 12);
-		final var composite = composite(1, 4, 7, 15);
+		final var continuous = dense(2, 12);
+		final var composite = sparse(1, 4, 7, 15);
 		final var expected = dates(continuous);
 		expected.retainAll(dates(composite));
 
@@ -96,11 +91,11 @@ public class RangeTest {
 
 	@Test
 	void differenceAcrossMultipleRanges() {
-		final var minuend = composite(1, 6, 8, 13, 15, 20, 22, 28);
-		final var subtrahend = composite(1, 2, 4, 9, 11, 16, 18, 24, 26, 30);
+		final var minuend = sparse(1, 6, 8, 13, 15, 20, 22, 28);
+		final var subtrahend = sparse(1, 2, 4, 9, 11, 16, 18, 24, 26, 30);
 
 		assertThat((Object)minuend.difference(subtrahend)).isEqualTo(
-			composite(2, 4, 9, 11, 16, 18, 24, 26)
+			sparse(2, 4, 9, 11, 16, 18, 24, 26)
 		);
 	}
 
@@ -124,16 +119,16 @@ public class RangeTest {
 		return new TreeSet<>(range.stream().toList());
 	}
 
-	private static DenseRange<LocalDate> range(final int start, final int end) {
-		return DATE_RANGE.dense(date(start), date(end));
+	private static DenseRange<LocalDate> dense(final int start, final int end) {
+		return Range.LOCAL_DATE.dense(date(start), date(end));
 	}
 
-	private static Range<LocalDate> composite(final int... bounds) {
+	private static Range<LocalDate> sparse(final int... bounds) {
 		final var ranges = new ArrayList<Range<LocalDate>>();
 		for (int i = 0; i < bounds.length; i += 2) {
-			ranges.add(range(bounds[i], bounds[i + 1]));
+			ranges.add(dense(bounds[i], bounds[i + 1]));
 		}
-		return DATE_RANGE.of(ranges);
+		return Range.LOCAL_DATE.of(ranges);
 	}
 
 	private static LocalDate date(final int day) {
