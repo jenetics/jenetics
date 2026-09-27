@@ -1,4 +1,4 @@
-package io.jenetics.incubator.util;
+package io.jenetics.incubator.range;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -9,6 +9,8 @@ import java.util.TreeSet;
 
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import io.jenetics.incubator.util.DateRange;
 
 public class DateRangeSetOperationsTest {
 
