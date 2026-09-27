@@ -10,17 +10,23 @@ import java.util.TreeSet;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.util.DateRange;
+import io.jenetics.incubator.util.range.DenseRange;
+import io.jenetics.incubator.util.range.Integral;
+import io.jenetics.incubator.util.range.Range;
 
 public class DateRangeSetOperationsTest {
 
+	private static final Range.Factory<LocalDate>
+		DATE_RANGE =
+		Range.factory(Integral.LOCAL_DATE);
+
 	private static final List<Sample> SAMPLES = List.of(
-		new Sample("empty continuous", DateRange.Continuous.EMPTY),
+		new Sample("empty continuous", DATE_RANGE.emptyDense()),
 		new Sample("continuous", range(2, 8)),
 		new Sample("overlapping continuous", range(6, 12)),
 		new Sample("contained continuous", range(4, 6)),
 		new Sample("disjoint continuous", range(14, 17)),
-		new Sample("empty composite", DateRange.Composite.EMPTY),
+		new Sample("empty composite", DATE_RANGE.emptySparse()),
 		new Sample("gapped composite", composite(1, 4, 7, 10)),
 		new Sample("overlapping composite", composite(3, 6, 9, 15)),
 		new Sample("normalized composite", composite(2, 5, 4, 8))
@@ -85,34 +91,34 @@ public class DateRangeSetOperationsTest {
 	}
 
 	private static void assertDates(
-		final DateRange actual,
+		final Range<LocalDate> actual,
 		final TreeSet<LocalDate> expected
 	) {
 		assertThat(actual.stream().toList()).containsExactlyElementsOf(expected);
-		assertThat(actual.days()).isEqualTo(expected.size());
+		assertThat(actual.size()).isEqualTo(expected.size());
 	}
 
-	private static TreeSet<LocalDate> dates(final DateRange range) {
+	private static TreeSet<LocalDate> dates(final Range<LocalDate> range) {
 		return new TreeSet<>(range.stream().toList());
 	}
 
-	private static DateRange.Continuous range(final int start, final int end) {
-		return DateRange.range(date(start), date(end));
+	private static DenseRange<LocalDate> range(final int start, final int end) {
+		return DATE_RANGE.dense(date(start), date(end));
 	}
 
-	private static DateRange.Composite composite(final int... bounds) {
-		final var ranges = new ArrayList<DateRange.Continuous>();
+	private static Range<LocalDate> composite(final int... bounds) {
+		final var ranges = new ArrayList<Range<LocalDate>>();
 		for (int i = 0; i < bounds.length; i += 2) {
 			ranges.add(range(bounds[i], bounds[i + 1]));
 		}
-		return new DateRange.Composite(ranges);
+		return DATE_RANGE.of(ranges);
 	}
 
 	private static LocalDate date(final int day) {
 		return LocalDate.of(2020, 1, day);
 	}
 
-	private record Sample(String name, DateRange range) {
+	private record Sample(String name, Range<LocalDate> range) {
 		@Override
 		public String toString() {
 			return name;

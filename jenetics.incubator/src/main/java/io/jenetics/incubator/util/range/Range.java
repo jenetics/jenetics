@@ -39,9 +39,13 @@ public sealed interface Range<T> extends Iterable<T>
 	final class Factory<T> {
 
 		private final Integral<T> witness;
+		private final DenseRange<T> emptyDense;
+		private final SparseRange<T> emptySparse;
 
 		private Factory(final Integral<T> witness) {
 			this.witness = requireNonNull(witness);
+			this.emptyDense = Range.dense(witness, witness.min(), witness.min());
+			this.emptySparse = new SparseRange<>(witness, List.of());
 		}
 
 		public DenseRange<T> dense(T start, T end) {
@@ -59,6 +63,18 @@ public sealed interface Range<T> extends Iterable<T>
 
 		public Range<T> of(List<? extends Range<T>> ranges) {
 			return Range.of(witness, ranges);
+		}
+
+		public DenseRange<T> emptyDense() {
+			return emptyDense;
+		}
+
+		public SparseRange<T> emptySparse() {
+			return emptySparse;
+		}
+
+		public Range<T> empty() {
+			return emptyDense;
 		}
 
 	}
