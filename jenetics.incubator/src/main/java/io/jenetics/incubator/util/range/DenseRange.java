@@ -126,7 +126,7 @@ public final class DenseRange<T> implements Range<T>, Comparable<DenseRange<T>> 
 	public Range<T> intersect(Range<T> other) {
 		return switch (other) {
 			case DenseRange<T> r -> intersect(r);
-			case SparseRange<T> r -> r.intersect(this);
+			case SparseRange<T> r -> intersect(r);
 		};
 	}
 
@@ -147,7 +147,13 @@ public final class DenseRange<T> implements Range<T>, Comparable<DenseRange<T>> 
 	}
 
 	public Range<T> intersect(SparseRange<T> other) {
-		return other.intersect(this);
+		if (isEmpty()) {
+			return this;
+		} else if (other.isEmpty()) {
+			return other;
+		} else {
+			return other.intersect(this);
+		}
 	}
 
 	/* *********************************************************************

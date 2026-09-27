@@ -166,8 +166,10 @@ public final class SparseRange<T> implements Range<T> {
 	}
 
 	public Range<T> intersect(DenseRange<T> other) {
-		if (isEmpty() || other.isEmpty()) {
+		if (isEmpty()) {
 			return this;
+		} else if (other.isEmpty()) {
+			return other;
 		} else {
 			final var intersects = ranges.stream()
 				.map(range -> range.intersect(other))
@@ -184,8 +186,10 @@ public final class SparseRange<T> implements Range<T> {
 	}
 
 	public Range<T> intersect(SparseRange<T> other) {
-		if (isEmpty() || other.isEmpty()) {
+		if (isEmpty()) {
 			return this;
+		} else if (other.isEmpty()) {
+			return other;
 		} else {
 			final List<DenseRange<T>> intersects = other.ranges.stream()
 				.<DenseRange<T>>mapMulti((or, consumer) ->
