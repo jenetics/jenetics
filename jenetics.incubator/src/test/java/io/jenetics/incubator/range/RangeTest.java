@@ -14,7 +14,7 @@ import io.jenetics.incubator.util.range.DenseRange;
 import io.jenetics.incubator.util.range.Integral;
 import io.jenetics.incubator.util.range.Range;
 
-public class DateRangeSetOperationsTest {
+public class RangeTest {
 
 	private static final Range.Factory<LocalDate>
 		DATE_RANGE =
