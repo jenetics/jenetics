@@ -19,8 +19,10 @@
  */
 package io.jenetics.incubator.util.range;
 
+import static java.util.Objects.requireNonNull;
 import static java.util.function.Predicate.not;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
@@ -34,10 +36,31 @@ public sealed interface Range<T> extends Iterable<T>
 	permits DenseRange, SparseRange
 {
 
-	interface Factory<T> {
-		Range<T> range(T start, T end);
-		Range<T> of(T element);
-		Range<T> of(List<Range<T>> ranges);
+	final class Factory<T> {
+
+		private final Integral<T> witness;
+
+		private Factory(final Integral<T> witness) {
+			this.witness = requireNonNull(witness);
+		}
+
+		public final DenseRange<T> dense(T start, T end) {
+			return Range.dense(witness, start, end);
+		}
+
+		public final DenseRange<T> of(T element) {
+			return  Range.of(witness, element);
+		}
+
+		@SafeVarargs
+		public final Range<T> of(Range<T>... ranges) {
+			return Range.of(witness, ranges);
+		}
+
+	}
+
+	static <T> Factory<T> factory(final Integral<T> witness) {
+		return new Factory<>(witness);
 	}
 
 	/**
@@ -171,27 +194,38 @@ public sealed interface Range<T> extends Iterable<T>
 	 * @param ranges the subranges of the created range
 	 * @return a new range consisting of the given subranges
 	 */
-	@SafeVarargs
-	static <T> Range<T> of(Integral<T> witness, Range<T>... ranges) {
-		if (ranges.length == 0) {
+	static <T> Range<T> of(Integral<T> witness, List<Range<T>> ranges) {
+		if (ranges.isEmpty()) {
 			return new DenseRange<>(witness, witness.min(), witness.min());
-		} else if (ranges.length == 1 && ranges[0] instanceof DenseRange<?>) {
-			return ranges[0];
+		} else if (ranges.size() == 1 && ranges.getFirst() instanceof DenseRange<?>) {
+			return ranges.getFirst();
 		}
 
 		return new SparseRange<>(
-				witness,
-				Stream.of(ranges)
-					.filter(not(Range::isEmpty))
-					.<DenseRange<T>>mapMulti((range, consumer) -> {
-						switch (range) {
-							case DenseRange<T> r -> consumer.accept(r);
-							case SparseRange<T> r -> r.ranges().forEach(consumer);
-						}
-					})
-					.toList()
-			)
+			witness,
+			ranges.stream()
+				.filter(not(Range::isEmpty))
+				.<DenseRange<T>>mapMulti((range, consumer) -> {
+					switch (range) {
+						case DenseRange<T> r -> consumer.accept(r);
+						case SparseRange<T> r -> r.ranges().forEach(consumer);
+					}
+				})
+				.toList()
+		)
 			.simplify();
+	}
+
+	/**
+	 * Create a new range consisting of the given subranges.
+	 *
+	 * @param witness the witness that the type {@code T} is an integral type
+	 * @param ranges the subranges of the created range
+	 * @return a new range consisting of the given subranges
+	 */
+	@SafeVarargs
+	static <T> Range<T> of(Integral<T> witness, Range<T>... ranges) {
+		return of(witness, Arrays.asList(ranges));
 	}
 
 }
