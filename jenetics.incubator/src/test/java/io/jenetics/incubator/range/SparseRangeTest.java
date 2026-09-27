@@ -13,7 +13,7 @@ import io.jenetics.incubator.util.range.DenseRange;
 import io.jenetics.incubator.util.range.Integral;
 import io.jenetics.incubator.util.range.Range;
 
-public class DateRangeCompositeTest {
+public class SparseRangeTest {
 
 	private static final Range.Factory<LocalDate>
 		DATE_RANGE =
@@ -225,7 +225,7 @@ public class DateRangeCompositeTest {
 	private static Range<LocalDate> composite(final String... ranges) {
 		return DATE_RANGE.of(
 			Stream.of(ranges)
-				.map(DateRangeCompositeTest::range)
+				.map(SparseRangeTest::range)
 				.toList()
 		);
 	}
