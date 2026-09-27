@@ -9,15 +9,20 @@ import java.util.stream.Stream;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.util.DateRange;
+import io.jenetics.incubator.util.range.DenseRange;
+import io.jenetics.incubator.util.range.Integral;
+import io.jenetics.incubator.util.range.Range;
 
 public class DateRangeCompositeTest {
 
+	private static final Range.Factory<LocalDate>
+		DATE_RANGE =
+		Range.factory(Integral.LOCAL_DATE);
 
 	@Test(dataProvider = "compositeDateRanges")
 	void contains(
-		final DateRange.Composite composite,
-		final DateRange.Continuous range,
+		final Range<LocalDate> composite,
+		final Range<LocalDate> range,
 		final boolean expected
 	) {
 		assertThat(composite.contains(range)).isEqualTo(expected);
@@ -150,9 +155,9 @@ public class DateRangeCompositeTest {
 
 	@Test(dataProvider = "intersectedDateRanges")
 	void intersect(
-		final DateRange a,
-		final DateRange b,
-		final DateRange expected
+		final Range<LocalDate> a,
+		final Range<LocalDate> b,
+		final Range<LocalDate> expected
 	) {
 		assertThat(a.intersect(b)).isEqualTo(expected);
 		assertThat(b.intersect(a)).isEqualTo(expected);
@@ -217,17 +222,17 @@ public class DateRangeCompositeTest {
 		DATE_FORMATTER =
 		DateTimeFormatter.ofPattern("yyyyMMdd");
 
-	private static DateRange.Composite composite(final String... ranges) {
-		return new DateRange.Composite(
+	private static Range<LocalDate> composite(final String... ranges) {
+		return DATE_RANGE.of(
 			Stream.of(ranges)
 				.map(DateRangeCompositeTest::range)
 				.toList()
 		);
 	}
 
-	private static DateRange.Continuous range(final String value) {
+	private static DenseRange<LocalDate> range(final String value) {
 		final var parts = value.split("-");
-		return new DateRange.Continuous(
+		return DATE_RANGE.dense(
 			LocalDate.parse(parts[0], DATE_FORMATTER),
 			LocalDate.parse(parts[1], DATE_FORMATTER)
 		);

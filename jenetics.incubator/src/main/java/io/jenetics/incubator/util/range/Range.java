@@ -44,16 +44,20 @@ public sealed interface Range<T> extends Iterable<T>
 			this.witness = requireNonNull(witness);
 		}
 
-		public final DenseRange<T> dense(T start, T end) {
+		public DenseRange<T> dense(T start, T end) {
 			return Range.dense(witness, start, end);
 		}
 
-		public final DenseRange<T> of(T element) {
+		public DenseRange<T> of(T element) {
 			return  Range.of(witness, element);
 		}
 
 		@SafeVarargs
 		public final Range<T> of(Range<T>... ranges) {
+			return Range.of(witness, ranges);
+		}
+
+		public Range<T> of(List<? extends Range<T>> ranges) {
 			return Range.of(witness, ranges);
 		}
 
@@ -194,7 +198,7 @@ public sealed interface Range<T> extends Iterable<T>
 	 * @param ranges the subranges of the created range
 	 * @return a new range consisting of the given subranges
 	 */
-	static <T> Range<T> of(Integral<T> witness, List<Range<T>> ranges) {
+	static <T> Range<T> of(Integral<T> witness, List<? extends Range<T>> ranges) {
 		if (ranges.isEmpty()) {
 			return new DenseRange<>(witness, witness.min(), witness.min());
 		} else if (ranges.size() == 1 && ranges.getFirst() instanceof DenseRange<?>) {
