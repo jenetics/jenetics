@@ -19,16 +19,33 @@
  */
 package io.jenetics.incubator.util.range;
 
-import static java.util.Objects.requireNonNull;
-import static java.util.function.Predicate.not;
-
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static java.util.Objects.requireNonNull;
+import static java.util.function.Predicate.not;
+
 /**
+ * A range class is essentially a sorted set of elements of type {@code T}. The
+ * containing elements are defined by ranges with a start and an end element,
+ * which allows to define huge sets with minimal storage requirements. E.g, a
+ * set of alle {@link Integer} elements can be defined as follows:
+ * {@snippet lang=java:
+ * final Range<Integer> integers = Range.INTEGER.dense(
+ *     Integer.MIN_VALUE,
+ *     Integer.MAX_VALUE
+ * );
+ * assert integers.size() == 4294967295;
+ * assert integers.contains(Integer.MIN_VALUE);
+ * assert integers.contains(42);
+ * assert !integers.contains(Integer.MAX_VALUE);
+ * }
+ * The {@code integers} set contains all possible integers, with minimal space
+ * requirements.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 9.2
  * @since 9.2
@@ -37,54 +54,110 @@ public sealed interface Range<T> extends Iterable<T>
 	permits DenseRange, SparseRange
 {
 
-	Range.Factory<LocalDate> LOCAL_DATE = Range.factory(Integral.LOCAL_DATE);
-	Range.Factory<Integer> INTEGER = Range.factory(Integral.INTEGER);
+	/**
+	 * Range factory for {@link LocalDate} elements.
+	 */
+	Range.Factory<LocalDate> LOCAL_DATE = Range.Factory.of(Integral.LOCAL_DATE);
 
+	/**
+	 * Range factory for {@link Integer} elements.
+	 */
+	Range.Factory<Integer> INTEGER = Range.Factory.of(Integral.INTEGER);
+
+	/**
+	 * Creates range values for the type {@code T}.
+	 *
+	 * @param <T> the range type
+	 */
 	final class Factory<T> {
 
 		private final Integral<T> witness;
-		private final DenseRange<T> emptyDense;
-		private final SparseRange<T> emptySparse;
+		private final DenseRange<T> empty;
 
 		private Factory(final Integral<T> witness) {
 			this.witness = requireNonNull(witness);
-			this.emptyDense = Range.dense(witness, witness.min(), witness.min());
-			this.emptySparse = new SparseRange<>(witness, List.of());
+			this.empty = Range.dense(witness, witness.zero(), witness.zero());
 		}
 
+		/**
+		 * Creates a <em>dense</em> range object with the given {@code start} and
+		 * {@code end} element.
+		 *
+		 * @param start the start element (inclusively)
+		 * @param end the end element (exclusively)
+		 * @return a <em>dense</em> range object
+		 * @throws IllegalArgumentException if {@code end < start}
+		 */
 		public DenseRange<T> dense(T start, T end) {
 			return Range.dense(witness, start, end);
 		}
 
+		/**
+		 * Create a <em>dense</em> range object, containing the given
+		 * {@code element}.
+		 *
+		 * @param element the sole {@code element} of the range
+		 * @return a <em>dense</em> range object, containing the given
+		 *         {@code element}
+		 */
 		public DenseRange<T> of(T element) {
 			return  Range.of(witness, element);
 		}
 
+		/**
+		 * Return a new range consisting of the given {@code values}.
+		 *
+		 * @param values the elements the created range consists of
+		 * @return a new range consisting of the given {@code values}
+		 */
+		@SuppressWarnings("unchecked")
+		public Range<T> of(Integral<T> witness, T... values) {
+			return Range.of(witness, values);
+		}
+
+		/**
+		 * Create a new range consisting of the given subranges.
+		 *
+		 * @param ranges the subranges of the created range
+		 * @return a new range consisting of the given subranges
+		 */
 		@SafeVarargs
 		public final Range<T> of(Range<T>... ranges) {
 			return Range.of(witness, ranges);
 		}
 
+		/**
+		 * Create a new range consisting of the given subranges.
+		 *
+		 * @param ranges the subranges of the created range
+		 * @return a new range consisting of the given subranges
+		 */
 		public Range<T> of(List<? extends Range<T>> ranges) {
 			return Range.of(witness, ranges);
 		}
 
-		public DenseRange<T> emptyDense() {
-			return emptyDense;
+		/**
+		 * Return an empty, dense range.
+		 *
+		 * @see SparseRange#empty()
+		 *
+		 * @return an empty, dense range
+		 */
+		public DenseRange<T> empty() {
+			return empty;
 		}
 
-		public SparseRange<T> emptySparse() {
-			return emptySparse;
+		/**
+		 * Return a range factory with the given integral type {@code witness}.
+		 *
+		 * @param witness the type withness
+		 * @param <T> the range type
+		 * @return a range factory for type {@code T}
+		 */
+		public static <T> Factory<T> of(final Integral<T> witness) {
+			return new Factory<>(witness);
 		}
 
-		public Range<T> empty() {
-			return emptyDense;
-		}
-
-	}
-
-	static <T> Factory<T> factory(final Integral<T> witness) {
-		return new Factory<>(witness);
 	}
 
 	/**
@@ -177,7 +250,9 @@ public sealed interface Range<T> extends Iterable<T>
 	 * @param witness the witness that the type {@code T} is an integral type
 	 * @param start the start (inclusively)
 	 * @param end the end (exclusively)
-	 * @return  a new continuous range
+	 * @param <T> the range type
+	 * @return  a new dense range
+	 * @throws IllegalArgumentException if {@code end < start}
 	 */
 	static <T> DenseRange<T> dense(Integral<T> witness, T start, T end) {
 		return new DenseRange<>(witness, start, end);
@@ -188,6 +263,7 @@ public sealed interface Range<T> extends Iterable<T>
 	 *
 	 * @param witness the witness that the type {@code T} is an integral type
 	 * @param value the element the created date range consists of
+	 * @param <T> the range type
 	 * @return a new range consisting of the given {@code value}
 	 */
 	static <T> DenseRange<T> of(Integral<T> witness, T value) {
@@ -199,6 +275,7 @@ public sealed interface Range<T> extends Iterable<T>
 	 *
 	 * @param witness the witness that the type {@code T} is an integral type
 	 * @param values the elements the created range consists of
+	 * @param <T> the range type
 	 * @return a new range consisting of the given {@code values}
 	 */
 	@SuppressWarnings("unchecked")
@@ -216,27 +293,28 @@ public sealed interface Range<T> extends Iterable<T>
 	 *
 	 * @param witness the witness that the type {@code T} is an integral type
 	 * @param ranges the subranges of the created range
+	 * @param <T> the range type
 	 * @return a new range consisting of the given subranges
 	 */
 	static <T> Range<T> of(Integral<T> witness, List<? extends Range<T>> ranges) {
 		if (ranges.isEmpty()) {
-			return new DenseRange<>(witness, witness.min(), witness.min());
+			return empty();
 		} else if (ranges.size() == 1 && ranges.getFirst() instanceof DenseRange<?>) {
 			return ranges.getFirst();
 		}
 
 		return new SparseRange<>(
-			witness,
-			ranges.stream()
-				.filter(not(Range::isEmpty))
-				.<DenseRange<T>>mapMulti((range, consumer) -> {
-					switch (range) {
-						case DenseRange<T> r -> consumer.accept(r);
-						case SparseRange<T> r -> r.ranges().forEach(consumer);
-					}
-				})
-				.toList()
-		)
+				witness,
+				ranges.stream()
+					.filter(not(Range::isEmpty))
+					.<DenseRange<T>>mapMulti((range, consumer) -> {
+						switch (range) {
+							case DenseRange<T> r -> consumer.accept(r);
+							case SparseRange<T> r -> r.ranges().forEach(consumer);
+						}
+					})
+					.toList()
+			)
 			.simplify();
 	}
 
@@ -245,11 +323,26 @@ public sealed interface Range<T> extends Iterable<T>
 	 *
 	 * @param witness the witness that the type {@code T} is an integral type
 	 * @param ranges the subranges of the created range
+	 * @param <T> the range type
 	 * @return a new range consisting of the given subranges
 	 */
 	@SafeVarargs
 	static <T> Range<T> of(Integral<T> witness, Range<T>... ranges) {
-		return of(witness, Arrays.asList(ranges));
+		if (ranges.length == 0) {
+			return empty();
+		} else {
+			return of(witness, Arrays.asList(ranges));
+		}
+	}
+
+	/**
+	 * Return an empty range.
+	 *
+	 * @param <T> the range type
+	 * @return an empty range
+	 */
+	static <T> Range<T> empty() {
+		return SparseRange.empty();
 	}
 
 }

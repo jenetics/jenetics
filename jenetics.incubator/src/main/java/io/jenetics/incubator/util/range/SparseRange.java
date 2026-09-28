@@ -19,14 +19,14 @@
  */
 package io.jenetics.incubator.util.range;
 
-import static java.util.Objects.requireNonNull;
-import static java.util.function.Predicate.not;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static java.util.Objects.requireNonNull;
+import static java.util.function.Predicate.not;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -35,9 +35,13 @@ import java.util.stream.Stream;
  */
 public final class SparseRange<T> implements Range<T> {
 
+	private static final SparseRange<?>
+		EMPTY =
+		new SparseRange<>(Integral.INTEGER, List.of());
+
+
 	private final Integral<T> witness;
 	private final List<DenseRange<T>> ranges;
-
 
 	SparseRange(final Integral<T> witness, final List<DenseRange<T>> ranges) {
 		this.witness = requireNonNull(witness);
@@ -149,9 +153,35 @@ public final class SparseRange<T> implements Range<T> {
 	}
 
 	public boolean contains(DenseRange<T> range) {
-		return range.isEmpty() || ranges.stream()
-			.takeWhile(candidate -> !witness.isAfter(candidate.start(), range.start()))
-			.anyMatch(candidate -> candidate.contains(range));
+		if (range.isEmpty()) {
+			return true;
+		} else if (isEmpty()) {
+			return false;
+		} else if (ranges.size() == 1) {
+			return ranges.getFirst().contains(range);
+		} else {
+			// Do a binary search. This is possible since the 'ranges' list is
+			// sorted, non-overlapping and normalized.
+			int low = 0;
+			int high = ranges.size() - 1;
+
+			while (low <= high) {
+				final int mid = (low + high) >>> 1;
+				final DenseRange<T> value = ranges.get(mid);
+
+				if (value.contains(range)) {
+					return true;
+				} else {
+					if (witness.isBefore(range.start(), value.start())) {
+						high = mid - 1;
+					} else {
+						low = mid + 1;
+					}
+				}
+			}
+
+			return false;
+		}
 	}
 
 	public boolean contains(SparseRange<T> range) {
@@ -186,6 +216,13 @@ public final class SparseRange<T> implements Range<T> {
 
 	}
 
+	/**
+	 * Returns the first {@link DenseRange} element, if the {@link #ranges()}
+	 * consists only of one element. If the {@link #ranges()} has more elements,
+	 * {@code this} range is returned.
+	 *
+	 * @return a simplified range
+	 */
 	Range<T> simplify() {
 		return ranges.size() == 1 ? ranges.getFirst() : this;
 	}
@@ -341,6 +378,18 @@ public final class SparseRange<T> implements Range<T> {
 				.map(DenseRange::toString)
 				.collect(Collectors.joining(", ", "{", "}"));
 		}
+	}
+
+	/**
+	 * Return an empty, sparse range.
+	 *
+	 * @see Factory#empty()
+	 *
+	 * @return an empty, sparse range
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> SparseRange<T> empty() {
+		return (SparseRange<T>)EMPTY;
 	}
 
 }

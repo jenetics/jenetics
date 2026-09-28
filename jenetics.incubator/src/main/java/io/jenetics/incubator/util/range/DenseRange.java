@@ -27,6 +27,8 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 /**
+ * A continuous, dense range of elements between [{@link #start()}, {@link #end()}).
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 9.2
  * @since 9.2
@@ -37,6 +39,14 @@ public final class DenseRange<T> implements Range<T>, Comparable<DenseRange<T>> 
 	private final T start;
 	private final T end;
 
+	/**
+	 * Create a new <em>dens</em> range object.
+	 *
+	 * @param witness the witness that the type {@code T} is an integral type
+	 * @param start the start (inclusively)
+	 * @param end the end (exclusively)
+	 * @throws IllegalArgumentException if {@code end < start}
+	 */
 	DenseRange(Integral<T> witness, T start, T end) {
 		this.witness = requireNonNull(witness);
 
@@ -48,18 +58,28 @@ public final class DenseRange<T> implements Range<T>, Comparable<DenseRange<T>> 
 		}
 
 		if (start.equals(end)) {
-			this.start = witness.min();
-			this.end = witness.min();
+			this.start = witness.zero();
+			this.end = witness.zero();
 		} else {
 			this.start = start;
 			this.end = end;
 		}
 	}
 
+	/**
+	 * Return the start element of the range (inclusively).
+	 *
+	 * @return the start element of the range (inclusively)
+	 */
 	public T start() {
 		return start;
 	}
 
+	/**
+	 * Return the end of the range (exclusively).
+	 *
+	 * @return the end of the range (exclusively)
+	 */
 	public T end() {
 		return end;
 	}
@@ -72,7 +92,7 @@ public final class DenseRange<T> implements Range<T>, Comparable<DenseRange<T>> 
 	@Override
 	public T get(long index) {
 		Objects.checkIndex(index, size());
-		return witness.add(start, index);
+		return witness.next(start, index);
 	}
 
 	@Override
@@ -136,7 +156,7 @@ public final class DenseRange<T> implements Range<T>, Comparable<DenseRange<T>> 
 			!witness.isAfter(end, other.start) ||
 			!witness.isBefore(start, other.end))
 		{
-			return new DenseRange<>(witness, witness.min(), witness.min());
+			return new DenseRange<>(witness, witness.zero(), witness.zero());
 		} else {
 			return new DenseRange<>(
 				witness,
@@ -219,7 +239,7 @@ public final class DenseRange<T> implements Range<T>, Comparable<DenseRange<T>> 
 		} else if (!witness.isAfter(subtrahend.start, start) &&
 			!witness.isBefore(subtrahend.end, end))
 		{
-			return new DenseRange<>(witness, witness.min(), witness.min());
+			return new DenseRange<>(witness, witness.zero(), witness.zero());
 		} else if (witness.isAfter(subtrahend.start, start) &&
 			witness.isBefore(subtrahend.end, end))
 		{

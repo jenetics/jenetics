@@ -38,12 +38,12 @@ import io.jenetics.incubator.util.range.Range;
 public class RangeTest {
 
 	private static final List<Sample> SAMPLES = List.of(
-		new Sample("empty continuous", Range.LOCAL_DATE.emptyDense()),
+		new Sample("empty continuous", Range.LOCAL_DATE.empty()),
 		new Sample("continuous", dense(2, 8)),
 		new Sample("overlapping continuous", dense(6, 12)),
 		new Sample("contained continuous", dense(4, 6)),
 		new Sample("disjoint continuous", dense(14, 17)),
-		new Sample("empty composite", Range.LOCAL_DATE.emptySparse()),
+		new Sample("empty composite", Range.empty()),
 		new Sample("gapped composite", sparse(1, 4, 7, 10)),
 		new Sample("overlapping composite", sparse(3, 6, 9, 15)),
 		new Sample("normalized composite", sparse(2, 5, 4, 8))
