@@ -19,8 +19,10 @@
  */
 package io.jenetics.distassert.internal.screen;
 
+import static io.jenetics.distassert.internal.screen.DrawChars.BLOCK_CHARS;
 import static io.jenetics.distassert.internal.screen.DrawChars.FULL_BLOCK;
 import static io.jenetics.distassert.internal.screen.DrawChars.HEAVY_STROKE_CHARS;
+import static io.jenetics.distassert.internal.screen.DrawChars.LIGHT_STROKE_CHARS;
 import static java.util.Objects.requireNonNull;
 
 import java.io.PrintStream;
@@ -41,6 +43,14 @@ import java.util.Arrays;
  * @since 8.3
  */
 public class Screen {
+	/**
+	 * The stroke weight used for drawing line primitives.
+	 */
+	public enum Stroke {
+		LIGHT,
+		HEAVY
+	}
+
 	private static final int UP = 1;
 	private static final int RIGHT = 1 << 1;
 	private static final int DOWN = 1 << 2;
@@ -51,6 +61,7 @@ public class Screen {
 
 	private final char[][] buffer;
 	private final byte[][] strokes;
+	private final byte[][] strokeWeights;
 
 	/**
 	 * Create a screen with the given dimensions.
@@ -71,6 +82,7 @@ public class Screen {
 		this.height = height;
 		this.buffer = new char[height][width];
 		this.strokes = new byte[height][width];
+		this.strokeWeights = new byte[height][width];
 		for (var row : buffer) {
 			Arrays.fill(row, ' ');
 		}
@@ -96,6 +108,7 @@ public class Screen {
 		if (contains(x, y)) {
 			buffer[y][x] = value;
 			strokes[y][x] = 0;
+			strokeWeights[y][x] = 0;
 		}
 	}
 
@@ -103,11 +116,23 @@ public class Screen {
 		return x >= 0 && x < width && y >= 0 && y < height;
 	}
 
-	private void stroke(final int x, final int y, final int directions) {
+	private void stroke(
+		final int x,
+		final int y,
+		final int directions,
+		final Stroke weight
+	) {
 		if (contains(x, y)) {
 			final int composed = strokes[y][x] | directions;
+			final int composedWeight = Math.max(
+				strokeWeights[y][x],
+				weight.ordinal() + 1
+			);
 			strokes[y][x] = (byte)composed;
-			buffer[y][x] = HEAVY_STROKE_CHARS[composed];
+			strokeWeights[y][x] = (byte)composedWeight;
+			buffer[y][x] = composedWeight == 1
+				? LIGHT_STROKE_CHARS[composed]
+				: HEAVY_STROKE_CHARS[composed];
 		}
 	}
 
@@ -135,26 +160,41 @@ public class Screen {
 	 * @throws NullPointerException if {@code rectangle} is {@code null}
 	 */
 	public void draw(final Rectangle rectangle) {
+		draw(rectangle, Stroke.HEAVY);
+	}
+
+	/**
+	 * Draw the outline of the given rectangle with the requested stroke weight.
+	 * Rectangle strokes are composed with strokes already present on the screen.
+	 * If light and heavy strokes intersect, the resulting cell is rendered with
+	 * heavy strokes.
+	 *
+	 * @param rectangle the rectangle to draw
+	 * @param stroke the stroke weight
+	 * @throws NullPointerException if an argument is {@code null}
+	 */
+	public void draw(final Rectangle rectangle, final Stroke stroke) {
 		requireNonNull(rectangle);
+		requireNonNull(stroke);
 		final int ox = rectangle.x();
 		final int oy = rectangle.y();
 		final int right = ox + rectangle.width() - 1;
 		final int bottom = oy + rectangle.height() - 1;
 
 		for (int x = ox + 1; x < right; ++x) {
-			stroke(x, oy, LEFT | RIGHT);
-			stroke(x, bottom, LEFT | RIGHT);
+			stroke(x, oy, LEFT | RIGHT, stroke);
+			stroke(x, bottom, LEFT | RIGHT, stroke);
 		}
 
 		for (int y = oy + 1; y < bottom; ++y) {
-			stroke(ox, y, UP | DOWN);
-			stroke(right, y, UP | DOWN);
+			stroke(ox, y, UP | DOWN, stroke);
+			stroke(right, y, UP | DOWN, stroke);
 		}
 
-		stroke(ox, oy, RIGHT | DOWN);
-		stroke(right, oy, DOWN | LEFT);
-		stroke(ox, bottom, UP | RIGHT);
-		stroke(right, bottom, UP | LEFT);
+		stroke(ox, oy, RIGHT | DOWN, stroke);
+		stroke(right, oy, DOWN | LEFT, stroke);
+		stroke(ox, bottom, UP | RIGHT, stroke);
+		stroke(right, bottom, UP | LEFT, stroke);
 	}
 
 	/**
@@ -166,8 +206,35 @@ public class Screen {
 	 */
 	public void draw(final Bar bar) {
 		requireNonNull(bar);
-		for (int y = 0; y < bar.height(); ++y) {
-			set(bar.x(), bar.y() - y, FULL_BLOCK);
+		for (int x = 0; x < bar.width(); ++x) {
+			for (int y = 0; y < bar.height(); ++y) {
+				set(bar.x() + x, bar.y() - y, FULL_BLOCK);
+			}
+			if (bar.fraction() > 0) {
+				set(
+					bar.x() + x,
+					bar.y() - bar.height(),
+					partialBlock(bar.fraction())
+				);
+			}
+		}
+	}
+
+	private static char partialBlock(final double fraction) {
+		final int level = Math.clamp((int)Math.round(fraction*8), 1, 7);
+		return BLOCK_CHARS[level];
+	}
+
+	/**
+	 * Draw the given text. Text uses painter order and replaces existing content.
+	 *
+	 * @param text the text to draw
+	 * @throws NullPointerException if {@code text} is {@code null}
+	 */
+	public void draw(final Text text) {
+		requireNonNull(text);
+		for (int i = 0; i < text.value().length(); ++i) {
+			set(text.x() + i, text.y(), text.value().charAt(i));
 		}
 	}
 

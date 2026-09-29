@@ -77,7 +77,7 @@ public class ExponentialRankSelectorTest
 			observation.histogram().partition(),
 			expected.value
 		);
-
+		observation.histogram().print(System.out);
 		assertThat(observation)
 			.follows(distribution);
 	}

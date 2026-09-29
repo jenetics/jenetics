@@ -45,6 +45,18 @@ public class ScreenTest {
 	}
 
 	@Test
+	void drawLightRectangle() {
+		final var screen = new Screen(5, 3);
+		screen.draw(new Rectangle(1, 0, 3, 3), Screen.Stroke.LIGHT);
+
+		assertThat(render(screen)).containsExactly(
+			" ┌─┐ ",
+			" │ │ ",
+			" └─┘ "
+		);
+	}
+
+	@Test
 	void clipRectangle() {
 		final var screen = new Screen(3, 3);
 		screen.draw(new Rectangle(-1, -1, 3, 3));
@@ -76,6 +88,41 @@ public class ScreenTest {
 			" █ ",
 			"   "
 		);
+	}
+
+	@Test
+	void drawWideBar() {
+		final var screen = new Screen(5, 3);
+		screen.draw(new Bar(1, 1, 3, 2));
+
+		assertThat(render(screen)).containsExactly(
+			" ███ ",
+			" ███ ",
+			"     "
+		);
+	}
+
+	@Test
+	void drawPartialBlockBarCaps() {
+		final var screen = new Screen(7, 3);
+		for (int i = 1; i <= 7; ++i) {
+			screen.draw(new Bar(i - 1, 1, 1, 0, i/8.0));
+		}
+
+		assertThat(render(screen)).containsExactly(
+			"       ",
+			"▁▂▃▄▅▆▇",
+			"       "
+		);
+	}
+
+	@Test
+	void drawClippedText() {
+		final var screen = new Screen(5, 2);
+		screen.draw(new Text(-2, 0, "abcdef"));
+		screen.draw(new Text(3, 1, "xyz"));
+
+		assertThat(render(screen)).containsExactly("cdef ", "   xy");
 	}
 
 	@Test
@@ -119,6 +166,11 @@ public class ScreenTest {
 		assertThatIllegalArgumentException()
 			.isThrownBy(() -> new Rectangle(0, 0, 2, 1));
 		assertThatIllegalArgumentException().isThrownBy(() -> new Bar(0, 0, -1));
+		assertThatIllegalArgumentException().isThrownBy(() -> new Bar(0, 0, 0, 1));
+		assertThatIllegalArgumentException()
+			.isThrownBy(() -> new Bar(0, 0, 1, 1, -0.1));
+		assertThatIllegalArgumentException()
+			.isThrownBy(() -> new Bar(0, 0, 1, 1, 1));
 	}
 
 	@Test
