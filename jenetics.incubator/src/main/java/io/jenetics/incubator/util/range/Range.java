@@ -23,6 +23,7 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
@@ -55,14 +56,19 @@ public sealed interface Range<T> extends Iterable<T>
 {
 
 	/**
-	 * Range factory for {@link LocalDate} elements.
-	 */
-	Range.Factory<LocalDate> LOCAL_DATE = Range.Factory.of(Integral.LOCAL_DATE);
-
-	/**
 	 * Range factory for {@link Integer} elements.
 	 */
 	Range.Factory<Integer> INTEGER = Range.Factory.of(Integral.INTEGER);
+
+	/**
+	 * Range factory for {@link Long} elements.
+	 */
+	Range.Factory<Long> LONG = Range.Factory.of(Integral.LONG);
+
+	/**
+	 * Range factory for {@link LocalDate} elements.
+	 */
+	Range.Factory<LocalDate> LOCAL_DATE = Range.Factory.of(Integral.LOCAL_DATE);
 
 	/**
 	 * Creates range values for the type {@code T}.
@@ -166,6 +172,22 @@ public sealed interface Range<T> extends Iterable<T>
 	 * @return the number of elements of {@code this} range
 	 */
 	long size();
+
+	/**
+	 * Return the start (smallest) element of the range (inclusively).
+	 *
+	 * @return the start element of the range (inclusively)
+	 * @throws NoSuchElementException if the range is empty.
+	 */
+	T start();
+
+	/**
+	 * Return the end (biggest) element of the range (exclusively).
+	 *
+	 * @return the end of the range (exclusively)
+	 * @throws NoSuchElementException if the range is empty.
+	 */
+	T end();
 
 	/**
 	 * Returns the element at the specified position in this range.

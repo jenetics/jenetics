@@ -23,6 +23,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -66,21 +67,19 @@ public final class DenseRange<T> implements Range<T>, Comparable<DenseRange<T>> 
 		}
 	}
 
-	/**
-	 * Return the start element of the range (inclusively).
-	 *
-	 * @return the start element of the range (inclusively)
-	 */
+	@Override
 	public T start() {
+		if (isEmpty()) {
+			throw new NoSuchElementException();
+		}
 		return start;
 	}
 
-	/**
-	 * Return the end of the range (exclusively).
-	 *
-	 * @return the end of the range (exclusively)
-	 */
+	@Override
 	public T end() {
+		if (isEmpty()) {
+			throw new NoSuchElementException();
+		}
 		return end;
 	}
 

@@ -36,32 +36,7 @@ import java.util.Comparator;
 public interface Integral<T> extends Comparator<T> {
 
 	/**
-	 * Integral <em>type class</em> for {@link LocalDate} objects.
-	 */
-	Integral<LocalDate> LOCAL_DATE = new Integral<>() {
-		@Override
-		public LocalDate zero() {
-			return LocalDate.of(0, 1, 1);
-		}
-
-		@Override
-		public LocalDate next(LocalDate value, long n) {
-			return value.plusDays(n);
-		}
-
-		@Override
-		public long distance(LocalDate a, LocalDate b) {
-			return Math.abs(ChronoUnit.DAYS.between(a, b));
-		}
-
-		@Override
-		public int compare(LocalDate a, LocalDate b) {
-			return a.compareTo(b);
-		}
-	};
-
-	/**
-	 * Integral <em>type class</em> for {@link Integer} objects.
+	 * Integral <em>type class</em> for {@link Integer} values.
 	 */
 	Integral<Integer> INTEGER = new Integral<>() {
 		@Override
@@ -91,6 +66,58 @@ public interface Integral<T> extends Comparator<T> {
 		}
 	};
 
+	/**
+	 * Integral <em>type class</em> for {@link Long} values.
+	 */
+	Integral<Long> LONG = new Integral<>() {
+		@Override
+		public Long zero() {
+			return 0L;
+		}
+
+		@Override
+		public Long next(Long value, long n) {
+			if (n < 0) {
+				throw new IllegalArgumentException("n must be greater than zero:" + n);
+			}
+			return Math.addExact(value, n);
+		}
+
+		@Override
+		public long distance(Long a, Long b) {
+			return Math.abs(Math.subtractExact(a, b));
+		}
+
+		@Override
+		public int compare(Long a, Long b) {
+			return a.compareTo(b);
+		}
+	};
+
+	/**
+	 * Integral <em>type class</em> for {@link LocalDate} values.
+	 */
+	Integral<LocalDate> LOCAL_DATE = new Integral<>() {
+		@Override
+		public LocalDate zero() {
+			return LocalDate.of(0, 1, 1);
+		}
+
+		@Override
+		public LocalDate next(LocalDate value, long n) {
+			return value.plusDays(n);
+		}
+
+		@Override
+		public long distance(LocalDate a, LocalDate b) {
+			return Math.abs(ChronoUnit.DAYS.between(a, b));
+		}
+
+		@Override
+		public int compare(LocalDate a, LocalDate b) {
+			return a.compareTo(b);
+		}
+	};
 
 	/**
 	 * Return the <em>zero</em> element of {@code T}.
