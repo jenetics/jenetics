@@ -31,6 +31,7 @@ import org.testng.annotations.Test;
 
 import io.jenetics.incubator.util.range.DenseRange;
 import io.jenetics.incubator.util.range.Range;
+import io.jenetics.incubator.util.range.SparseRange;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -170,6 +171,42 @@ public class SparseRangeTest {
 		};
 	}
 
+	@Test(dataProvider = "binarySearchRanges")
+	void containsDenseRangeWithBinarySearch(
+		final String scenario,
+		final DenseRange<LocalDate> range,
+		final boolean expected
+	) {
+		final var sparse = binarySearchRange();
+
+		assertThat(sparse.ranges()).hasSize(7);
+		assertThat(sparse.contains(range))
+			.as(scenario)
+			.isEqualTo(expected);
+	}
+
+	@DataProvider
+	static Object[][] binarySearchRanges() {
+		return new Object[][] {
+			{"exact middle element", dense("20200201-20200205"), true},
+			{"inside middle element", dense("20200202-20200204"), true},
+			{"exact first element", dense("20200101-20200105"), true},
+			{"inside first element", dense("20200102-20200104"), true},
+			{"exact last element", dense("20200301-20200305"), true},
+			{"inside last element", dense("20200302-20200304"), true},
+			{"element found left of middle", dense("20200120-20200125"), true},
+			{"element found right of middle", dense("20200220-20200225"), true},
+			{"before first element", dense("20191201-20191205"), false},
+			{"after last element", dense("20200306-20200308"), false},
+			{"gap left of middle", dense("20200106-20200109"), false},
+			{"gap right of middle", dense("20200216-20200219"), false},
+			{"starts at exclusive end", dense("20200115-20200116"), false},
+			{"overlaps left boundary", dense("20200109-20200112"), false},
+			{"overlaps right boundary", dense("20200113-20200116"), false},
+			{"crosses two elements", dense("20200114-20200121"), false}
+		};
+	}
+
 
 	@Test(dataProvider = "intersectedDateRanges")
 	void intersect(
@@ -253,6 +290,18 @@ public class SparseRangeTest {
 		return Range.LOCAL_DATE.dense(
 			LocalDate.parse(parts[0], DATE_FORMATTER),
 			LocalDate.parse(parts[1], DATE_FORMATTER)
+		);
+	}
+
+	private static SparseRange<LocalDate> binarySearchRange() {
+		return (SparseRange<LocalDate>)sparse(
+			"20200101-20200105",
+			"20200110-20200115",
+			"20200120-20200125",
+			"20200201-20200205",
+			"20200210-20200215",
+			"20200220-20200225",
+			"20200301-20200305"
 		);
 	}
 
