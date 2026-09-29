@@ -19,35 +19,60 @@
  */
 package io.jenetics.distassert.internal.screen;
 
-import static io.jenetics.distassert.internal.screen.DrawChars.BLOCK_CHARS;
-import static io.jenetics.distassert.internal.screen.DrawChars.HEAVY_DOWN_AND_LEFT;
-import static io.jenetics.distassert.internal.screen.DrawChars.HEAVY_DOWN_AND_RIGHT;
-import static io.jenetics.distassert.internal.screen.DrawChars.HEAVY_HORIZONTAL;
-import static io.jenetics.distassert.internal.screen.DrawChars.HEAVY_UP_AND_LEFT;
-import static io.jenetics.distassert.internal.screen.DrawChars.HEAVY_UP_AND_RIGHT;
-import static io.jenetics.distassert.internal.screen.DrawChars.HEAVY_VERTICAL;
+import static io.jenetics.distassert.internal.screen.DrawChars.FULL_BLOCK;
+import static io.jenetics.distassert.internal.screen.DrawChars.HEAVY_STROKE_CHARS;
+import static java.util.Objects.requireNonNull;
 
 import java.io.PrintStream;
+import java.util.Arrays;
 
 /**
+ * A mutable character-cell drawing surface. Its origin is at the upper-left
+ * corner, with the x-axis pointing right and the y-axis pointing down. Drawing
+ * outside the screen is silently clipped.
+ * <p>
+ * Line strokes are composed according to their directions. Drawing crossing
+ * horizontal and vertical strokes therefore creates the corresponding junction
+ * character. Direct character writes and filled primitives use painter order
+ * and replace previously drawn content.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.3
  * @since 8.3
  */
 public class Screen {
+	private static final int UP = 1;
+	private static final int RIGHT = 1 << 1;
+	private static final int DOWN = 1 << 2;
+	private static final int LEFT = 1 << 3;
+
 	private final int width;
 	private final int height;
 
-	private final int[][] buffer;
+	private final char[][] buffer;
+	private final byte[][] strokes;
 
+	/**
+	 * Create a screen with the given dimensions.
+	 *
+	 * @param width the screen width in character cells
+	 * @param height the screen height in character cells
+	 * @throws IllegalArgumentException if a dimension is smaller than one
+	 */
 	public Screen(final int width, final int height) {
+		if (width < 1 || height < 1) {
+			throw new IllegalArgumentException(
+				"Screen dimensions must be positive: %dx%d."
+					.formatted(width, height)
+			);
+		}
+
 		this.width = width;
 		this.height = height;
-		this.buffer = new int[width][height];
-		for (int y = 0; y < height; ++y) {
-			for (int x = 0; x < width; ++x) {
-				buffer[x][y] = ' ';
-			}
+		this.buffer = new char[height][width];
+		this.strokes = new byte[height][width];
+		for (var row : buffer) {
+			Arrays.fill(row, ' ');
 		}
 	}
 
@@ -59,55 +84,94 @@ public class Screen {
 		return height;
 	}
 
-	public void set(int x, int y, char value) {
-		if (x < width && y < height && x >= 0 && y >= 0) {
-			buffer[x][y] = value;
+	/**
+	 * Set a screen cell to the given value. This operation replaces existing
+	 * content, including composed line strokes.
+	 *
+	 * @param x the horizontal cell coordinate
+	 * @param y the vertical cell coordinate
+	 * @param value the character value
+	 */
+	public void set(final int x, final int y, final char value) {
+		if (contains(x, y)) {
+			buffer[y][x] = value;
+			strokes[y][x] = 0;
 		}
 	}
 
-	public void print(PrintStream out) {
+	private boolean contains(final int x, final int y) {
+		return x >= 0 && x < width && y >= 0 && y < height;
+	}
+
+	private void stroke(final int x, final int y, final int directions) {
+		if (contains(x, y)) {
+			final int composed = strokes[y][x] | directions;
+			strokes[y][x] = (byte)composed;
+			buffer[y][x] = HEAVY_STROKE_CHARS[composed];
+		}
+	}
+
+	/**
+	 * Print the screen content to the given output stream.
+	 *
+	 * @param out the output stream
+	 * @throws NullPointerException if {@code out} is {@code null}
+	 */
+	public void print(final PrintStream out) {
+		requireNonNull(out);
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
-				out.print((char)buffer[x][y]);
+				out.print(buffer[y][x]);
 			}
 			out.println();
 		}
 	}
 
+	/**
+	 * Draw the outline of the given rectangle. Rectangle strokes are composed
+	 * with strokes already present on the screen.
+	 *
+	 * @param rectangle the rectangle to draw
+	 * @throws NullPointerException if {@code rectangle} is {@code null}
+	 */
 	public void draw(final Rectangle rectangle) {
+		requireNonNull(rectangle);
 		final int ox = rectangle.x();
 		final int oy = rectangle.y();
+		final int right = ox + rectangle.width() - 1;
+		final int bottom = oy + rectangle.height() - 1;
 
-		// Horizontal lines.
-		for (int i = 0; i < rectangle.width(); ++i) {
-			set(i + ox, oy, HEAVY_HORIZONTAL);
-			set(i + ox, rectangle.height() - 1 + oy, HEAVY_HORIZONTAL);
+		for (int x = ox + 1; x < right; ++x) {
+			stroke(x, oy, LEFT | RIGHT);
+			stroke(x, bottom, LEFT | RIGHT);
 		}
 
-		// Vertical lines.
-		for (int i = 0; i < rectangle.height(); ++i) {
-			set(ox, i + oy, HEAVY_VERTICAL);
-			set(rectangle.width() - 1 + ox, i + oy, HEAVY_VERTICAL);
+		for (int y = oy + 1; y < bottom; ++y) {
+			stroke(ox, y, UP | DOWN);
+			stroke(right, y, UP | DOWN);
 		}
 
-		// Edges.
-		set(ox, oy, HEAVY_DOWN_AND_RIGHT);
-		set(ox, rectangle.height() - 1 + oy, HEAVY_UP_AND_RIGHT);
-		set(rectangle.width() - 1 + ox, oy, HEAVY_DOWN_AND_LEFT);
-		set(rectangle.width() - 1 + ox, rectangle.height() - 1 + oy, HEAVY_UP_AND_LEFT);
+		stroke(ox, oy, RIGHT | DOWN);
+		stroke(right, oy, DOWN | LEFT);
+		stroke(ox, bottom, UP | RIGHT);
+		stroke(right, bottom, UP | LEFT);
 	}
 
+	/**
+	 * Draw the given filled bar. A bar uses painter order and replaces existing
+	 * content. It includes its origin cell and grows towards decreasing y-values.
+	 *
+	 * @param bar the bar to draw
+	 * @throws NullPointerException if {@code bar} is {@code null}
+	 */
 	public void draw(final Bar bar) {
-		for  (int y = 0; y < bar.height(); ++y) {
-			set(bar.x(), bar.y() - y, BLOCK_CHARS[8]);
+		requireNonNull(bar);
+		for (int y = 0; y < bar.height(); ++y) {
+			set(bar.x(), bar.y() - y, FULL_BLOCK);
 		}
 	}
 
-
-
-
-
-	void main() {
+	public static void main() {
 		final var screen = new Screen(80, 20);
 		screen.draw(new Rectangle(2, 2, 76, 16));
 		screen.draw(new Rectangle(15, 7, 30, 30));

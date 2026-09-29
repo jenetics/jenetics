@@ -20,9 +20,23 @@
 package io.jenetics.distassert.internal.screen;
 
 /**
+ * A vertical filled bar. The coordinate {@code (x, y)} denotes its inclusive
+ * bottom cell and the bar grows towards decreasing y-values.
+ *
+ * @param x the horizontal coordinate
+ * @param y the inclusive bottom coordinate
+ * @param height the bar height in character cells
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.3
  * @since 8.3
  */
 public record Bar(int x, int y, int height) {
+	public Bar {
+		if (height < 0) {
+			throw new IllegalArgumentException(
+				"Bar height must not be negative: %d.".formatted(height)
+			);
+		}
+	}
 }
