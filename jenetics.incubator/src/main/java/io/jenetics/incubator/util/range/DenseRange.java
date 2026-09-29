@@ -90,6 +90,11 @@ public final class DenseRange<T> implements Range<T>, Comparable<DenseRange<T>> 
 	}
 
 	@Override
+	public boolean isEmpty() {
+		return start.equals(end);
+	}
+
+	@Override
 	public T get(long index) {
 		Objects.checkIndex(index, size());
 		return witness.next(start, index);

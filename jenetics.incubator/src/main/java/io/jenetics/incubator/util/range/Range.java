@@ -183,9 +183,7 @@ public sealed interface Range<T> extends Iterable<T>
 	 * @return {@code true} if {@code this} range is empty, {@code false}
 	 *         otherwise
 	 */
-	default boolean isEmpty() {
-		return size() == 0;
-	}
+	boolean isEmpty();
 
 	@Override
 	default Iterator<T> iterator() {
