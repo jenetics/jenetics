@@ -30,12 +30,18 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.function.BinaryOperator;
 import java.util.function.Predicate;
 import java.util.stream.Gatherer;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
+ * A list view of a given range, onto an underlying list.
+ *
+ * @param list the underlying list
+ * @param range the index range of the {@code list} projection
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 9.2
  * @since 9.2
@@ -49,6 +55,11 @@ public record ListRange<T>(List<T> list, Range<Integer> range) implements List<T
 		}
 	}
 
+	/**
+	 * Create a new list projection of the whole {@code list} range.
+	 *
+	 * @param list the projected list
+	 */
 	public ListRange(List<T> list) {
 		this(list, Range.INTEGER.dense(0, list.size()));
 	}
@@ -61,11 +72,6 @@ public record ListRange<T>(List<T> list, Range<Integer> range) implements List<T
 	@Override
 	public boolean isEmpty() {
 		return range.isEmpty();
-	}
-
-	@Override
-	public boolean contains(Object o) {
-		return stream().anyMatch(element -> Objects.equals(element, o));
 	}
 
 	@Override
@@ -86,6 +92,11 @@ public record ListRange<T>(List<T> list, Range<Integer> range) implements List<T
 	@Override
 	public T remove(int index) {
 		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public boolean contains(Object o) {
+		return stream().anyMatch(element -> Objects.equals(element, o));
 	}
 
 	@Override
@@ -110,6 +121,11 @@ public record ListRange<T>(List<T> list, Range<Integer> range) implements List<T
 			--index;
 		}
 		return -1;
+	}
+
+	@Override
+	public Iterator<T> iterator() {
+		return listIterator();
 	}
 
 	@Override
@@ -188,11 +204,56 @@ public record ListRange<T>(List<T> list, Range<Integer> range) implements List<T
 	}
 
 	@Override
+	public Stream<T> stream() {
+		return range.stream().map(list::get);
+	}
+
+	@Override
 	public ListRange<T> subList(int fromIndex, int toIndex) {
 		Objects.checkFromToIndex(fromIndex, toIndex, size());
 		return new ListRange<>(list, subRange(fromIndex, toIndex));
 	}
 
+	private Range<Integer> subRange(final int fromIndex, final int toIndex) {
+		return switch (range) {
+			case DenseRange<Integer> dense -> Range.INTEGER.dense(
+				dense.start() + fromIndex,
+				dense.start() + toIndex
+			);
+			case SparseRange<Integer> sparse -> {
+				final var ranges = new ArrayList<Range<Integer>>();
+				int offset = 0;
+
+				for (var part : sparse.ranges()) {
+					final int partSize = (int)part.size();
+					final int start = Math.max(0, fromIndex - offset);
+					final int end = Math.min(partSize, toIndex - offset);
+
+					if (start < end) {
+						ranges.add(Range.INTEGER.dense(
+							part.start() + start,
+							part.start() + end
+						));
+					}
+
+					offset += partSize;
+					if (offset >= toIndex) {
+						break;
+					}
+				}
+
+				yield Range.INTEGER.of(ranges);
+			}
+		};
+	}
+
+	/**
+	 * Return a new list projection by intersecting the range of {@code this}
+	 * list with given {@code ranges} (union).
+	 *
+	 * @param ranges the ranges being part of the new projection
+	 * @return a new list projection
+	 */
 	@SuppressWarnings("unchecked")
 	public ListRange<T> subList(final Range<Integer>... ranges) {
 		final var sub = Range.INTEGER.of(ranges);
@@ -203,9 +264,19 @@ public record ListRange<T>(List<T> list, Range<Integer> range) implements List<T
 		}
 	}
 
-	@Override
-	public Iterator<T> iterator() {
-		return stream().iterator();
+	/**
+	 * Create a new list projection applying the given {@code range} and range
+	 * {@code operation}.
+	 *
+	 * @param operation the range (set) operation
+	 * @param range the other range used in by the {@code operation}
+	 * @return a new list projection
+	 */
+	public ListRange<T> project(
+		final BinaryOperator<Range<Integer>> operation,
+		final Range<Integer> range
+	) {
+		return new ListRange<>(list, operation.apply(this.range, range));
 	}
 
 	@Override
@@ -235,6 +306,11 @@ public record ListRange<T>(List<T> list, Range<Integer> range) implements List<T
 		return result;
 	}
 
+	/**
+	 * Return an unmodifiable copy of {@code this} list projection.
+	 *
+	 * @return an unmodifiable copy of {@code this} list projection
+	 */
 	public List<T> toList() {
 		final int size = size();
 		final var result = new ArrayList<T>(size);
@@ -243,6 +319,10 @@ public record ListRange<T>(List<T> list, Range<Integer> range) implements List<T
 		}
 		return Collections.unmodifiableList(result);
 	}
+
+	/* *************************************************************************
+	 * Unsupported operations.
+	 * ************************************************************************/
 
 	@Override
 	public boolean add(T t) {
@@ -284,58 +364,29 @@ public record ListRange<T>(List<T> list, Range<Integer> range) implements List<T
 		throw new UnsupportedOperationException();
 	}
 
-	@Override
-	public Stream<T> stream() {
-		return range.stream().map(list::get);
-	}
+	/* *************************************************************************
+	 * Static factories.
+	 * ************************************************************************/
 
-	public ListRange<T> intersect(final Range<Integer> range) {
-		return new ListRange<>(list, this.range.intersect(range));
-	}
+	/**
+	 * Create a new list projection with all filtered elements.
+	 *
+	 * @param list the projecting list
+	 * @param filter the element filter
+	 * @return a new list projection with all filtered elements
+	 * @param <T> the element type
+	 */
+	public static <T> ListRange<T>
+	of(final List<T> list, Predicate<? super T> filter) {
+		requireNonNull(list);
+		requireNonNull(filter);
 
-	private Range<Integer> subRange(final int fromIndex, final int toIndex) {
-		return switch (range) {
-			case DenseRange<Integer> dense -> Range.INTEGER.dense(
-				dense.start() + fromIndex,
-				dense.start() + toIndex
-			);
-			case SparseRange<Integer> sparse -> {
-				final var ranges = new ArrayList<Range<Integer>>();
-				int offset = 0;
-
-				for (var part : sparse.ranges()) {
-					final int partSize = (int)part.size();
-					final int start = Math.max(0, fromIndex - offset);
-					final int end = Math.min(partSize, toIndex - offset);
-
-					if (start < end) {
-						ranges.add(Range.INTEGER.dense(
-							part.start() + start,
-							part.start() + end
-						));
-					}
-
-					offset += partSize;
-					if (offset >= toIndex) {
-						break;
-					}
-				}
-
-				yield Range.INTEGER.of(ranges);
-			}
-		};
-	}
-
-	public static <T> ListRange<T> of(final List<T> list, Predicate<? super T> predicate) {
-		requireNonNull(predicate);
-
-		final Range<Integer> range = Range.INTEGER.of(
+		return new ListRange<>(
+			list,
 			list.stream()
-				.gather(rangeOf(predicate))
-				.toList()
+				.gather(rangeOf(filter))
+				.collect(Range.INTEGER.toRange())
 		);
-
-		return new ListRange<>(list, range);
 	}
 
 	/**
@@ -348,11 +399,9 @@ public record ListRange<T>(List<T> list, Range<Integer> range) implements List<T
 	 *     .toList();
 	 *
 	 * // The indexes of the null-values in the list.
-	 * final Range<Integer> nulls = Range.INTEGER.of(
-	 *     list.stream()
-	 *         .gather(ListRange.rangeOf(Objects::isNull))
-	 *         .toList()
-	 * );
+	 * final Range<Integer> nulls = list.stream()
+	 *    .gather(ListRange.rangeOf(Objects::isNull))
+	 *    .collect(Range.INTEGER.toRange());
 	 * }
 	 *
 	 * @param predicate the predicate which defines the element ranges
@@ -415,6 +464,8 @@ public record ListRange<T>(List<T> list, Range<Integer> range) implements List<T
 		IO.println(nulls);
 
 		var sparse = ListRange.of(list, Objects::isNull);
+		sparse.project(Range::union, Range.empty());
+
 		for (final var element : sparse) {
 			if (element != null) {
 				System.out.println("ERROR: " +element);

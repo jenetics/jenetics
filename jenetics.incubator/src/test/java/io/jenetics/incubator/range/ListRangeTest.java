@@ -19,16 +19,17 @@
  */
 package io.jenetics.incubator.range;
 
-import io.jenetics.incubator.util.range.ListRange;
-import io.jenetics.incubator.util.range.Range;
-import org.testng.annotations.Test;
+import static java.util.Arrays.asList;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.util.Arrays.asList;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import org.testng.annotations.Test;
+
+import io.jenetics.incubator.util.range.ListRange;
+import io.jenetics.incubator.util.range.Range;
 
 @SuppressWarnings("unchecked")
 public class ListRangeTest {
@@ -114,7 +115,7 @@ public class ListRangeTest {
 			Range.INTEGER.dense(2, 7)
 		);
 
-		assertThat(range.intersect(Range.INTEGER.dense(4, 6)).toList())
+		assertThat(range.project(Range::intersect, Range.INTEGER.dense(4, 6)).toList())
 			.containsExactly(4, 5);
 	}
 
