@@ -46,9 +46,11 @@ import java.util.stream.Stream;
  * @version 9.2
  * @since 9.2
  */
-public record ListRange<T>(List<T> list, Range<Integer> range) implements List<T> {
+public record ListProjection<T>(List<T> list, Range<Integer> range)
+	implements List<T>
+{
 
-	public ListRange {
+	public ListProjection {
 		if (!range.isEmpty()) {
 			Objects.checkIndex(range.start(), list.size());
 			Objects.checkIndex(range.end() - 1, list.size());
@@ -60,7 +62,7 @@ public record ListRange<T>(List<T> list, Range<Integer> range) implements List<T
 	 *
 	 * @param list the projected list
 	 */
-	public ListRange(List<T> list) {
+	public ListProjection(List<T> list) {
 		this(list, Range.INTEGER.dense(0, list.size()));
 	}
 
@@ -193,7 +195,7 @@ public record ListRange<T>(List<T> list, Range<Integer> range) implements List<T
 				if (last < 0) {
 					throw new IllegalStateException();
 				}
-				ListRange.this.set(last, element);
+				ListProjection.this.set(last, element);
 			}
 
 			@Override
@@ -209,9 +211,9 @@ public record ListRange<T>(List<T> list, Range<Integer> range) implements List<T
 	}
 
 	@Override
-	public ListRange<T> subList(int fromIndex, int toIndex) {
+	public ListProjection<T> subList(int fromIndex, int toIndex) {
 		Objects.checkFromToIndex(fromIndex, toIndex, size());
-		return new ListRange<>(list, subRange(fromIndex, toIndex));
+		return new ListProjection<>(list, subRange(fromIndex, toIndex));
 	}
 
 	private Range<Integer> subRange(final int fromIndex, final int toIndex) {
@@ -255,12 +257,12 @@ public record ListRange<T>(List<T> list, Range<Integer> range) implements List<T
 	 * @return a new list projection
 	 */
 	@SuppressWarnings("unchecked")
-	public ListRange<T> subList(final Range<Integer>... ranges) {
+	public ListProjection<T> subList(final Range<Integer>... ranges) {
 		final var sub = Range.INTEGER.of(ranges);
 		if (sub.contains(range)) {
 			return this;
 		} else {
-			return new ListRange<>(list, range.intersect(sub));
+			return new ListProjection<>(list, range.intersect(sub));
 		}
 	}
 
@@ -272,11 +274,11 @@ public record ListRange<T>(List<T> list, Range<Integer> range) implements List<T
 	 * @param range the other range used in by the {@code operation}
 	 * @return a new list projection
 	 */
-	public ListRange<T> project(
+	public ListProjection<T> project(
 		final BinaryOperator<Range<Integer>> operation,
 		final Range<Integer> range
 	) {
-		return new ListRange<>(list, operation.apply(this.range, range));
+		return new ListProjection<>(list, operation.apply(this.range, range));
 	}
 
 	@Override
@@ -376,12 +378,12 @@ public record ListRange<T>(List<T> list, Range<Integer> range) implements List<T
 	 * @return a new list projection with all filtered elements
 	 * @param <T> the element type
 	 */
-	public static <T> ListRange<T>
+	public static <T> ListProjection<T>
 	of(final List<T> list, Predicate<? super T> filter) {
 		requireNonNull(list);
 		requireNonNull(filter);
 
-		return new ListRange<>(
+		return new ListProjection<>(
 			list,
 			list.stream()
 				.gather(rangeOf(filter))
@@ -392,7 +394,7 @@ public record ListRange<T>(List<T> list, Range<Integer> range) implements List<T
 	/**
 	 * Return a {@link Gatherer} which collects index ranges fulfilling the
 	 * given {@code predicate}.
-	 * {@snippet lang=java:
+	 * {@snippet lang = java:
 	 * // List with null-values
 	 * final List<String> list = IntStream.range(0, 100)
 	 *     .mapToObj(i -> i%10 == 0 ? "value" : null)
@@ -400,9 +402,9 @@ public record ListRange<T>(List<T> list, Range<Integer> range) implements List<T
 	 *
 	 * // The indexes of the null-values in the list.
 	 * final Range<Integer> nulls = list.stream()
-	 *    .gather(ListRange.rangeOf(Objects::isNull))
+	 *    .gather(ListProjection.rangeOf(Objects::isNull))
 	 *    .collect(Range.INTEGER.toRange());
-	 * }
+	 *}
 	 *
 	 * @param predicate the predicate which defines the element ranges
 	 * @return list index ranges of elements which fulfills the given
@@ -458,12 +460,12 @@ public record ListRange<T>(List<T> list, Range<Integer> range) implements List<T
 			.toList();
 
 		final Range<Integer> nulls = list.stream()
-			.gather(ListRange.rangeOf(Predicate.not(Objects::isNull)))
+			.gather(ListProjection.rangeOf(Predicate.not(Objects::isNull)))
 			.collect(Range.INTEGER.toRange());
 
 		IO.println(nulls);
 
-		var sparse = ListRange.of(list, Objects::isNull);
+		var sparse = ListProjection.of(list, Objects::isNull);
 		sparse.project(Range::union, Range.empty());
 
 		for (final var element : sparse) {
@@ -472,7 +474,7 @@ public record ListRange<T>(List<T> list, Range<Integer> range) implements List<T
 			}
 		}
 
-		sparse = ListRange.of(list, Predicate.not(Objects::isNull));
+		sparse = ListProjection.of(list, Predicate.not(Objects::isNull));
 		for (final var element : sparse) {
 			if (element == null) {
 				System.out.println("ERROR: " + element);
