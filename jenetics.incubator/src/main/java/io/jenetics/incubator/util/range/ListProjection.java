@@ -33,7 +33,6 @@ import java.util.Objects;
 import java.util.function.BinaryOperator;
 import java.util.function.Predicate;
 import java.util.stream.Gatherer;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
@@ -452,34 +451,6 @@ public record ListProjection<T>(List<T> list, Range<Integer> range)
 				}
 			}
 		);
-	}
-
-	static void main() {
-		final var list = IntStream.range(0, 100)
-			.mapToObj(i -> i%10 == 0 ? "value" : null)
-			.toList();
-
-		final Range<Integer> nulls = list.stream()
-			.gather(ListProjection.rangeOf(Predicate.not(Objects::isNull)))
-			.collect(Range.INTEGER.toRange());
-
-		IO.println(nulls);
-
-		var sparse = ListProjection.of(list, Objects::isNull);
-		sparse.project(Range::union, Range.empty());
-
-		for (final var element : sparse) {
-			if (element != null) {
-				System.out.println("ERROR: " +element);
-			}
-		}
-
-		sparse = ListProjection.of(list, Predicate.not(Objects::isNull));
-		for (final var element : sparse) {
-			if (element == null) {
-				System.out.println("ERROR: " + element);
-			}
-		}
 	}
 
 }
