@@ -404,7 +404,7 @@ public record ListRange<T>(List<T> list, Range<Integer> range) implements List<T
 			.mapToObj(i -> i%10 == 0 ? "value" : null)
 			.toList();
 
-		final Range<Integer nulls = Range.INTEGER.of(
+		final Range<Integer> nulls = Range.INTEGER.of(
 			list.stream()
 				.gather(ListRange.rangeOf(Predicate.not(Objects::isNull)))
 				.toList()

@@ -19,17 +19,18 @@
  */
 package io.jenetics.incubator.range;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import io.jenetics.incubator.util.range.ListRange;
+import io.jenetics.incubator.util.range.Range;
+import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.testng.annotations.Test;
+import static java.util.Arrays.asList;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import io.jenetics.incubator.util.range.ListRange;
-import io.jenetics.incubator.util.range.Range;
-
+@SuppressWarnings("unchecked")
 public class ListRangeTest {
 
 	@Test
@@ -50,13 +51,13 @@ public class ListRangeTest {
 	@Test
 	void containsAndIndices() {
 		final var range = new ListRange<>(
-			new ArrayList<>(java.util.Arrays.asList("a", "b", "a", null))
+			new ArrayList<>(asList("a", "b", "a", null))
 		);
 
 		assertThat(range.contains("a")).isTrue();
 		assertThat(range.contains(null)).isTrue();
 		assertThat(range.contains("x")).isFalse();
-		assertThat(range.containsAll(java.util.Arrays.asList("a", null))).isTrue();
+		assertThat(range.containsAll(asList("a", null))).isTrue();
 		assertThat(range.indexOf("a")).isEqualTo(0);
 		assertThat(range.lastIndexOf("a")).isEqualTo(2);
 		assertThat(range.indexOf("x")).isEqualTo(-1);
@@ -118,6 +119,60 @@ public class ListRangeTest {
 	}
 
 	@Test
+	void rangeSubListClipsToOneBackingRange() {
+		final var range = new ListRange<>(
+			List.of(0, 1, 2, 3, 4, 5, 6, 7),
+			Range.INTEGER.dense(2, 7)
+		);
+
+		assertThat(range.subList(Range.INTEGER.dense(4, 6)).toList())
+			.containsExactly(4, 5);
+	}
+
+	@Test
+	void rangeSubListCombinesDisjointBackingRanges() {
+		final var range = new ListRange<>(List.of(0, 1, 2, 3, 4, 5, 6, 7));
+
+		assertThat(range.subList(
+			Range.INTEGER.dense(1, 3),
+			Range.INTEGER.dense(5, 7)
+		).toList()).containsExactly(1, 2, 5, 6);
+	}
+
+	@Test
+	void rangeSubListWorksWithSparseBackingRange() {
+		final var range = ListRange.of(
+			List.of(0, 1, 2, 3, 4, 5, 6, 7),
+			value -> value%2 == 0
+		);
+
+		assertThat(range.subList(
+			Range.INTEGER.dense(2, 3),
+			Range.INTEGER.dense(6, 7)
+		).toList()).containsExactly(2, 6);
+	}
+
+	@Test
+	void rangeSubListReturnsEmptyForNoOverlap() {
+		final var range = new ListRange<>(
+			List.of(0, 1, 2, 3),
+			Range.INTEGER.dense(1, 3)
+		);
+
+		assertThat(range.subList(Range.INTEGER.dense(3, 4)).isEmpty()).isTrue();
+	}
+
+	@Test
+	void rangeSubListReturnsThisWhenAlreadyContained() {
+		final var range = new ListRange<>(
+			List.of(0, 1, 2, 3),
+			Range.INTEGER.dense(1, 3)
+		);
+
+		assertThat(range.subList(Range.INTEGER.dense(0, 4))).isSameAs(range);
+	}
+
+	@Test
 	void arraysAndEmptyRanges() {
 		final var empty = new ListRange<>(
 			List.of(),
@@ -136,7 +191,7 @@ public class ListRangeTest {
 	@Test
 	void toListKeepsNullElements() {
 		final var range = new ListRange<>(
-			new ArrayList<>(java.util.Arrays.asList("a", null, "b"))
+			new ArrayList<>(asList("a", null, "b"))
 		);
 
 		assertThat(range.toList()).containsExactly("a", null, "b");

@@ -298,7 +298,7 @@ public record CompositeList<T>(List<List<T>> lists) implements List<T> {
 	public String toString() {
 		return stream()
 			.map(Objects::toString)
-			.collect(Collectors.joining(", ", "[", ""));
+			.collect(Collectors.joining(", ", "[", "]"));
 	}
 
 }
