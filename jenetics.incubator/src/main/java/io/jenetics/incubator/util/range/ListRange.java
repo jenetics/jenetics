@@ -21,10 +21,12 @@ package io.jenetics.incubator.util.range;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.Gatherer;
@@ -39,8 +41,13 @@ import java.util.stream.Stream;
 public record ListRange<T>(List<T> list, Range<Integer> range) implements List<T> {
 
 	public ListRange {
-		Objects.checkIndex(range.start(), list.size());
-		Objects.checkIndex(range.end() - 1, list.size());
+		list = requireNonNull(list);
+		range = requireNonNull(range);
+
+		if (!range.isEmpty()) {
+			Objects.checkIndex(range.start(), list.size());
+			Objects.checkIndex(range.end() - 1, list.size());
+		}
 	}
 
 	public ListRange(List<T> list) {
@@ -58,7 +65,7 @@ public record ListRange<T>(List<T> list, Range<Integer> range) implements List<T
 
 	@Override
 	public boolean contains(Object o) {
-		return false;
+		return stream().anyMatch(element -> Objects.equals(element, o));
 	}
 
 	public T get(int index) {
@@ -82,30 +89,108 @@ public record ListRange<T>(List<T> list, Range<Integer> range) implements List<T
 
 	@Override
 	public int indexOf(Object o) {
-		return 0;
+		int index = 0;
+		for (var element : this) {
+			if (Objects.equals(element, o)) {
+				return index;
+			}
+			++index;
+		}
+		return -1;
 	}
 
 	@Override
 	public int lastIndexOf(Object o) {
-		return 0;
+		int index = size();
+		for (var iterator = listIterator(size()); iterator.hasPrevious();) {
+			if (Objects.equals(iterator.previous(), o)) {
+				return --index;
+			}
+			--index;
+		}
+		return -1;
 	}
 
 	@Override
 	public ListIterator<T> listIterator() {
-		return null;
+		return listIterator(0);
 	}
 
 	@Override
 	public ListIterator<T> listIterator(int index) {
-		return null;
+		if (index < 0 || index > size()) {
+			throw new IndexOutOfBoundsException("Index: %d, size: %d".formatted(index, size()));
+		}
+
+		return new ListIterator<>() {
+			private int cursor = index;
+			private int last = -1;
+
+			@Override
+			public boolean hasNext() {
+				return cursor < size();
+			}
+
+			@Override
+			public T next() {
+				if (!hasNext()) {
+					throw new NoSuchElementException();
+				}
+				last = cursor;
+				return get(cursor++);
+			}
+
+			@Override
+			public boolean hasPrevious() {
+				return cursor > 0;
+			}
+
+			@Override
+			public T previous() {
+				if (!hasPrevious()) {
+					throw new NoSuchElementException();
+				}
+				last = --cursor;
+				return get(cursor);
+			}
+
+			@Override
+			public int nextIndex() {
+				return cursor;
+			}
+
+			@Override
+			public int previousIndex() {
+				return cursor - 1;
+			}
+
+			@Override
+			public void remove() {
+				throw new UnsupportedOperationException();
+			}
+
+			@Override
+			public void set(final T element) {
+				if (last < 0) {
+					throw new IllegalStateException();
+				}
+				ListRange.this.set(last, element);
+			}
+
+			@Override
+			public void add(final T element) {
+				throw new UnsupportedOperationException();
+			}
+		};
 	}
 
 	@Override
 	public ListRange<T> subList(int fromIndex, int toIndex) {
-		final var sub = Range.INTEGER.dense(fromIndex, toIndex);
-		return new ListRange<>(list, range.intersect(sub));
+		Objects.checkFromToIndex(fromIndex, toIndex, size());
+		return new ListRange<>(list, subRange(fromIndex, toIndex));
 	}
 
+	@SuppressWarnings("unchecked")
 	public ListRange<T> subList(final Range<Integer>... ranges) {
 		final var sub = Range.INTEGER.of(ranges);
 		if (sub.contains(range)) {
@@ -146,7 +231,7 @@ public record ListRange<T>(List<T> list, Range<Integer> range) implements List<T
 
 	@Override
 	public boolean containsAll(Collection<?> c) {
-		return false;
+		return c.stream().allMatch(this::contains);
 	}
 
 	@Override
@@ -180,7 +265,40 @@ public record ListRange<T>(List<T> list, Range<Integer> range) implements List<T
 	}
 
 	public ListRange<T> intersect(final Range<Integer> range) {
-		return new ListRange<>(list, range.intersect(range));
+		return new ListRange<>(list, this.range.intersect(range));
+	}
+
+	private Range<Integer> subRange(final int fromIndex, final int toIndex) {
+		return switch (range) {
+			case DenseRange<Integer> dense -> Range.INTEGER.dense(
+				dense.start() + fromIndex,
+				dense.start() + toIndex
+			);
+			case SparseRange<Integer> sparse -> {
+				final var ranges = new ArrayList<Range<Integer>>();
+				int offset = 0;
+
+				for (var part : sparse.ranges()) {
+					final int partSize = (int)part.size();
+					final int start = Math.max(0, fromIndex - offset);
+					final int end = Math.min(partSize, toIndex - offset);
+
+					if (start < end) {
+						ranges.add(Range.INTEGER.dense(
+							part.start() + start,
+							part.start() + end
+						));
+					}
+
+					offset += partSize;
+					if (offset >= toIndex) {
+						break;
+					}
+				}
+
+				yield Range.INTEGER.of(ranges);
+			}
+		};
 	}
 
 	public static <T> ListRange<T> of(final List<T> list, Predicate<? super T> predicate) {
