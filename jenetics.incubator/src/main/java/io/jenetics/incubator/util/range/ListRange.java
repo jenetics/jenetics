@@ -22,7 +22,9 @@ package io.jenetics.incubator.util.range;
 import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -41,9 +43,6 @@ import java.util.stream.Stream;
 public record ListRange<T>(List<T> list, Range<Integer> range) implements List<T> {
 
 	public ListRange {
-		list = requireNonNull(list);
-		range = requireNonNull(range);
-
 		if (!range.isEmpty()) {
 			Objects.checkIndex(range.start(), list.size());
 			Objects.checkIndex(range.end() - 1, list.size());
@@ -207,16 +206,38 @@ public record ListRange<T>(List<T> list, Range<Integer> range) implements List<T
 
 	@Override
 	public Object[] toArray() {
-		return stream().toArray();
+		final var result = new Object[size()];
+		for (int i = 0; i < result.length; ++i) {
+			result[i] = get(i);
+		}
+		return result;
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public <T1> T1[] toArray(T1[] a) {
-		return toList().toArray(a);
+		final int size = size();
+		final T1[] result = a.length >= size
+			? a
+			: Arrays.copyOf(a, size);
+
+		for (int i = 0; i < size; ++i) {
+			result[i] = (T1)get(i);
+		}
+		if (result.length > size) {
+			result[size] = null;
+		}
+
+		return result;
 	}
 
 	public List<T> toList() {
-		return stream().toList();
+		final int size = size();
+		final var result = new ArrayList<T>(size);
+		for (int i = 0; i < size; ++i) {
+			result.add(get(i));
+		}
+		return Collections.unmodifiableList(result);
 	}
 
 	@Override

@@ -128,6 +128,36 @@ public class ListRangeTest {
 		assertThat(empty.isEmpty()).isTrue();
 		assertThat(empty.toArray()).isEmpty();
 		assertThat(range.toArray(new Integer[0])).containsExactly(1, 2, 3);
+		assertThat(range.toList()).containsExactly(1, 2, 3);
+		assertThatThrownBy(() -> range.toList().set(0, 10))
+			.isInstanceOf(UnsupportedOperationException.class);
+	}
+
+	@Test
+	void toListKeepsNullElements() {
+		final var range = new ListRange<>(
+			new ArrayList<>(java.util.Arrays.asList("a", null, "b"))
+		);
+
+		assertThat(range.toList()).containsExactly("a", null, "b");
+	}
+
+	@Test
+	void arrayConversionsReuseAndTerminateArrays() {
+		final var range = new ListRange<>(List.of(1, 2, 3));
+		final var target = new Integer[] {-1, -1, -1, -1};
+
+		assertThat(range.toArray(target)).isSameAs(target);
+		assertThat(target).containsExactly(1, 2, 3, null);
+		assertThat(range.toArray(new Number[0])).containsExactly(1, 2, 3);
+	}
+
+	@Test
+	void arrayConversionsCheckRuntimeComponentType() {
+		final var range = new ListRange<>(List.of(1, 2, 3));
+
+		assertThatThrownBy(() -> range.toArray(new String[0]))
+			.isInstanceOf(ArrayStoreException.class);
 	}
 
 	@Test
