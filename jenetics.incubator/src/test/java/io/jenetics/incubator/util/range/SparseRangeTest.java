@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.range;
+package io.jenetics.incubator.util.range;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -28,10 +28,6 @@ import java.util.stream.Stream;
 
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import io.jenetics.incubator.util.range.DenseRange;
-import io.jenetics.incubator.util.range.Range;
-import io.jenetics.incubator.util.range.SparseRange;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

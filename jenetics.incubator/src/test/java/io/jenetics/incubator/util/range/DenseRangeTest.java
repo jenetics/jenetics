@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.incubator.range;
+package io.jenetics.incubator.util.range;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
