@@ -303,22 +303,22 @@ public final class SparseRange<T> implements Range<T> {
 	 * ********************************************************************/
 
 	@Override
-	public Range<T> difference(Range<T> subtrahend) {
+	public Range<T> minus(Range<T> subtrahend) {
 		return switch (subtrahend) {
-			case DenseRange<T> r -> difference(r);
-			case SparseRange<T> r -> difference(r);
+			case DenseRange<T> r -> minus(r);
+			case SparseRange<T> r -> minus(r);
 		};
 	}
 
-	public Range<T> difference(final DenseRange<T> subtrahend) {
+	public Range<T> minus(final DenseRange<T> subtrahend) {
 		if (isEmpty() || subtrahend.isEmpty()) {
 			return this;
 		}
 
-		return difference(new SparseRange<>(witness, List.of(subtrahend)));
+		return minus(new SparseRange<>(witness, List.of(subtrahend)));
 	}
 
-	public Range<T> difference(final SparseRange<T> subtrahend) {
+	public Range<T> minus(final SparseRange<T> subtrahend) {
 		if (isEmpty() || subtrahend.isEmpty()) {
 			return this;
 		}

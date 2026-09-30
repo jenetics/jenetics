@@ -53,6 +53,7 @@ public record ListRange<T>(List<T> list, Range<Integer> range) implements List<T
 		this(list, Range.INTEGER.dense(0, list.size()));
 	}
 
+	@Override
 	public int size() {
 		return (int)range.size();
 	}
@@ -67,6 +68,7 @@ public record ListRange<T>(List<T> list, Range<Integer> range) implements List<T
 		return stream().anyMatch(element -> Objects.equals(element, o));
 	}
 
+	@Override
 	public T get(int index) {
 		return list.get(range.get(index));
 	}
@@ -101,8 +103,8 @@ public record ListRange<T>(List<T> list, Range<Integer> range) implements List<T
 	@Override
 	public int lastIndexOf(Object o) {
 		int index = size();
-		for (var iterator = listIterator(size()); iterator.hasPrevious();) {
-			if (Objects.equals(iterator.previous(), o)) {
+		for (var it = listIterator(size()); it.hasPrevious();) {
+			if (Objects.equals(it.previous(), o)) {
 				return --index;
 			}
 			--index;
@@ -118,7 +120,9 @@ public record ListRange<T>(List<T> list, Range<Integer> range) implements List<T
 	@Override
 	public ListIterator<T> listIterator(int index) {
 		if (index < 0 || index > size()) {
-			throw new IndexOutOfBoundsException("Index: %d, size: %d".formatted(index, size()));
+			throw new IndexOutOfBoundsException(
+				"Index: %d, size: %d".formatted(index, size())
+			);
 		}
 
 		return new ListIterator<>() {
@@ -404,11 +408,11 @@ public record ListRange<T>(List<T> list, Range<Integer> range) implements List<T
 			.mapToObj(i -> i%10 == 0 ? "value" : null)
 			.toList();
 
-		final Range<Integer> nulls = Range.INTEGER.of(
-			list.stream()
-				.gather(ListRange.rangeOf(Predicate.not(Objects::isNull)))
-				.toList()
-		);
+		final Range<Integer> nulls = list.stream()
+			.gather(ListRange.rangeOf(Predicate.not(Objects::isNull)))
+			.collect(Range.INTEGER.toRange());
+
+		IO.println(nulls);
 
 		var sparse = ListRange.of(list, Objects::isNull);
 		for (final var element : sparse) {

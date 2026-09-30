@@ -227,14 +227,14 @@ public final class DenseRange<T> implements Range<T>, Comparable<DenseRange<T>> 
 	 * ********************************************************************/
 
 	@Override
-	public Range<T> difference(Range<T> subtrahend) {
+	public Range<T> minus(Range<T> subtrahend) {
 		return switch (subtrahend) {
-			case DenseRange<T> r -> difference(r);
-			case SparseRange<T> r -> difference(r);
+			case DenseRange<T> r -> minus(r);
+			case SparseRange<T> r -> minus(r);
 		};
 	}
 
-	public Range<T> difference(final DenseRange<T> subtrahend) {
+	public Range<T> minus(final DenseRange<T> subtrahend) {
 		if (isEmpty() || subtrahend.isEmpty() ||
 			!witness.isAfter(subtrahend.end, start) ||
 			!witness.isBefore(subtrahend.start, end))
@@ -261,11 +261,11 @@ public final class DenseRange<T> implements Range<T>, Comparable<DenseRange<T>> 
 		}
 	}
 
-	public Range<T> difference(final SparseRange<T> subtrahend) {
+	public Range<T> minus(final SparseRange<T> subtrahend) {
 		if (isEmpty() || subtrahend.isEmpty()) {
 			return this;
 		} else {
-			return new SparseRange<>(witness, List.of(this)).difference(subtrahend);
+			return new SparseRange<>(witness, List.of(this)).minus(subtrahend);
 		}
 	}
 

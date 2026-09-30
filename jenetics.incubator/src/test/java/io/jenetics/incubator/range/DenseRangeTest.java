@@ -231,7 +231,7 @@ public class DenseRangeTest {
 		final Range<LocalDate> b,
 		final Range<LocalDate> expected
 	) {
-		assertThat(a.difference(b)).isEqualTo(expected);
+		assertThat(a.minus(b)).isEqualTo(expected);
 	}
 
 	@DataProvider

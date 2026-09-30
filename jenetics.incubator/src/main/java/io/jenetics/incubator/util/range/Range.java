@@ -24,6 +24,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
@@ -153,6 +155,10 @@ public sealed interface Range<T> extends Iterable<T>
 			return empty;
 		}
 
+		public Collector<Range<T>, ?, Range<T>> toRange() {
+			return Range.toRange(witness);
+		}
+
 		/**
 		 * Return a range factory with the given integral type {@code witness}.
 		 *
@@ -256,7 +262,7 @@ public sealed interface Range<T> extends Iterable<T>
 	 * @param subtrahend the ranges to subtract
 	 * @return the range difference
 	 */
-	Range<T> difference(Range<T> subtrahend);
+	Range<T> minus(Range<T> subtrahend);
 
 
 	/* *********************************************************************
@@ -363,6 +369,13 @@ public sealed interface Range<T> extends Iterable<T>
 	 */
 	static <T> Range<T> empty() {
 		return SparseRange.empty();
+	}
+
+	static <T> Collector<Range<T>, ?, Range<T>> toRange(Integral<T> witness) {
+		return Collectors.collectingAndThen(
+			Collectors.toUnmodifiableList(),
+			ranges -> Range.of(witness, ranges)
+		);
 	}
 
 }

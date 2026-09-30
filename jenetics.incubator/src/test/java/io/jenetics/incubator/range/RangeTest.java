@@ -76,7 +76,7 @@ public class RangeTest {
 		final var expected = dates(left.range);
 		expected.removeAll(dates(right.range));
 
-		assertDates(left.range.difference(right.range), expected);
+		assertDates(left.range.minus(right.range), expected);
 	}
 
 	@Test
@@ -94,7 +94,7 @@ public class RangeTest {
 		final var minuend = sparse(1, 6, 8, 13, 15, 20, 22, 28);
 		final var subtrahend = sparse(1, 2, 4, 9, 11, 16, 18, 24, 26, 30);
 
-		assertThat((Object)minuend.difference(subtrahend)).isEqualTo(
+		assertThat((Object)minuend.minus(subtrahend)).isEqualTo(
 			sparse(2, 4, 9, 11, 16, 18, 24, 26)
 		);
 	}
