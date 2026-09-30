@@ -8,6 +8,7 @@ import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.function.Predicate.not;
 
@@ -17,7 +18,7 @@ import static java.util.function.Predicate.not;
  * @param lists the underlying lists
  * @param <T> the list element type
  */
-public record CompositeList<T>(List<List<T>> lists) implements List<T> {
+record CompositeList<T>(List<? extends List<T>> lists) implements List<T> {
 
 	public CompositeList {
 		lists = lists.stream()
@@ -46,7 +47,7 @@ public record CompositeList<T>(List<List<T>> lists) implements List<T> {
 
 	@Override
 	public Iterator<T> iterator() {
-		return listIterator();
+		return stream().iterator();
 	}
 
 	@Override
@@ -254,6 +255,11 @@ public record CompositeList<T>(List<List<T>> lists) implements List<T> {
 				throw new UnsupportedOperationException();
 			}
 		};
+	}
+
+	@Override
+	public Stream<T> stream() {
+		return lists.stream().flatMap(List::stream);
 	}
 
 	@Override

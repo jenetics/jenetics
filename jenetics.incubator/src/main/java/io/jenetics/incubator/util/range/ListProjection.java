@@ -391,6 +391,28 @@ public record ListProjection<T>(List<T> list, Range<Integer> range)
 	}
 
 	/**
+	 * Return a flattened list projection of the given list of lists.
+	 *
+	 * @param lists the list of lists
+	 * @return a flattened list projection
+	 * @param <T> the element type
+	 */
+	public static <T> List<T> concat(final List<? extends List<T>> lists) {
+		return new CompositeList<>(lists);
+	}
+
+	/**
+	 * Return a flattened list projection of the given array of lists.
+	 *
+	 * @param lists the array of lists
+	 * @return a flattened list projection
+	 * @param <T> the element type
+	 */
+	public static <T> List<T> concat(final List<T>... lists) {
+		return concat(Arrays.asList(lists));
+	}
+
+	/**
 	 * Return a {@link Gatherer} which collects index ranges fulfilling the
 	 * given {@code predicate}.
 	 * {@snippet lang = java:
