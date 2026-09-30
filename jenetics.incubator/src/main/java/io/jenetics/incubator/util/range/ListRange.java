@@ -334,6 +334,28 @@ public record ListRange<T>(List<T> list, Range<Integer> range) implements List<T
 		return new ListRange<>(list, range);
 	}
 
+	/**
+	 * Return a {@link Gatherer} which collects index ranges fulfilling the
+	 * given {@code predicate}.
+	 * {@snippet lang=java:
+	 * // List with null-values
+	 * final List<String> list = IntStream.range(0, 100)
+	 *     .mapToObj(i -> i%10 == 0 ? "value" : null)
+	 *     .toList();
+	 *
+	 * // The indexes of the null-values in the list.
+	 * final Range<Integer> nulls = Range.INTEGER.of(
+	 *     list.stream()
+	 *         .gather(ListRange.rangeOf(Objects::isNull))
+	 *         .toList()
+	 * );
+	 * }
+	 *
+	 * @param predicate the predicate which defines the element ranges
+	 * @return list index ranges of elements which fulfills the given
+	 *         {@code predicate}
+	 * @param <T> the element type
+	 */
 	public static <T> Gatherer<T, ?, Range<Integer>>
 	rangeOf(Predicate<? super T> predicate) {
 		requireNonNull(predicate);
@@ -381,6 +403,12 @@ public record ListRange<T>(List<T> list, Range<Integer> range) implements List<T
 		final var list = IntStream.range(0, 100)
 			.mapToObj(i -> i%10 == 0 ? "value" : null)
 			.toList();
+
+		final Range<Integer nulls = Range.INTEGER.of(
+			list.stream()
+				.gather(ListRange.rangeOf(Predicate.not(Objects::isNull)))
+				.toList()
+		);
 
 		var sparse = ListRange.of(list, Objects::isNull);
 		for (final var element : sparse) {
