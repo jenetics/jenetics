@@ -19,8 +19,6 @@
  */
 package io.jenetics.incubator.util.range;
 
-import static java.util.Objects.requireNonNull;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -32,28 +30,30 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.function.BinaryOperator;
 import java.util.function.Predicate;
-import java.util.stream.Gatherer;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * A list view of a given range, onto an underlying list.
- *
- * @param list the underlying list
- * @param range the index range of the {@code list} projection
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 9.2
  * @since 9.2
  */
-public record ListProjection<T>(List<T> list, Range<Integer> range)
-	implements List<T>
-{
+public class ListProjection<T> implements List<T> {
 
-	public ListProjection {
+	private final List<T> list;
+	private final Range<Integer> range;
+
+	private ListProjection(List<T> list, Range<Integer> range) {
 		if (!range.isEmpty()) {
 			Objects.checkIndex(range.start(), list.size());
 			Objects.checkIndex(range.end() - 1, list.size());
 		}
+		this.list = list;
+		this.range = range;
 	}
 
 	/**
@@ -321,6 +321,45 @@ public record ListProjection<T>(List<T> list, Range<Integer> range)
 		return Collections.unmodifiableList(result);
 	}
 
+	@Override
+	public int hashCode() {
+		int hash = 1;
+		for (var element : this) {
+			hash = 31*hash + (element == null ? 0 : element.hashCode());
+		}
+		return hash;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == this) {
+			return true;
+		} else if (!(obj instanceof List<?>)) {
+			return false;
+		}
+
+		final var other = (List<?>)obj;
+		if (other.size() != size()) {
+			return false;
+		}
+
+		final var left = iterator();
+		final var right = other.iterator();
+		while (left.hasNext()) {
+			if (!Objects.equals(left.next(), right.next())) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return stream()
+			.map(Objects::toString)
+			.collect(Collectors.joining(", ", "[", "]"));
+	}
+
 	/* *************************************************************************
 	 * Unsupported operations.
 	 * ************************************************************************/
@@ -365,9 +404,25 @@ public record ListProjection<T>(List<T> list, Range<Integer> range)
 		throw new UnsupportedOperationException();
 	}
 
+
 	/* *************************************************************************
 	 * Static factories.
 	 * ************************************************************************/
+
+	/**
+	 * Create a new list projection with all filtered elements.
+	 *
+	 * @param list the projecting list
+	 * @param range the element range of the given {@code list}
+	 * @return a new list projection with all filtered elements
+	 * @param <T> the element type
+	 * @throws IndexOutOfBoundsException if the {@code range} is invalid for the
+	 *         given {@code list}
+	 */
+	public static <T> ListProjection<T>
+	of(final List<T> list, final Range<Integer> range) {
+		return new ListProjection<>(list, range);
+	}
 
 	/**
 	 * Create a new list projection with all filtered elements.
@@ -385,7 +440,7 @@ public record ListProjection<T>(List<T> list, Range<Integer> range)
 		return new ListProjection<>(
 			list,
 			list.stream()
-				.gather(rangeOf(filter))
+				.gather(Ranges.rangeOf(filter))
 				.collect(Range.INTEGER.toRange())
 		);
 	}
@@ -410,69 +465,6 @@ public record ListProjection<T>(List<T> list, Range<Integer> range)
 	 */
 	public static <T> List<T> concat(final List<T>... lists) {
 		return concat(Arrays.asList(lists));
-	}
-
-	/**
-	 * Return a {@link Gatherer} which collects index ranges fulfilling the
-	 * given {@code predicate}.
-	 * {@snippet lang = java:
-	 * // List with null-values
-	 * final List<String> list = IntStream.range(0, 100)
-	 *     .mapToObj(i -> i%10 == 0 ? "value" : null)
-	 *     .toList();
-	 *
-	 * // The indexes of the null-values in the list.
-	 * final Range<Integer> nulls = list.stream()
-	 *    .gather(ListProjection.rangeOf(Objects::isNull))
-	 *    .collect(Range.INTEGER.toRange());
-	 *}
-	 *
-	 * @param predicate the predicate which defines the element ranges
-	 * @return list index ranges of elements which fulfills the given
-	 *         {@code predicate}
-	 * @param <T> the element type
-	 */
-	public static <T> Gatherer<T, ?, Range<Integer>>
-	rangeOf(Predicate<? super T> predicate) {
-		requireNonNull(predicate);
-
-		final class State {
-			int count = 0;
-			int start = -1;
-		}
-
-		return Gatherer.ofSequential(
-			State::new,
-			(state, element, downstream) -> {
-				if (predicate.test(element)) {
-					if (state.start == -1) {
-						state.start = state.count;
-					}
-				} else {
-					if (state.start != -1) {
-						final var range = Range.INTEGER.dense(
-							state.start,
-							state.count
-						);
-						downstream.push(range);
-
-						state.start = -1;
-					}
-				}
-
-				++state.count;
-				return true;
-			},
-			(state, downstream) -> {
-				if (state.start != -1) {
-					final var range = Range.INTEGER.dense(
-						state.start,
-						state.count
-					);
-					downstream.push(range);
-				}
-			}
-		);
 	}
 
 }
