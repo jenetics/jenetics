@@ -26,7 +26,7 @@ package io.jenetics.distassert.internal.screen;
  */
 final class DrawChars {
 
-	public static final char LIGHT_HORIZONTAL = '_';
+	public static final char LIGHT_HORIZONTAL = '─';
 	public static final char HEAVY_HORIZONTAL = '━';
 	public static final char LIGHT_VERTICAL = '│';
 	public static final char HEAVY_VERTICAL = '┃';
@@ -154,6 +154,45 @@ final class DrawChars {
 	public static final char LIGHT_UP_AND_HEAVY_DOWN = '╽';
 	public static final char HEAVY_LEFT_AND_LIGHT_RIGHT = '╾';
 	public static final char HEAVY_UP_AND_LIGHT_DOWN = '╿';
+	public static final char FULL_BLOCK = '█';
+
+	static final char[] LIGHT_STROKE_CHARS = {
+		' ',
+		LIGHT_UP,
+		LIGHT_RIGHT,
+		LIGHT_UP_AND_RIGHT,
+		LIGHT_DOWN,
+		LIGHT_VERTICAL,
+		LIGHT_DOWN_AND_RIGHT,
+		LIGHT_VERTICAL_AND_RIGHT,
+		LIGHT_LEFT,
+		LIGHT_UP_AND_LEFT,
+		LIGHT_HORIZONTAL,
+		LIGHT_UP_AND_HORIZONTAL,
+		LIGHT_DOWN_AND_LEFT,
+		LIGHT_VERTICAL_AND_LEFT,
+		LIGHT_DOWN_AND_HORIZONTAL,
+		LIGHT_VERTICAL_AND_HORIZONTAL
+	};
+
+	static final char[] HEAVY_STROKE_CHARS = {
+		' ',
+		HEAVY_UP,
+		HEAVY_RIGHT,
+		HEAVY_UP_AND_RIGHT,
+		HEAVY_DOWN,
+		HEAVY_VERTICAL,
+		HEAVY_DOWN_AND_RIGHT,
+		HEAVY_VERTICAL_AND_RIGHT,
+		HEAVY_LEFT,
+		HEAVY_UP_AND_LEFT,
+		HEAVY_HORIZONTAL,
+		HEAVY_UP_AND_HORIZONTAL,
+		HEAVY_DOWN_AND_LEFT,
+		HEAVY_VERTICAL_AND_LEFT,
+		HEAVY_DOWN_AND_HORIZONTAL,
+		HEAVY_VERTICAL_AND_HORIZONTAL
+	};
 
 	//           0    1    2    3    4    5    6    7    8    9    A    B    C    D    E    F
 	// U+250x    ─    ━    │    ┃    ┄    ┅    ┆    ┇    ┈    ┉    ┊    ┋    ┌    ┍    ┎    ┏
@@ -166,7 +205,7 @@ final class DrawChars {
 	// U+257x    ╰    ╱    ╲    ╳    ╴    ╵    ╶    ╷    ╸    ╹    ╺    ╻    ╼    ╽    ╾    ╿
 	static final char[] BOX_CHARS = {
 		// Light and heavy solid lines
-		'_', //   0: LIGHT HORIZONTAL
+		'─', //   0: LIGHT HORIZONTAL
 		'━', //   1: HEAVY HORIZONTAL
 		'│', //   2: LIGHT VERTICAL
 		'┃', //   3: HEAVY VERTICAL

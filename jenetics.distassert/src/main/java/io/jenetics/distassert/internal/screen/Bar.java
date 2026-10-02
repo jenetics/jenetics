@@ -20,9 +20,37 @@
 package io.jenetics.distassert.internal.screen;
 
 /**
+ * A vertical filled bar. The coordinate {@code (x, y)} denotes its inclusive
+ * bottom cell and the bar grows towards decreasing y-values.
+ *
+ * @param x the horizontal coordinate
+ * @param y the inclusive bottom coordinate
+ * @param width the bar width in character cells
+ * @param height the number of completely filled character rows
+ * @param fraction the filled fraction of the additional top row, in the range
+ *        {@code [0, 1)}
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 8.3
  * @since 8.3
  */
-public record Bar(int x, int y, int height) {
+public record Bar(int x, int y, int width, int height, double fraction) {
+	public Bar {
+		if (width < 1 || height < 0 ||
+			!Double.isFinite(fraction) || fraction < 0 || fraction >= 1)
+		{
+			throw new IllegalArgumentException(
+				"Invalid bar dimensions: %dx%d, fraction %s."
+					.formatted(width, height, fraction)
+			);
+		}
+	}
+
+	public Bar(final int x, final int y, final int width, final int height) {
+		this(x, y, width, height, 0);
+	}
+
+	public Bar(final int x, final int y, final int height) {
+		this(x, y, 1, height, 0);
+	}
 }

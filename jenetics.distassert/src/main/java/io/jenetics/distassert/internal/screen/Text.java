@@ -19,30 +19,21 @@
  */
 package io.jenetics.distassert.internal.screen;
 
+import static java.util.Objects.requireNonNull;
+
 /**
- * A rectangular outline. Width and height are measured in character cells and
- * include the border cells.
+ * A horizontal text primitive.
  *
- * @param x the left coordinate
- * @param y the top coordinate
- * @param width the width in character cells, at least two
- * @param height the height in character cells, at least two
+ * @param x the horizontal coordinate of the first character
+ * @param y the vertical coordinate
+ * @param value the text value
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 8.3
- * @since 8.3
+ * @version 9.2
+ * @since 9.2
  */
-public record Rectangle(int x, int y, int width, int height) {
-	public Rectangle {
-		if (width < 2 || height < 2) {
-			throw new IllegalArgumentException(
-				"Rectangle dimensions must be at least two: %dx%d."
-					.formatted(width, height)
-			);
-		}
-	}
-
-	public Rectangle(int width, int height) {
-		this(0, 0, width, height);
+public record Text(int x, int y, String value) {
+	public Text {
+		requireNonNull(value);
 	}
 }
