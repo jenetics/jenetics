@@ -265,7 +265,7 @@ record CompositeList<T>(List<? extends List<T>> lists) implements List<T> {
 	@Override
 	public List<T> subList(int fromIndex, int toIndex) {
 		Objects.checkFromToIndex(fromIndex, toIndex, size());
-		return ListProjection.of(this, Range.INTEGER.dense(fromIndex, toIndex));
+		return ListView.of(this, Range.INTEGER.dense(fromIndex, toIndex));
 	}
 
 	@Override

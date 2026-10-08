@@ -42,12 +42,12 @@ import static java.util.Objects.requireNonNull;
  * @version 9.2
  * @since 9.2
  */
-public class ListProjection<T> implements List<T> {
+public class ListView<T> implements List<T> {
 
 	private final List<T> list;
 	private final Range<Integer> range;
 
-	private ListProjection(List<T> list, Range<Integer> range) {
+	private ListView(List<T> list, Range<Integer> range) {
 		if (!range.isEmpty()) {
 			Objects.checkIndex(range.start(), list.size());
 			Objects.checkIndex(range.end() - 1, list.size());
@@ -61,7 +61,7 @@ public class ListProjection<T> implements List<T> {
 	 *
 	 * @param list the projected list
 	 */
-	public ListProjection(List<T> list) {
+	public ListView(List<T> list) {
 		this(list, Range.INTEGER.dense(0, list.size()));
 	}
 
@@ -194,7 +194,7 @@ public class ListProjection<T> implements List<T> {
 				if (last < 0) {
 					throw new IllegalStateException();
 				}
-				ListProjection.this.set(last, element);
+				ListView.this.set(last, element);
 			}
 
 			@Override
@@ -210,9 +210,9 @@ public class ListProjection<T> implements List<T> {
 	}
 
 	@Override
-	public ListProjection<T> subList(int fromIndex, int toIndex) {
+	public ListView<T> subList(int fromIndex, int toIndex) {
 		Objects.checkFromToIndex(fromIndex, toIndex, size());
-		return new ListProjection<>(list, subRange(fromIndex, toIndex));
+		return new ListView<>(list, subRange(fromIndex, toIndex));
 	}
 
 	private Range<Integer> subRange(final int fromIndex, final int toIndex) {
@@ -256,12 +256,12 @@ public class ListProjection<T> implements List<T> {
 	 * @return a new list projection
 	 */
 	@SuppressWarnings("unchecked")
-	public ListProjection<T> subList(final Range<Integer>... ranges) {
+	public ListView<T> subList(final Range<Integer>... ranges) {
 		final var sub = Range.INTEGER.of(ranges);
 		if (sub.contains(range)) {
 			return this;
 		} else {
-			return new ListProjection<>(list, range.intersect(sub));
+			return new ListView<>(list, range.intersect(sub));
 		}
 	}
 
@@ -273,11 +273,11 @@ public class ListProjection<T> implements List<T> {
 	 * @param range the other range used in by the {@code operation}
 	 * @return a new list projection
 	 */
-	public ListProjection<T> project(
+	public ListView<T> project(
 		final BinaryOperator<Range<Integer>> operation,
 		final Range<Integer> range
 	) {
-		return new ListProjection<>(list, operation.apply(this.range, range));
+		return new ListView<>(list, operation.apply(this.range, range));
 	}
 
 	@Override
@@ -419,9 +419,9 @@ public class ListProjection<T> implements List<T> {
 	 * @throws IndexOutOfBoundsException if the {@code range} is invalid for the
 	 *         given {@code list}
 	 */
-	public static <T> ListProjection<T>
+	public static <T> ListView<T>
 	of(final List<T> list, final Range<Integer> range) {
-		return new ListProjection<>(list, range);
+		return new ListView<>(list, range);
 	}
 
 	/**
@@ -432,12 +432,12 @@ public class ListProjection<T> implements List<T> {
 	 * @return a new list projection with all filtered elements
 	 * @param <T> the element type
 	 */
-	public static <T> ListProjection<T>
+	public static <T> ListView<T>
 	of(final List<T> list, Predicate<? super T> filter) {
 		requireNonNull(list);
 		requireNonNull(filter);
 
-		return new ListProjection<>(
+		return new ListView<>(
 			list,
 			list.stream()
 				.gather(Ranges.rangeOf(filter))

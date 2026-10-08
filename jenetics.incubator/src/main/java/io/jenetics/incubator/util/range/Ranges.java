@@ -35,16 +35,16 @@ public final class Ranges {
 	 * Return a {@link Gatherer} which collects index ranges fulfilling the
 	 * given {@code predicate}.
 	 * {@snippet lang = java:
-	 * // List with null-values
-	 * final List<String> list = IntStream.range(0, 100)
-	 *     .mapToObj(i -> i%10 == 0 ? "value" : null)
-	 *     .toList();
-	 *
-	 * // The indexes of the null-values in the list.
-	 * final Range<Integer> nulls = list.stream()
-	 *    .gather(ListProjection.rangeOf(Objects::isNull))
-	 *    .collect(Range.INTEGER.toRange());
-	 *}
+     * // List with null-values
+     * final List<String> list = IntStream.range(0, 100)
+     *     .mapToObj(i -> i%10 == 0 ? "value" : null)
+     *     .toList();
+     *
+     * // The indexes of the null-values in the list.
+     * final Range<Integer> nulls = list.stream()
+     *    .gather(Ranges.rangeOf(Objects::isNull))
+     *    .collect(Range.INTEGER.toRange());
+     *}
 	 *
 	 * @param predicate the predicate which defines the element ranges
 	 * @return list index ranges of elements which fulfills the given

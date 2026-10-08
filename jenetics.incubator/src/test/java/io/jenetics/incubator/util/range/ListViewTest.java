@@ -28,16 +28,13 @@ import java.util.List;
 
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.util.range.ListProjection;
-import io.jenetics.incubator.util.range.Range;
-
 @SuppressWarnings("unchecked")
-public class ListProjectionTest {
+public class ListViewTest {
 
 	@Test
 	void basicListView() {
 		final var backing = new ArrayList<>(List.of(0, 1, 2, 3, 4, 5));
-		final var range = new ListProjection<>(backing, Range.INTEGER.dense(1, 5));
+		final var range = new ListView<>(backing, Range.INTEGER.dense(1, 5));
 
 		assertThat(range.size()).isEqualTo(4);
 		assertThat(range.isEmpty()).isFalse();
@@ -51,7 +48,7 @@ public class ListProjectionTest {
 
 	@Test
 	void containsAndIndices() {
-		final var range = new ListProjection<>(
+		final var range = new ListView<>(
 			new ArrayList<>(asList("a", "b", "a", null))
 		);
 
@@ -68,7 +65,7 @@ public class ListProjectionTest {
 	@Test
 	void listIteratorSupportsNavigationAndSet() {
 		final var backing = new ArrayList<>(List.of(0, 1, 2, 3));
-		final var range = new ListProjection<>(backing, Range.INTEGER.dense(1, 4));
+		final var range = new ListView<>(backing, Range.INTEGER.dense(1, 4));
 		final var iterator = range.listIterator(1);
 
 		assertThat(iterator.nextIndex()).isEqualTo(1);
@@ -89,7 +86,7 @@ public class ListProjectionTest {
 	@Test
 	void denseSubListUsesLogicalIndices() {
 		final var backing = new ArrayList<>(List.of(0, 1, 2, 3, 4, 5, 6));
-		final var range = new ListProjection<>(backing, Range.INTEGER.dense(2, 7));
+		final var range = new ListView<>(backing, Range.INTEGER.dense(2, 7));
 
 		assertThat(range.subList(1, 4).toList()).containsExactly(3, 4, 5);
 		assertThat(range.subList(0, 0).isEmpty()).isTrue();
@@ -99,7 +96,7 @@ public class ListProjectionTest {
 
 	@Test
 	void sparseSubListUsesLogicalIndices() {
-		final var range = ListProjection.of(
+		final var range = ListView.of(
 			List.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9),
 			value -> value%2 == 0
 		);
@@ -110,7 +107,7 @@ public class ListProjectionTest {
 
 	@Test
 	void intersectUsesTheBackingRange() {
-		final var range = new ListProjection<>(
+		final var range = new ListView<>(
 			List.of(0, 1, 2, 3, 4, 5, 6, 7),
 			Range.INTEGER.dense(2, 7)
 		);
@@ -121,7 +118,7 @@ public class ListProjectionTest {
 
 	@Test
 	void rangeSubListClipsToOneBackingRange() {
-		final var range = new ListProjection<>(
+		final var range = new ListView<>(
 			List.of(0, 1, 2, 3, 4, 5, 6, 7),
 			Range.INTEGER.dense(2, 7)
 		);
@@ -132,7 +129,7 @@ public class ListProjectionTest {
 
 	@Test
 	void rangeSubListCombinesDisjointBackingRanges() {
-		final var range = new ListProjection<>(List.of(0, 1, 2, 3, 4, 5, 6, 7));
+		final var range = new ListView<>(List.of(0, 1, 2, 3, 4, 5, 6, 7));
 
 		assertThat(range.subList(
 			Range.INTEGER.dense(1, 3),
@@ -142,7 +139,7 @@ public class ListProjectionTest {
 
 	@Test
 	void rangeSubListWorksWithSparseBackingRange() {
-		final var range = ListProjection.of(
+		final var range = ListView.of(
 			List.of(0, 1, 2, 3, 4, 5, 6, 7),
 			value -> value%2 == 0
 		);
@@ -155,7 +152,7 @@ public class ListProjectionTest {
 
 	@Test
 	void rangeSubListReturnsEmptyForNoOverlap() {
-		final var range = new ListProjection<>(
+		final var range = new ListView<>(
 			List.of(0, 1, 2, 3),
 			Range.INTEGER.dense(1, 3)
 		);
@@ -165,7 +162,7 @@ public class ListProjectionTest {
 
 	@Test
 	void rangeSubListReturnsThisWhenAlreadyContained() {
-		final var range = new ListProjection<>(
+		final var range = new ListView<>(
 			List.of(0, 1, 2, 3),
 			Range.INTEGER.dense(1, 3)
 		);
@@ -175,11 +172,11 @@ public class ListProjectionTest {
 
 	@Test
 	void arraysAndEmptyRanges() {
-		final var empty = new ListProjection<>(
+		final var empty = new ListView<>(
 			List.of(),
 			Range.INTEGER.dense(0, 0)
 		);
-		final var range = new ListProjection<>(List.of(1, 2, 3));
+		final var range = new ListView<>(List.of(1, 2, 3));
 
 		assertThat(empty.isEmpty()).isTrue();
 		assertThat(empty.toArray()).isEmpty();
@@ -191,7 +188,7 @@ public class ListProjectionTest {
 
 	@Test
 	void toListKeepsNullElements() {
-		final var range = new ListProjection<>(
+		final var range = new ListView<>(
 			new ArrayList<>(asList("a", null, "b"))
 		);
 
@@ -200,7 +197,7 @@ public class ListProjectionTest {
 
 	@Test
 	void arrayConversionsReuseAndTerminateArrays() {
-		final var range = new ListProjection<>(List.of(1, 2, 3));
+		final var range = new ListView<>(List.of(1, 2, 3));
 		final var target = new Integer[] {-1, -1, -1, -1};
 
 		assertThat(range.toArray(target)).isSameAs(target);
@@ -210,7 +207,7 @@ public class ListProjectionTest {
 
 	@Test
 	void arrayConversionsCheckRuntimeComponentType() {
-		final var range = new ListProjection<>(List.of(1, 2, 3));
+		final var range = new ListView<>(List.of(1, 2, 3));
 
 		assertThatThrownBy(() -> range.toArray(new String[0]))
 			.isInstanceOf(ArrayStoreException.class);
@@ -219,10 +216,10 @@ public class ListProjectionTest {
 	@Test
 	void rejectInvalidRangesAndSubLists() {
 		assertThatThrownBy
-			(() -> new ListProjection<>(List.of(1), Range.INTEGER.dense(0, 2)))
+			(() -> new ListView<>(List.of(1), Range.INTEGER.dense(0, 2)))
 			.isInstanceOf(IndexOutOfBoundsException.class);
 
-		final var range = new ListProjection<>(List.of(1, 2, 3));
+		final var range = new ListView<>(List.of(1, 2, 3));
 		assertThatThrownBy(() -> range.subList(-1, 1))
 			.isInstanceOf(IndexOutOfBoundsException.class);
 		assertThatThrownBy(() -> range.subList(2, 1))
