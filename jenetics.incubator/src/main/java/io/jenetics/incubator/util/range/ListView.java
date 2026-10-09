@@ -19,21 +19,17 @@
  */
 package io.jenetics.incubator.util.range;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.function.BinaryOperator;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * A list view of a given range, onto an underlying list.
@@ -42,12 +38,12 @@ import static java.util.Objects.requireNonNull;
  * @version 9.2
  * @since 9.2
  */
-public class ListView<T> implements List<T> {
+public final class ListView<T> extends AbstractList<T> {
 
 	private final List<T> list;
 	private final Range<Integer> range;
 
-	private ListView(List<T> list, Range<Integer> range) {
+	public ListView(List<T> list, Range<Integer> range) {
 		if (!range.isEmpty()) {
 			Objects.checkIndex(range.start(), list.size());
 			Objects.checkIndex(range.end() - 1, list.size());
@@ -86,122 +82,8 @@ public class ListView<T> implements List<T> {
 	}
 
 	@Override
-	public void add(int index, T element) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public T remove(int index) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
 	public boolean contains(Object o) {
 		return stream().anyMatch(element -> Objects.equals(element, o));
-	}
-
-	@Override
-	public int indexOf(Object o) {
-		int index = 0;
-		for (var element : this) {
-			if (Objects.equals(element, o)) {
-				return index;
-			}
-			++index;
-		}
-		return -1;
-	}
-
-	@Override
-	public int lastIndexOf(Object o) {
-		int index = size();
-		for (var it = listIterator(size()); it.hasPrevious();) {
-			if (Objects.equals(it.previous(), o)) {
-				return --index;
-			}
-			--index;
-		}
-		return -1;
-	}
-
-	@Override
-	public Iterator<T> iterator() {
-		return listIterator();
-	}
-
-	@Override
-	public ListIterator<T> listIterator() {
-		return listIterator(0);
-	}
-
-	@Override
-	public ListIterator<T> listIterator(int index) {
-		if (index < 0 || index > size()) {
-			throw new IndexOutOfBoundsException(
-				"Index: %d, size: %d".formatted(index, size())
-			);
-		}
-
-		return new ListIterator<>() {
-			private int cursor = index;
-			private int last = -1;
-
-			@Override
-			public boolean hasNext() {
-				return cursor < size();
-			}
-
-			@Override
-			public T next() {
-				if (!hasNext()) {
-					throw new NoSuchElementException();
-				}
-				last = cursor;
-				return get(cursor++);
-			}
-
-			@Override
-			public boolean hasPrevious() {
-				return cursor > 0;
-			}
-
-			@Override
-			public T previous() {
-				if (!hasPrevious()) {
-					throw new NoSuchElementException();
-				}
-				last = --cursor;
-				return get(cursor);
-			}
-
-			@Override
-			public int nextIndex() {
-				return cursor;
-			}
-
-			@Override
-			public int previousIndex() {
-				return cursor - 1;
-			}
-
-			@Override
-			public void remove() {
-				throw new UnsupportedOperationException();
-			}
-
-			@Override
-			public void set(final T element) {
-				if (last < 0) {
-					throw new IllegalStateException();
-				}
-				ListView.this.set(last, element);
-			}
-
-			@Override
-			public void add(final T element) {
-				throw new UnsupportedOperationException();
-			}
-		};
 	}
 
 	@Override
@@ -280,33 +162,6 @@ public class ListView<T> implements List<T> {
 		return new ListView<>(list, operation.apply(this.range, range));
 	}
 
-	@Override
-	public Object[] toArray() {
-		final var result = new Object[size()];
-		for (int i = 0; i < result.length; ++i) {
-			result[i] = get(i);
-		}
-		return result;
-	}
-
-	@Override
-	@SuppressWarnings("unchecked")
-	public <T1> T1[] toArray(T1[] a) {
-		final int size = size();
-		final T1[] result = a.length >= size
-			? a
-			: Arrays.copyOf(a, size);
-
-		for (int i = 0; i < size; ++i) {
-			result[i] = (T1)get(i);
-		}
-		if (result.length > size) {
-			result[size] = null;
-		}
-
-		return result;
-	}
-
 	/**
 	 * Return an unmodifiable copy of {@code this} list projection.
 	 *
@@ -319,89 +174,6 @@ public class ListView<T> implements List<T> {
 			result.add(get(i));
 		}
 		return Collections.unmodifiableList(result);
-	}
-
-	@Override
-	public int hashCode() {
-		int hash = 1;
-		for (var element : this) {
-			hash = 31*hash + (element == null ? 0 : element.hashCode());
-		}
-		return hash;
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		} else if (!(obj instanceof List<?>)) {
-			return false;
-		}
-
-		final var other = (List<?>)obj;
-		if (other.size() != size()) {
-			return false;
-		}
-
-		final var left = iterator();
-		final var right = other.iterator();
-		while (left.hasNext()) {
-			if (!Objects.equals(left.next(), right.next())) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	@Override
-	public String toString() {
-		return stream()
-			.map(Objects::toString)
-			.collect(Collectors.joining(", ", "[", "]"));
-	}
-
-	/* *************************************************************************
-	 * Unsupported operations.
-	 * ************************************************************************/
-
-	@Override
-	public boolean add(T t) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public boolean remove(Object o) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public boolean containsAll(Collection<?> c) {
-		return c.stream().allMatch(this::contains);
-	}
-
-	@Override
-	public boolean addAll(Collection<? extends T> c) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public boolean addAll(int index, Collection<? extends T> c) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public boolean removeAll(Collection<?> c) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public boolean retainAll(Collection<?> c) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public void clear() {
-		throw new UnsupportedOperationException();
 	}
 
 
@@ -463,6 +235,7 @@ public class ListView<T> implements List<T> {
 	 * @return a flattened list projection
 	 * @param <T> the element type
 	 */
+	@SafeVarargs
 	public static <T> List<T> concat(final List<T>... lists) {
 		return concat(Arrays.asList(lists));
 	}
