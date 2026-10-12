@@ -23,7 +23,6 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -69,17 +68,11 @@ public final class DenseRange<T> implements Range<T>, Comparable<DenseRange<T>> 
 
 	@Override
 	public T start() {
-		if (isEmpty()) {
-			throw new NoSuchElementException();
-		}
 		return start;
 	}
 
 	@Override
 	public T end() {
-		if (isEmpty()) {
-			throw new NoSuchElementException();
-		}
 		return end;
 	}
 

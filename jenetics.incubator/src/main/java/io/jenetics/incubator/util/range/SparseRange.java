@@ -19,15 +19,14 @@
  */
 package io.jenetics.incubator.util.range;
 
+import static java.util.Objects.requireNonNull;
+import static java.util.function.Predicate.not;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static java.util.Objects.requireNonNull;
-import static java.util.function.Predicate.not;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -105,18 +104,12 @@ public final class SparseRange<T> implements Range<T> {
 
 	@Override
 	public T start() {
-		if (isEmpty()) {
-			throw new NoSuchElementException();
-		}
-		return ranges.getFirst().start();
+		return !isEmpty() ? ranges.getFirst().start() : witness.zero();
 	}
 
 	@Override
 	public T end() {
-		if (isEmpty()) {
-			throw new NoSuchElementException();
-		}
-		return ranges.getLast().end();
+		return !isEmpty() ? ranges.getLast().end() : witness.zero();
 	}
 
 	public List<DenseRange<T>> ranges() {

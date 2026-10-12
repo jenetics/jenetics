@@ -27,7 +27,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.BinaryOperator;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -41,15 +40,16 @@ import java.util.stream.Stream;
 public final class ListView<T> extends AbstractList<T> {
 
 	private final List<T> list;
-	private final Range<Integer> range;
+	private final IndexProjection projection;
 
-	public ListView(List<T> list, Range<Integer> range) {
-		if (!range.isEmpty()) {
-			Objects.checkIndex(range.start(), list.size());
-			Objects.checkIndex(range.end() - 1, list.size());
+	private ListView(List<T> list, IndexProjection projection) {
+		if (!projection.isEmpty()) {
+			final var codomain = projection.codomain();
+			Objects.checkIndex(codomain.min(), list.size());
+			Objects.checkIndex(codomain.max() - 1, list.size());
 		}
-		this.list = list;
-		this.range = range;
+		this.list = requireNonNull(list);
+		this.projection = requireNonNull(projection);
 	}
 
 	/**
@@ -57,28 +57,28 @@ public final class ListView<T> extends AbstractList<T> {
 	 *
 	 * @param list the projected list
 	 */
-	public ListView(List<T> list) {
-		this(list, Range.INTEGER.dense(0, list.size()));
+	private ListView(List<T> list) {
+		this(list, IndexProjection.of(Range.INTEGER.dense(0, list.size())));
 	}
 
 	@Override
 	public int size() {
-		return (int)range.size();
+		return projection.size();
 	}
 
 	@Override
 	public boolean isEmpty() {
-		return range.isEmpty();
+		return projection.isEmpty();
 	}
 
 	@Override
 	public T get(int index) {
-		return list.get(range.get(index));
+		return list.get(projection.apply(index));
 	}
 
 	@Override
 	public T set(int index, T element) {
-		return list.set(range.get(index), element);
+		return list.set(projection.apply(index), element);
 	}
 
 	@Override
@@ -88,79 +88,79 @@ public final class ListView<T> extends AbstractList<T> {
 
 	@Override
 	public Stream<T> stream() {
-		return range.stream().map(list::get);
+		return projection.stream().mapToObj(list::get);
 	}
 
-	@Override
-	public ListView<T> subList(int fromIndex, int toIndex) {
-		Objects.checkFromToIndex(fromIndex, toIndex, size());
-		return new ListView<>(list, subRange(fromIndex, toIndex));
-	}
+//	@Override
+//	public ListView<T> subList(int fromIndex, int toIndex) {
+//		Objects.checkFromToIndex(fromIndex, toIndex, size());
+//		return of(list, subRange(fromIndex, toIndex));
+//	}
+//
+//	private Range<Integer> subRange(final int fromIndex, final int toIndex) {
+//		return switch (range) {
+//			case DenseRange<Integer> dense -> Range.INTEGER.dense(
+//				dense.start() + fromIndex,
+//				dense.start() + toIndex
+//			);
+//			case SparseRange<Integer> sparse -> {
+//				final var ranges = new ArrayList<Range<Integer>>();
+//				int offset = 0;
+//
+//				for (var part : sparse.ranges()) {
+//					final int partSize = (int)part.size();
+//					final int start = Math.max(0, fromIndex - offset);
+//					final int end = Math.min(partSize, toIndex - offset);
+//
+//					if (start < end) {
+//						ranges.add(Range.INTEGER.dense(
+//							part.start() + start,
+//							part.start() + end
+//						));
+//					}
+//
+//					offset += partSize;
+//					if (offset >= toIndex) {
+//						break;
+//					}
+//				}
+//
+//				yield Range.INTEGER.of(ranges);
+//			}
+//		};
+//	}
 
-	private Range<Integer> subRange(final int fromIndex, final int toIndex) {
-		return switch (range) {
-			case DenseRange<Integer> dense -> Range.INTEGER.dense(
-				dense.start() + fromIndex,
-				dense.start() + toIndex
-			);
-			case SparseRange<Integer> sparse -> {
-				final var ranges = new ArrayList<Range<Integer>>();
-				int offset = 0;
+//	/**
+//	 * Return a new list projection by intersecting the range of {@code this}
+//	 * list with given {@code ranges} (union).
+//	 *
+//	 * @param ranges the ranges being part of the new projection
+//	 * @return a new list projection
+//	 */
+//	@SuppressWarnings("unchecked")
+//	public ListView<T> subList(final Range<Integer>... ranges) {
+//		final var sub = Range.INTEGER.of(ranges);
+//		if (sub.contains(range)) {
+//			return this;
+//		} else {
+//			return new ListView<>(list, range.intersect(sub));
+//		}
+//	}
 
-				for (var part : sparse.ranges()) {
-					final int partSize = (int)part.size();
-					final int start = Math.max(0, fromIndex - offset);
-					final int end = Math.min(partSize, toIndex - offset);
-
-					if (start < end) {
-						ranges.add(Range.INTEGER.dense(
-							part.start() + start,
-							part.start() + end
-						));
-					}
-
-					offset += partSize;
-					if (offset >= toIndex) {
-						break;
-					}
-				}
-
-				yield Range.INTEGER.of(ranges);
-			}
-		};
-	}
-
-	/**
-	 * Return a new list projection by intersecting the range of {@code this}
-	 * list with given {@code ranges} (union).
-	 *
-	 * @param ranges the ranges being part of the new projection
-	 * @return a new list projection
-	 */
-	@SuppressWarnings("unchecked")
-	public ListView<T> subList(final Range<Integer>... ranges) {
-		final var sub = Range.INTEGER.of(ranges);
-		if (sub.contains(range)) {
-			return this;
-		} else {
-			return new ListView<>(list, range.intersect(sub));
-		}
-	}
-
-	/**
-	 * Create a new list projection applying the given {@code range} and range
-	 * {@code operation}.
-	 *
-	 * @param operation the range (set) operation
-	 * @param range the other range used in by the {@code operation}
-	 * @return a new list projection
-	 */
-	public ListView<T> project(
-		final BinaryOperator<Range<Integer>> operation,
-		final Range<Integer> range
-	) {
-		return new ListView<>(list, operation.apply(this.range, range));
-	}
+//	/**
+//	 * Create a new list projection applying the given {@code range} and range
+//	 * {@code operation}.
+//	 *
+//	 * @param operation the range (set) operation
+//	 * @param range the other range used in by the {@code operation}
+//	 * @return a new list projection
+//	 */
+//	public ListView<T> project(
+//		final BinaryOperator<Range<Integer>> operation,
+//		final Range<Integer> range
+//	) {
+//		return new ListView<>(list, operation.apply(this.range, range));
+//	}
 
 	/**
 	 * Return an unmodifiable copy of {@code this} list projection.
@@ -181,6 +181,15 @@ public final class ListView<T> extends AbstractList<T> {
 	 * Static factories.
 	 * ************************************************************************/
 
+	public static <T> ListView<T>
+	of(final List<T> list, IndexProjection projection) {
+		return new ListView<>(list, projection);
+	}
+
+	public static <T> ListView<T> of(final List<T> list) {
+		return new ListView<>(list, IndexProjection.of(Range.INTEGER.dense(0, list.size())));
+	}
+
 	/**
 	 * Create a new list projection with all filtered elements.
 	 *
@@ -193,7 +202,7 @@ public final class ListView<T> extends AbstractList<T> {
 	 */
 	public static <T> ListView<T>
 	of(final List<T> list, final Range<Integer> range) {
-		return new ListView<>(list, range);
+		return of(list, IndexProjection.of((range)));
 	}
 
 	/**
@@ -209,7 +218,7 @@ public final class ListView<T> extends AbstractList<T> {
 		requireNonNull(list);
 		requireNonNull(filter);
 
-		return new ListView<>(
+		return of(
 			list,
 			list.stream()
 				.gather(Ranges.rangeOf(filter))
