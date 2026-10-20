@@ -66,7 +66,7 @@ public class GaussianMutatorTest extends MutatorTester {
 							.allele()
 					)
 				),
-				Histogram.Partition.of(interval, 21)
+				Histogram.Partition.of(interval, 20)
 			);
 
 		assertThat(observation)

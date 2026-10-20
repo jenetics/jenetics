@@ -25,6 +25,21 @@ import java.util.concurrent.Flow;
 import java.util.function.Consumer;
 
 /**
+ * A simple signal subscriber, which forwards published and transformed signals
+ * to the wrapped transition consumer.
+ * {@snippet lang=java:
+ * try (var publisher = new SignalPublisher<>(new SymbolStepper<>(FSM))) {
+ *     publisher.subscribe(
+ *         new SignalSubscriber<>(transition -> handle(transition))
+ *     );
+ *
+ *     publisher.submit(BEGIN);
+ *     publisher.submit(END);
+ *     publisher.submit(EXIT);
+ * }
+ * }
+ *
+ * @see SignalPublisher
  *
  * @param <ST> the state type
  * @param <SI> the symbol type
@@ -33,7 +48,7 @@ import java.util.function.Consumer;
  * @version 9.1
  * @since 9.1
  */
-public class SignalSubscriber<ST extends Fsm.State, SI extends Fsm.Signal>
+public final class SignalSubscriber<ST extends Fsm.State, SI extends Fsm.Signal>
 	implements Flow.Subscriber<Fsm.Transition<ST, SI>>
 {
 
@@ -42,6 +57,11 @@ public class SignalSubscriber<ST extends Fsm.State, SI extends Fsm.Signal>
 	private Flow.Subscription subscription;
 	private boolean completed;
 
+	/**
+	 * Wraps the given transition {@code consumer} into a transition subscriber.
+	 *
+	 * @param consumer the wrapped transition consumer
+	 */
 	public SignalSubscriber(Consumer<? super Fsm.Transition<ST, SI>> consumer) {
 		this.consumer = requireNonNull(consumer);
 	}

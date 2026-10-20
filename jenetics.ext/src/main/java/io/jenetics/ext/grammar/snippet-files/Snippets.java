@@ -26,60 +26,60 @@ import static io.jenetics.ext.grammar.Cfg.T;
 
 class Snippets {
 
-	static class CfgSnippets {
+    static class CfgSnippets {
 
-		void parseBnf() {
-			// @start region="parseBnf"
-			final Cfg<String> cfg = Bnf.parse("""
-				<expr> ::= <num> | <var> | '(' <expr> <op> <expr> ')'
-				<op>   ::= + | - | * | /
-				<var>  ::= x | y
-				<num>  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
-				"""
-			);
-			// @end
-		}
+        void parseBnf() {
+            // @start region="parseBnf"
+            final Cfg<String> cfg = Bnf.parse("""
+                <expr> ::= <num> | <var> | '(' <expr> <op> <expr> ')'
+                <op>   ::= + | - | * | /
+                <var>  ::= x | y
+                <num>  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+                """
+            );
+            // @end
+        }
 
-		void buildWithoutBuilder() {
-			// @start region="cfgWithoutBuilder"
-			final Cfg<String> cfg = Cfg.of(
-				R("expr",
-					N("num"),
-					N("var"),
-					E(T("("), N("expr"), N("op"), N("expr"), T(")"))
-				),
-				R("op", T("+"), T("-"), T("*"), T("/")),
-				R("var", T("x"), T("y")),
-				R("num",
-					T("0"), T("1"), T("2"), T("3"),
-					T("4"), T("5"), T("6"), T("7"),
-					T("8"), T("9")
-				)
-			);
-			// @end
-		}
+        void buildWithoutBuilder() {
+            // @start region="cfgWithoutBuilder"
+            final Cfg<String> cfg = Cfg.of(
+                R("expr",
+                    N("num"),
+                    N("var"),
+                    E(T("("), N("expr"), N("op"), N("expr"), T(")"))
+                ),
+                R("op", T("+"), T("-"), T("*"), T("/")),
+                R("var", T("x"), T("y")),
+                R("num",
+                    T("0"), T("1"), T("2"), T("3"),
+                    T("4"), T("5"), T("6"), T("7"),
+                    T("8"), T("9")
+                )
+            );
+            // @end
+        }
 
-		void buildWithBuilder() {
-			// @start region="cfgWithBuilder"
-			final Cfg<String> cfg = Cfg.<String>builder()
-				.R(N("expr", "Rule start annotation"), rule -> rule
-					.N("num", "Non-terminal annotation 1")
-					.N("var", "Non-terminal annotation 2")
-					.E(exp -> exp
-						.add(T("(").at("Terminal annotation"))
-						.N("expr").N("op").N("expr")
-						.T(")")
-						.at("Expression annotation")))
-				.R("op", rule -> rule.T("+").T("-").T("*").T("/"))
-				.R("var", rule -> rule.T("x").T("y"))
-				.R("num", rule -> rule
-					.T("0").T("1").T("2").T("3").T("4")
-					.T("5").T("6").T("7").T("8").T("9")
-					.at("Rule annotation")
-				)
-				.build();
-			// @end
-		}
-	}
+        void buildWithBuilder() {
+            // @start region="cfgWithBuilder"
+            final Cfg<String> cfg = Cfg.<String>builder()
+                .R(N("expr", "Rule start annotation"), rule -> rule
+                    .N("num", "Non-terminal annotation 1")
+                    .N("var", "Non-terminal annotation 2")
+                    .E(exp -> exp
+                        .add(T("(").at("Terminal annotation"))
+                        .N("expr").N("op").N("expr")
+                        .T(")")
+                        .at("Expression annotation")))
+                .R("op", rule -> rule.T("+").T("-").T("*").T("/"))
+                .R("var", rule -> rule.T("x").T("y"))
+                .R("num", rule -> rule
+                    .T("0").T("1").T("2").T("3").T("4")
+                    .T("5").T("6").T("7").T("8").T("9")
+                    .at("Rule annotation")
+                )
+                .build();
+            // @end
+        }
+    }
 
 }

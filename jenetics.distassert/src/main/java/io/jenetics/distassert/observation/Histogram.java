@@ -24,6 +24,7 @@ import static java.lang.System.arraycopy;
 import static java.util.Arrays.copyOfRange;
 import static java.util.Objects.requireNonNull;
 
+import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
@@ -35,6 +36,8 @@ import java.util.stream.Collector;
 import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
+import io.jenetics.distassert.internal.screen.HistogramRenderer;
 
 /**
  * This class lets you create a histogram from {@code double} sample data. The
@@ -685,6 +688,34 @@ public record Histogram(Buckets buckets, Residual residual) {
 	 */
 	public Histogram(final Buckets buckets) {
 		this(buckets, Residual.EMPTY);
+	}
+
+	/**
+	 * Print a graphical representation of this histogram to the given output
+	 * stream. Only the inner histogram buckets are drawn; residual counts are not
+	 * part of the chart.
+	 *
+	 * @param out the output stream
+	 * @throws NullPointerException if {@code out} is {@code null}
+	 */
+	public void print(final PrintStream out) {
+		HistogramRenderer.print(this, out);
+	}
+
+	/**
+	 * Print a graphical representation of this histogram with the requested
+	 * character-cell dimensions. Only the inner histogram buckets are drawn;
+	 * residual counts are not part of the chart.
+	 *
+	 * @param out the output stream
+	 * @param width the chart width in character cells
+	 * @param height the chart height in character cells
+	 * @throws NullPointerException if {@code out} is {@code null}
+	 * @throws IllegalArgumentException if the dimensions are too small for the
+	 *         histogram
+	 */
+	public void print(final PrintStream out, final int width, final int height) {
+		HistogramRenderer.print(this, out, width, height);
 	}
 
 	/**

@@ -193,7 +193,7 @@ public final class CsvSupport {
 		 * Indicating that <em>all</em> columns should be part of the split
 		 * result.
 		 */
-		public static final ColumnIndexes ALL = new ColumnIndexes();
+		public static final ColumnIndexes ALL = new ColumnIndexes(new int[0]);
 
 		/**
 		 * Create a new column indexes object.

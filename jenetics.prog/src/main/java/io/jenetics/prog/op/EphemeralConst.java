@@ -42,7 +42,6 @@ import io.jenetics.internal.util.Lazy;
  * is chosen, a different value is generated which is then used for that
  * particular terminal, and which will remain fixed for the given tree. The main
  * usage would be to introduce random terminal values.
- *
  * {@snippet lang="java":
  * final Random random = null; // @replace substring='null' replacement="..."
  * final Op<Double> val = EphemeralConst.of(random::nextDouble);
