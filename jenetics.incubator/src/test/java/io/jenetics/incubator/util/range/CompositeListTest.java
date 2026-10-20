@@ -28,8 +28,6 @@ import java.util.List;
 
 import org.testng.annotations.Test;
 
-import io.jenetics.incubator.util.range.CompositeList;
-
 public class CompositeListTest {
 
 	@Test
@@ -129,7 +127,7 @@ public class CompositeListTest {
 		assertThatThrownBy(() -> composite.get(0))
 			.isInstanceOf(IndexOutOfBoundsException.class);
 		assertThatThrownBy(() -> composite.subList(1, 0))
-			.isInstanceOf(IndexOutOfBoundsException.class);
+			.isInstanceOf(IllegalArgumentException.class);
 		assertThatThrownBy(() -> new CompositeList<Integer>(List.of(List.of(1), null)))
 			.isInstanceOf(NullPointerException.class);
 	}

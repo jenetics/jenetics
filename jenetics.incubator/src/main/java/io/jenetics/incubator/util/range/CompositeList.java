@@ -1,38 +1,33 @@
 package io.jenetics.incubator.util.range;
 
-import java.util.Arrays;
-import java.util.Collection;
+import static java.util.Objects.requireNonNull;
+
+import java.util.AbstractList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static java.util.function.Predicate.not;
 
 /**
  * A list <em>view</em> over the given list of lists.
  *
- * @param lists the underlying lists
  * @param <T> the list element type
  */
-record CompositeList<T>(List<? extends List<T>> lists) implements List<T> {
+final class CompositeList<T> extends AbstractList<T> {
 
-	public CompositeList {
-		lists = lists.stream()
-			.filter(not(List::isEmpty))
-			.toList();
+	private final List<? extends List<T>> lists;
+	private final int[] sizes;
+
+	CompositeList(final List<? extends List<T>> lists) {
+		this.lists = requireNonNull(lists);
+		this.sizes = lists.stream().mapToInt(List::size).toArray();
 	}
 
 	@Override
 	public int size() {
-		int size = 0;
-		for (var list : lists) {
-			size += list.size();
-		}
-		return size;
+		return lists.stream().mapToInt(List::size).sum();
 	}
 
 	@Override
@@ -48,73 +43,6 @@ record CompositeList<T>(List<? extends List<T>> lists) implements List<T> {
 	@Override
 	public Iterator<T> iterator() {
 		return stream().iterator();
-	}
-
-	@Override
-	public Object[] toArray() {
-		final var result = new Object[size()];
-		for (int i = 0; i < result.length; ++i) {
-			result[i] = get(i);
-		}
-		return result;
-	}
-
-	@Override
-	@SuppressWarnings("unchecked")
-	public <T1> T1[] toArray(T1[] a) {
-		final int size = size();
-		final T1[] result = a.length >= size
-			? a
-			: Arrays.copyOf(a, size);
-
-		for (int i = 0; i < size; ++i) {
-			result[i] = (T1)get(i);
-		}
-		if (result.length > size) {
-			result[size] = null;
-		}
-
-		return result;
-	}
-
-	@Override
-	public boolean add(T t) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public boolean remove(Object o) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public boolean containsAll(Collection<?> c) {
-		return c.stream().allMatch(this::contains);
-	}
-
-	@Override
-	public boolean addAll(Collection<? extends T> c) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public boolean addAll(int index, Collection<? extends T> c) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public boolean removeAll(Collection<?> c) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public boolean retainAll(Collection<?> c) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public void clear() {
-		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -143,16 +71,6 @@ record CompositeList<T>(List<? extends List<T>> lists) implements List<T> {
 			offset -= list.size();
 		}
 		throw new AssertionError("Unreachable");
-	}
-
-	@Override
-	public void add(int index, T element) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public T remove(int index) {
-		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -196,12 +114,15 @@ record CompositeList<T>(List<? extends List<T>> lists) implements List<T> {
 		}
 
 		return new ListIterator<>() {
-			private int cursor = index;
-			private int last = -1;
+			private final IndexCursor crs = new IndexCursor(sizes);
+			{ crs.pos(index); }
+
+			private int last1 = -1;
+			private int last2 = -1;
 
 			@Override
 			public boolean hasNext() {
-				return cursor < size();
+				return crs.pos() < crs.size();
 			}
 
 			@Override
@@ -209,13 +130,16 @@ record CompositeList<T>(List<? extends List<T>> lists) implements List<T> {
 				if (!hasNext()) {
 					throw new NoSuchElementException();
 				}
-				last = cursor;
-				return get(cursor++);
+
+				last1 = crs.index1();
+				last2 = crs.index2();
+				crs.next();
+				return lists.get(last1).get(last2);
 			}
 
 			@Override
 			public boolean hasPrevious() {
-				return cursor > 0;
+				return crs.pos() > 0;
 			}
 
 			@Override
@@ -223,18 +147,21 @@ record CompositeList<T>(List<? extends List<T>> lists) implements List<T> {
 				if (!hasPrevious()) {
 					throw new NoSuchElementException();
 				}
-				last = --cursor;
-				return get(cursor);
+
+				crs.prev();
+				last1 = crs.index1();
+				last2 = crs.index2();
+				return lists.get(last1).get(last2);
 			}
 
 			@Override
 			public int nextIndex() {
-				return cursor;
+				return crs.pos();
 			}
 
 			@Override
 			public int previousIndex() {
-				return cursor - 1;
+				return crs.pos() - 1;
 			}
 
 			@Override
@@ -244,10 +171,10 @@ record CompositeList<T>(List<? extends List<T>> lists) implements List<T> {
 
 			@Override
 			public void set(final T element) {
-				if (last < 0) {
+				if (last1 < 0) {
 					throw new IllegalStateException();
 				}
-				CompositeList.this.set(last, element);
+				lists.get(last1).set(last2, element);
 			}
 
 			@Override
@@ -260,51 +187,6 @@ record CompositeList<T>(List<? extends List<T>> lists) implements List<T> {
 	@Override
 	public Stream<T> stream() {
 		return lists.stream().flatMap(List::stream);
-	}
-
-	@Override
-	public List<T> subList(int fromIndex, int toIndex) {
-		Objects.checkFromToIndex(fromIndex, toIndex, size());
-		return ListView.of(this, Range.INTEGER.dense(fromIndex, toIndex));
-	}
-
-	@Override
-	public int hashCode() {
-		int hash = 1;
-		for (var element : this) {
-			hash = 31*hash + (element == null ? 0 : element.hashCode());
-		}
-		return hash;
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		if (obj == this) {
-			return true;
-		} else if (!(obj instanceof List<?>)) {
-			return false;
-		}
-
-		final var other = (List<?>)obj;
-		if (other.size() != size()) {
-			return false;
-		}
-
-		final var left = iterator();
-		final var right = other.iterator();
-		while (left.hasNext()) {
-			if (!Objects.equals(left.next(), right.next())) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	@Override
-	public String toString() {
-		return stream()
-			.map(Objects::toString)
-			.collect(Collectors.joining(", ", "[", "]"));
 	}
 
 }

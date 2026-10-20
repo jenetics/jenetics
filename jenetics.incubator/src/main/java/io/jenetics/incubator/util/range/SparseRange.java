@@ -162,13 +162,13 @@ public final class SparseRange<T> implements Range<T> {
 		};
 	}
 
-	public boolean contains(DenseRange<T> range) {
-		if (range.isEmpty()) {
+	public boolean contains(DenseRange<T> value) {
+		if (value.isEmpty()) {
 			return true;
 		} else if (isEmpty()) {
 			return false;
 		} else if (ranges.size() == 1) {
-			return ranges.getFirst().contains(range);
+			return ranges.getFirst().contains(value);
 		} else {
 			// Do a binary search. This is possible since the 'ranges' list is
 			// sorted, non-overlapping and normalized.
@@ -177,12 +177,12 @@ public final class SparseRange<T> implements Range<T> {
 
 			while (low <= high) {
 				final int mid = (low + high) >>> 1;
-				final DenseRange<T> value = ranges.get(mid);
+				final DenseRange<T> range = ranges.get(mid);
 
-				if (value.contains(range)) {
+				if (range.contains(value)) {
 					return true;
 				} else {
-					if (witness.isBefore(range.start(), value.start())) {
+					if (witness.isBefore(value.start(), range.start())) {
 						high = mid - 1;
 					} else {
 						low = mid + 1;

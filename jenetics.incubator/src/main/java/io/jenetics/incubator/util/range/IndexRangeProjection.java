@@ -21,11 +21,13 @@ package io.jenetics.incubator.util.range;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.RandomAccess;
+import java.util.function.IntUnaryOperator;
 import java.util.stream.IntStream;
 
 sealed interface IndexRangeProjection extends IndexProjection {
 
-	record Dense(int min, int max) implements IndexRangeProjection {
+	record Dense(int min, int max) implements IndexRangeProjection, RandomAccess {
 		@Override
 		public int size() {
 			return max - min;
@@ -45,7 +47,33 @@ sealed interface IndexRangeProjection extends IndexProjection {
 		}
 	}
 
-	record Sparse(List<Dense> ranges) implements IndexRangeProjection {
+	final class Sparse implements IndexRangeProjection {
+
+		private final List<Dense> ranges;
+
+		private final IntUnaryOperator apply;
+		private final int[] sums;
+
+		Sparse(final List<Dense> ranges) {
+			this.ranges = List.copyOf(ranges);
+
+
+			if (ranges.size() < 32) {
+				this.sums = null;
+				apply = this::applyLinearSearch;
+			} else {
+				this.sums = new int[ranges.size() + 1];
+				sums[ranges.size()] = Integer.MAX_VALUE;
+				int sum = 0;
+				for (int i = 0; i < ranges.size(); ++i) {
+					sums[i] = sum;
+					sum += ranges.get(i).size();
+				}
+
+				apply = this::applyBinarySearch;
+			}
+		}
+
 		@Override
 		public int size() {
 			return ranges.stream().mapToInt(Dense::size).sum();
@@ -59,7 +87,10 @@ sealed interface IndexRangeProjection extends IndexProjection {
 		@Override
 		public int apply(int index) {
 			Objects.checkIndex(index, size());
+			return apply.applyAsInt(index);
+		}
 
+		private int applyLinearSearch(int index) {
 			int sum = 0;
 			int pos = index;
 			for (final var range : ranges) {
@@ -71,8 +102,31 @@ sealed interface IndexRangeProjection extends IndexProjection {
 				pos -= range.size();
 			}
 
-			throw new AssertionError("Unreachable");
+			throw new AssertionError("Unreachable!");
 		}
+
+		private int applyBinarySearch(int index) {
+			int low = 0;
+			int high = ranges.size() - 1;
+
+			while (low <= high) {
+				final int mid = (low + high) >>> 1;
+				final var range = ranges.get(mid);
+
+				if (index >= sums[mid] && index < sums[mid + 1]) {
+					return range.apply(index - sums[mid]);
+				} else {
+					if (index < sums[mid]) {
+						high = mid - 1;
+					} else {
+						low = mid + 1;
+					}
+				}
+			}
+
+			throw new AssertionError("Unreachable!");
+		}
+
 		@Override
 		public IntStream stream() {
 			return ranges.stream().flatMapToInt(Dense::stream);
@@ -81,10 +135,10 @@ sealed interface IndexRangeProjection extends IndexProjection {
 
 	default Range<Integer> toRange() {
 		return switch (this) {
-			case Dense(var min, var max) -> Range.INTEGER.dense(min, max);
-			case Sparse(var ranges) -> Range.INTEGER.of(
-				ranges.stream()
-					.map(r -> Range.INTEGER.dense(r.min(), r.max()))
+			case Dense d -> Range.INTEGER.dense(d.min, d.max);
+			case Sparse s -> Range.INTEGER.of(
+				s.ranges.stream()
+					.map(r -> Range.INTEGER.dense(r.min, r.max))
 					.toList()
 			);
 		};
