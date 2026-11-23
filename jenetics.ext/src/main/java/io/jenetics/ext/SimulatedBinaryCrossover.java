@@ -125,8 +125,8 @@ public class SimulatedBinaryCrossover<
 		final double v1 = that.get(i).doubleValue();
 		final double v2 = other.get(i).doubleValue();
 		final double v = random.nextBoolean()
-			? ((v1 - v2)*0.5) - beta*0.5*abs(v1 - v2)
-			: ((v1 - v2)*0.5) + beta*0.5*abs(v1 - v2);
+			? ((v1 + v2)*0.5) - beta*0.5*abs(v1 - v2)
+			: ((v1 + v2)*0.5) + beta*0.5*abs(v1 - v2);
 
 		final double min = that.get(i).min().doubleValue();
 		final double max = that.get(i).max().doubleValue();
