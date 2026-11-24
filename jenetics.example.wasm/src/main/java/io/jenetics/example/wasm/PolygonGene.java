@@ -1,0 +1,77 @@
+/*
+ * Java Genetic Algorithm Library (@__identifier__@).
+ * Copyright (c) @__year__@ Franz Wilhelmstötter
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Author:
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
+ */
+package io.jenetics.example.wasm;
+
+import static java.util.Objects.requireNonNull;
+
+import io.jenetics.Gene;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.MSeq;
+import io.jenetics.util.Mean;
+
+/**
+ * Represents a fixed size polygon with its fill color.
+ */
+public final class PolygonGene
+	implements
+		Gene<Polygon, PolygonGene>,
+		Mean<PolygonGene>
+{
+	private final Polygon _polygon;
+
+	private PolygonGene(final Polygon polygon) {
+		_polygon = requireNonNull(polygon);
+	}
+
+	@Override
+	public Polygon allele() {
+		return _polygon;
+	}
+
+	@Override
+	public boolean isValid() {
+		return true;
+	}
+
+	@Override
+	public PolygonGene newInstance() {
+		return new PolygonGene(Polygon.newRandom(_polygon.length()));
+	}
+
+	@Override
+	public PolygonGene newInstance(final Polygon polygon) {
+		return of(polygon);
+	}
+
+	@Override
+	public PolygonGene mean(final PolygonGene other) {
+		return of(allele().mean(other.allele()));
+	}
+
+	public static ISeq<PolygonGene> seq(final int polygonCount, final int polygonLength) {
+		return MSeq.<PolygonGene>ofLength(polygonCount)
+			.fill(() -> of(Polygon.newRandom(polygonLength)))
+			.toISeq();
+	}
+
+	public static PolygonGene of(final Polygon polygon) {
+		return new PolygonGene(polygon);
+	}
+}
